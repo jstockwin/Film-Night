@@ -1,6 +1,7 @@
 <?php
-  require '../../../database.php';
+  require '../header.php';
 
+  if (loginCheck($session)=="admin"){
   // Create connection
   $conn = new mysqli($host, $username, $password, "films");
 
@@ -27,4 +28,7 @@
 
 
   $conn->close();
+}else{
+  echo "You are not authorised to view this page";
+}
 ?>
