@@ -1,4 +1,4 @@
-<?php require_once 'google.php';  require_once 'functions.php'; require_once "../override.php"; if(!loginCheck($session)) : ?>
+<?php require_once 'google.php';  require_once 'functions.php'; include_once "../override.php"; if(!loginCheck($session)) : ?>
   <div class="g-signin2" data-onsuccess="onSignIn"></div>
 <?php else : ?>
   <a href="#" onclick="signOut();">Sign out</a>
