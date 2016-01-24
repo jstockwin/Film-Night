@@ -1,11 +1,13 @@
-<?php require_once 'google.php';  require_once 'functions.php'; include_once "../override.php"; if(!loginCheck($session)) : ?>
+<?php include 'header.php'; if(!loginCheck($session)) : ?>
   <div class="g-signin2" data-onsuccess="onSignIn"></div>
 <?php else : ?>
   <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['Email']; ?>)</p>
     <a href="#" onclick="signOut();">Sign out</a><br>
 
   <?php
-  require '../../database.php';
+  require $root.'../../database.php';
+
+
 
   // Create connection
   $conn = new mysqli($host, $username, $password, "films");
