@@ -1,8 +1,8 @@
 <?php
 if (strpos(gethostname(), 'rpi') !== FALSE){
-  $root = '/filmnight/';
+  $root = $_SERVER['DOCUMENT_ROOT'].'/filmnight/';
 }else{
-  $root = '/';
+  $root = $_SERVER['DOCUMENT_ROOT'].'/';
 }
 
 require_once $root.'google.php';
