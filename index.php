@@ -1,7 +1,8 @@
 <?php require_once 'google.php';  require_once 'functions.php'; include_once "../override.php"; if(!loginCheck($session)) : ?>
   <div class="g-signin2" data-onsuccess="onSignIn"></div>
 <?php else : ?>
-  <a href="#" onclick="signOut();">Sign out</a>
+  <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['Email']; ?>)</p>
+    <a href="#" onclick="signOut();">Sign out</a><br>
 
   <?php
   require '../../database.php';
@@ -13,7 +14,7 @@
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
-  echo "Connected successfully";
+  echo "Connected to sql database successfully";
   echo "<br>";
 
 
