@@ -27,7 +27,8 @@ if(!loginCheck($session)){
       if($result2==1){
         echo "successfully sumbitted vote";
       }else{
-        echo "There was an error submitting to the database: ".$result2;
+        echo "There was an error submitting to the database: ".$sql2;
+        echo "Returned: "$result2;
       }
 
       // Should check $result2 == 1 (no errors)
