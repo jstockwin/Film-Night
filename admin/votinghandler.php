@@ -21,7 +21,7 @@ if(!loginCheck($session)){
     $result = $conn->query($sql);
     if ($result->num_rows == 0){
       // User has not yet voted.
-      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".str_replace("'", "#",$_POST['votes'])."');";
+      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".urlencode($_POST['votes'])."');";
       $result2 = $conn->query($sql2);
       echo "New Vote: ".$result2;
       if($result2==1){
@@ -34,7 +34,7 @@ if(!loginCheck($session)){
       // Should check $result2 == 1 (no errors)
     }else{
       //user has already voted.
-      $sql2 = "UPDATE votes SET Vote='".str_replace("'", "#",$_POST["votes"])."' WHERE ID='".$_SESSION['Email']."';";
+      $sql2 = "UPDATE votes SET Vote='".urlencode($_POST['votes'])."' WHERE ID='".$_SESSION['Email']."';";
       $result2 = $conn->query($sql2);
       echo "Updated Vote: ".$result2;
       if($result2==1){
