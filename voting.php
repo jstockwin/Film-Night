@@ -54,7 +54,7 @@
       $voted = TRUE;
       echo "console.log('true');";
       while($row = $result->fetch_assoc()){
-        echo 'var Vote = ["'.str_replace(',', '","',$row['Vote']).'"];';
+        echo 'var Vote = ['.$row['Vote'].'];';
       }
 
       echo "films.sort(function(a, b){return Vote.indexOf(a[0]) - Vote.indexOf(b[0]);});";
@@ -199,7 +199,7 @@
    console.log("submit");
     var orderedTitles =[];
      for(var i=0; i< numberOfFields;i++){
-       orderedTitles.push(document.getElementById(i+1).innerHTML);
+       orderedTitles.push('"'+document.getElementById(i+1).innerHTML+'"');
      }
      var button = document.getElementById("submit");
      console.log(orderedTitles);
