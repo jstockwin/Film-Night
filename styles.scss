@@ -1,0 +1,179 @@
+$primary-color-dark:   #455A64;
+$primary-color:        #607D8B;
+$primary-color-light:  #CFD8DC;
+$primary-color-text:   #FFFFFF;
+$accent-color:         #009688;
+$primary-text-color:   #212121;
+$secondary-text-color: #727272;
+$divider-color:        #B6B6B6;
+
+$icon-height: 300px;
+
+
+html,body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  color: $primary-text-color;
+}
+
+#header{
+  background-color: $primary-color;
+  height:100%;
+  width: 100%;
+  position: fixed;
+  transition: height 2s;
+  top: 0;
+  z-index: 100;
+}
+
+#svg-container{
+  box-sizing: border-box;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  padding: 10px;
+  transform: translate(-50%, -50%);
+  transform-origin: left top;
+  transition: all 2s;
+  height: $icon-height;
+  z-index: 102;
+}
+svg{
+  height: 100%;
+  width: 100%;
+}
+
+#log{
+position: fixed;
+top: calc(50% + 1 / 3 * #{$icon-height});
+text-align:center;
+width: 100%;
+color: white;
+margin: 0;
+font-family: monospace;
+z-index: 101;
+}
+
+#log:before{
+  content:'';
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    background:linear-gradient($primary-color, transparent 66%);
+  }
+
+#top{
+  transform-origin: left bottom;
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
+  transition-timing-function: ease-in;
+}
+
+#container{
+  position: relative;
+  top: 70px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+#tables{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
+.algorithm h2{
+  text-align: center;
+  margin: 0;
+}
+
+.time{
+  margin: 0;
+  text-align: center;
+  color: $secondary-text-color;
+}
+
+.right-align{
+  text-align: right;
+}
+
+.center-align{
+  text-align: center;
+}
+
+.algorithm{
+  padding: 20px;
+}
+
+.results-table{
+  border-collapse: collapse;
+  box-sizing: border-box;
+}
+
+
+.results-table th{
+  color: $secondary-text-color;
+  padding: 10px;
+  text-align: left;
+  border-style: solid;
+  border-color: $divider-color;
+  border-width: 0 0 1px 0;
+}
+
+.results-table td{
+  padding: 10px;
+  	vertical-align: middle;
+}
+
+.rank1{
+  font-weight: bold;
+  color: $accent-color;
+}
+
+.results-table > tbody > tr > td:nth-child(1){
+  text-align: center;
+}
+
+.results-table > tbody > tr > td:nth-child(3){
+  text-align: center;
+}
+
+.error-message{
+  color: #F47738;
+  font-weight: bold;
+  text-align: center;
+}
+
+#winner-div > h2{
+  text-align: center;
+  font-size: 4em;
+  margin: 0;
+}
+
+#distances-table{
+  border-collapse: collapse;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.null{
+  background-color: #EBEBEB;
+}
+
+.equal{
+  background-color: #FFE8A2;
+}
+
+.worse{
+  background-color: #fdd;
+}
+
+.better{
+  background-color: #dfd;
+}
