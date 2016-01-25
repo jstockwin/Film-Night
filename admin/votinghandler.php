@@ -12,6 +12,9 @@ if(!loginCheck($session)){
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_POST['votes'])){
+
+    // Should implement a "if($_POST['votes']=="REMOVE"){delete their vote}" here
+
     echo "Vote: ".$_POST['votes'];
     // Check if they have already voted
     $sql = "SELECT * FROM votes WHERE ID='".$_SESSION['Email']."'";

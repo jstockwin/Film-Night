@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<?php include 'StyleSheet.html'; include 'header.php' ?>
-
-
+<?php include 'StyleSheet.html'; include 'header.php'; if(!loginCheck($session)) : ?>
+You need to log in
+<?php else : ?>
 <header></header>
 
 <script>window.onload = function() { init() };</script>
@@ -24,6 +24,8 @@
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
+
+
     $sql = "SELECT * FROM selected_films";
     $result = $conn->query($sql);
 
@@ -41,8 +43,30 @@
       }
       echo '];';
     }else{
-      echo "There are no films.";
+      // Selected films is empty.
+      echo "var films = []";
     }
+
+    $sql = 'SELECT * FROM votes WHERE ID="'.$_SESSION['Email'].'";';
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0){
+      // User has voted previously
+      $voted = TRUE;
+      echo "console.log('true');";
+      while($row = $result->fetch_assoc()){
+        echo 'var Vote = ["'.str_replace(',', '","',$row['Vote']).'"];';
+      }
+
+      echo "films.sort(function(a, b){return Vote.indexOf(a[0]) - Vote.indexOf(b[0]);});";
+
+      echo "console.log(films);";
+
+    }else{
+      // User has not voted previously
+      $voted = FALSE;
+    }
+
+
     $conn->close();
 
     ?>
@@ -220,8 +244,10 @@
 
 </div>
 
-<button type="button" id="submit" style="margin:auto;width:20%;display:block" >Submit</button>
+<button type="button" id="submit" style="margin:auto;width:20%;display:block" ><?php if($voted){echo "Update Vote";}else{echo "Submit Vote";} ?></button>
 </div>
 <script>
     document.getElementById("submit").addEventListener("click",function(){submit();});
 </script>
+
+<?php endif; ?>
