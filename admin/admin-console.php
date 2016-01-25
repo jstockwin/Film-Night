@@ -1,6 +1,6 @@
 <?php
   require_once '../header.php';
-  require_once $root.'../../../database.php';
+  require_once $root.'../../database.php';
 
 
   if (loginCheck($session)=="admin"){

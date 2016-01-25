@@ -7,7 +7,8 @@ if (strpos(gethostname(), 'rpi') !== FALSE){
 
 require_once $root.'google.php';
 require_once $root.'functions.php';
-include_once $root.'../override.php';
+$session = "live";
+include $root.'../override.php';
 
 
  ?>

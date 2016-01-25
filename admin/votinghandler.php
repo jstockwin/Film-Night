@@ -1,6 +1,8 @@
 <?php
+ob_start();
 require '../header.php';
 require $root.'../../database.php';
+ob_end_clean(); // supresses output.
 
 if(!loginCheck($session)){
   // Not signed in.
@@ -18,11 +20,13 @@ if(!loginCheck($session)){
       // User has not yet voted.
       $sql2 = 'INSERT INTO votes VALUES ("'.$_SESSION['Email'].'", "'.$_POST['votes'].'");';
       $result2 = $conn->query($sql2);
+      echo "New Vote: ".$result2;
       // Should check $result2 == 1 (no errors)
     }else{
       //user has already voted.
       $sql2 = 'UPDATE votes SET Vote="'.$_POST['votes'].'" WHERE ID="'.$_SESSION['Email'].'";';
       $result2 = $conn->query($sql2);
+      echo "Updated Vote: ".$result2;
       // Should check $result2 == 1 (no errors)
     }
   }
