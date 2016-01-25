@@ -29,6 +29,14 @@ html,body{
   z-index: 100;
 }
 
+#utilities-tables{
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
 #svg-container{
   box-sizing: border-box;
   position: fixed;

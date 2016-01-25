@@ -27,27 +27,26 @@
 </div>
 <p id="log"></p>
 <div id="container">
-<div id="results">
-  <div id="winner-div">
-    <h3>This week's winner is</h3>
-    <h2 id="winner">TODO</h2>
+  <div id="results">
+    <div id="winner-div">
+      <h3>This week's winner is</h3>
+      <h2 id="winner">TODO</h2>
+    </div>
+    <div id="utilities">
+      <div id="utilities-tables">
+        <div id="distances"><table id="distances-table"></table></div>
+        <div id="svg"></div>
+      </div>
+    </div>
+    <div id="tables">
+      <div id="schulze"></div>
+      <div id="copeland"></div>
+      <div id="borda"></div>
+      <div id="minimax"></div>
+      <div id="kemenyYoung"></div>
+      <div id="baldwin"></div>
+    </div>
   </div>
-  <div id="utilities">
-    <div id="distances"><table id="distances-table"></table></div>
-    <div id="svg">
-
-      </defs>
-    </svg>
-  </div>
-  <div id="tables">
-    <div id="schulze"></div>
-    <div id="copeland"></div>
-    <div id="borda"></div>
-    <div id="minimax"></div>
-    <div id="kemenyYoung"></div>
-    <div id="baldwin"></div>
-  </div>
-</div>
 </div>
 <script>
 
@@ -203,11 +202,11 @@ function populateDistances(listOfCandidates, distances){
       if(i === j){
         html = html + "<td class='null'></td>";
       }else if(distances[i][j] === distances[j][i]){
-          html = html + "<td class='equal'>" + distances[i][j] + "</td>";
+        html = html + "<td class='equal'>" + distances[i][j] + "</td>";
       }else if(distances[i][j] > distances[j][i]){
-          html = html + "<td class='better'>" + distances[i][j] + "</td>";
+        html = html + "<td class='better'>" + distances[i][j] + "</td>";
       }else{
-          html = html + "<td class='worse'>" + distances[i][j] + "</td>";
+        html = html + "<td class='worse'>" + distances[i][j] + "</td>";
       }
     }
     html = html + "</tr>";
@@ -261,9 +260,9 @@ function drawDirectedGraph(listOfCandidates, distances){
     }
   }
   for(var i = 0; i < listOfCandidates.length; i++){
-      var node = '<circle cx="'+ coordinates[i].x + '" cy="'+ coordinates[i].y + '" r="'+nodeRadius+'" fill="'+nodeColors[i % nodeColors.length] + '"/>';
-      var text = '<text x="'+ coordinates[i].x + '" y="'+ coordinates[i].y + '" text-anchor="middle"  fill="white" font-size="' + nodeRadius * 1.5 + '" style="alignment-baseline:central" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
-      svg = svg + node + text;
+    var node = '<circle cx="'+ coordinates[i].x + '" cy="'+ coordinates[i].y + '" r="'+nodeRadius+'" fill="'+nodeColors[i % nodeColors.length] + '"/>';
+    var text = '<text x="'+ coordinates[i].x + '" y="'+ coordinates[i].y + '" text-anchor="middle"  fill="white" font-size="' + nodeRadius * 1.5 + '" style="alignment-baseline:central" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
+    svg = svg + node + text;
   }
   for(var i =0; i < numberOfIndicatorSquares; i++ ){
 
@@ -284,27 +283,27 @@ function interpolateColors(hex1, hex2, t){
 }
 
 function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
-    return componentToHex(r) + componentToHex(g) + componentToHex(b);
+  return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 function hexToRgb(hex) {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return r + r + g + g + b + b;
-    });
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
 
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }
 </script>
 </body>
