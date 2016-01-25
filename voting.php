@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php include 'StyleSheet.html'; include 'header.php'; if(!loginCheck($session)) : ?>
-You need to log in
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
 <?php else : ?>
 <header></header>
 

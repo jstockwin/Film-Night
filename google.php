@@ -16,7 +16,7 @@ function signOut() {
   xhr.open('POST', 'https://jakestockwin.co.uk/filmnight/logout.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function(){
-    location.replace("https://jakestockwin.co.uk/filmnight/index.php");
+    location.reload;
   }
   xhr.send();
 }
