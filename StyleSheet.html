@@ -1,0 +1,102 @@
+<style>
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,700,500italic,900,700italic,900italic);
+
+* { font-family: 'Roboto', sans-serif; line-height:1.2; vertical-align:middle; }
+
+.falling{
+animation-name: fall;
+animation-duration: 20s;
+animation-iteration-count: infinite;
+animation-timing-function: linear;
+position: absolute;
+height: 50px;
+}
+
+@keyframes fall{
+0%{transform:translateY(0) translateX(-10px) scale(1) rotate(10deg)}
+10%{transform:translateY(20vh) translateX(-30px) scale(1.1) rotate(20deg);}
+20%{transform:translateY(50vh) translateX(20px) scale(1) rotate(10deg);}
+30%{transform:translateY(60vh) translateX(-10px) scale(0.9) rotate(30deg);}
+50%{transform:translateY(80vh) translateX(30px) scale(1.2) rotate(45deg);}
+60%{transform:translateY(120vh) translateX(-10px) scale(1.4) rotate(0deg);}
+80%{transform:translateY(140vh) translateX(-20px) scale(1.2) rotate(-45deg);}
+100%{transform:translateY(160vh) translateX(-0px) scale(1) rotate(0deg);}
+}
+
+header {
+  position:absolute;
+  z-index:0;
+  top:0; left:0; right:0;
+  height:200px;
+  background:url(https://docs.google.com/uc?authuser=0&id=0Bzygl0tJta6ZS1hRNU54d1R0Zkk&export=download)  center center;
+  background-size:cover;
+}
+
+input, .card {
+  position:relative;
+  z-index:2;
+}
+
+button{
+  display:inline-block;
+  background:#002147;
+  color:#ffffff;
+  border:0;
+  padding:.75rem 1rem;
+  border-radius:3px;
+  box-shadow:0 1px 2px #aaa;
+}
+input {
+  display:inline-block;
+  border:0;
+  padding:.75rem 1rem;
+  border-radius:3px;
+  box-shadow:0 1px 2px #aaa;
+}
+
+.card {
+  padding:3%;
+  padding-bottom:1%;
+  padding-top:1%;
+  box-shadow:0 1px 2px #aaa;
+  background:white;
+  width:80%;
+  margin:0px auto;
+  margin-bottom:20px;
+  border-radius:3px;
+  user-select:none;
+  display:inline-block;
+}
+
+h1 {
+  font-size:2rem;
+  font-weight:200;
+}
+  strong {
+    font-weight:300;
+    color:#539D00;
+  }
+
+h2 {
+  font-size:.9rem;
+  line-height:2.5;
+  color:gray;
+  font-weight:400;
+}
+.picture {
+  width:150px;
+  height:222px;
+  display: inline-block;
+  float:left;
+  background:whitesmoke;
+  margin: 0px;
+  margin-right:20px;
+  }
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+</style>
