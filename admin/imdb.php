@@ -22,7 +22,7 @@ if ($result->num_rows > 0){
       $Plot = $output->{'Plot'};
       $Poster = $output->{'Poster'};
 
-      $sql2 = "UPDATE selected_films SET Metascore='".$Metascore."', IMDb='".$IMDb."', Plot='".$Plot."', Poster='".$Poster."' WHERE Film='".$row['Film']."';";
+      $sql2 = 'UPDATE selected_films SET Metascore="'.$Metascore.'", IMDb="'.$IMDb.'", Plot="'.$Plot.'", Poster="'.$Poster.'" WHERE Film="'.$row["Film"].'";';
       $result2 = $conn->query($sql2);
       if ($result2 == 1){
         // Updated successfully
