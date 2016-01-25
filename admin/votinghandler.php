@@ -21,7 +21,7 @@ if(!loginCheck($session)){
     $result = $conn->query($sql);
     if ($result->num_rows == 0){
       // User has not yet voted.
-      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".str_replace('"', '#',$_POST['votes'])."');";
+      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".str_replace("'", "#",$_POST['votes'])."');";
       $result2 = $conn->query($sql2);
       echo "New Vote: ".$result2;
       if($result2==1){
