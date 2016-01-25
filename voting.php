@@ -54,7 +54,7 @@
       $voted = TRUE;
       echo "console.log('true');";
       while($row = $result->fetch_assoc()){
-        echo 'var Vote = ['.$row['Vote'].'];';
+        echo 'var Vote = ['.str_replace("#", "'",$row["Vote"]).'];';
       }
 
       echo "films.sort(function(a, b){return Vote.indexOf(a[0]) - Vote.indexOf(b[0]);});";
