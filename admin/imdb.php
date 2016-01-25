@@ -20,7 +20,7 @@ if ($result->num_rows > 0){
       $Metascore = $output->{'Metascore'};
       $IMDb = $output->{'imdbRating'};
       $Plot = $output->{'Plot'};
-      $Poster = $output->{'Poster'};
+      $Poster = str_replace("http","https",$output->{'Poster'});
 
       $sql2 = 'UPDATE selected_films SET Metascore="'.$Metascore.'", IMDb="'.$IMDb.'", Plot="'.$Plot.'", Poster="'.$Poster.'" WHERE Film="'.$row["Film"].'";';
       $result2 = $conn->query($sql2);
