@@ -24,6 +24,12 @@ if(!loginCheck($session)){
       $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".$_POST['votes']."');";
       $result2 = $conn->query($sql2);
       echo "New Vote: ".$result2;
+      if($result2==1){
+        echo "successfully sumbitted vote";
+      }else{
+        echo "There was an error submitting to the database: ".$result2;
+      }
+
       // Should check $result2 == 1 (no errors)
     }else{
       //user has already voted.
