@@ -239,7 +239,7 @@
 
 <div id="2spooky4me" style="overflow:hidden; height:100%; width:100%;"></div>
 
-<div id="background" style="width:94%;background:#d5d5d5;margin-top:200px;padding:3%;">
+<div id="background" style="width:94%;background:#d5d5d5;padding:3%;">
 <div id="cards">
 
 </div>
