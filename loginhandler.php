@@ -20,12 +20,8 @@
     $result = $conn->query($sql);
 
     if (!$result){
-      // User authenticated with Google, but is not in our list of users.
-      // For now (registration period), set the Email in the session so for
-      // the registration page. This should be changed to return an error
-      // once everyone has registered.
-      $_SESSION["Email"] = $email;
-    }else{
+      // something went wrong
+    }elseif($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         if($row["Active"]==1){
           // Active user returned
@@ -37,6 +33,13 @@
           // Inactive user returned
         }
       }
+    }else{
+
+      // User authenticated with Google, but is not in our list of users.
+      // For now (registration period), set the Email in the session for
+      // the registration page. This should be changed to return an error
+      // once everyone has registered.
+      $_SESSION["Email"] = $email;
     }
     $conn->close();
 	}else{
