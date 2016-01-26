@@ -5,7 +5,7 @@ Please fill in and submit the form below. <br>
 Your Google email has been provided by Google and cannot be changed.<br>
 Please enter an email in the "Email Address" field. This will be the address we
 send emails to.
-<form action="/admin/registrationhandler.php" method="post">
+<form action="admin/registrationhandler.php" method="post">
   Google email: <?php echo $_SESSION['Email'] ?><br>
   Full Name: <input type="text" name="name"><br>
   Email Address: <input type="text" name="email"><br>
