@@ -1,6 +1,6 @@
 <?php include 'header.php'; if(!loginCheck($session)) : ?>
 
-<?php if(isset($_SESSION['Email'])) : ?>
+<?php session_start(); if(isset($_SESSION['Email'])) : ?>
 Please fill in and submit the form below. <br>
 Your Google email has been provided by Google and cannot be changed.<br>
 Please enter an email in the "Email Address" field. This will be the address we
