@@ -1,5 +1,4 @@
-var listOfCandidates = ['Interstellar','The Lion King','The Dukes of Hazzard','Jurassic World',"Ocean's Eleven"];
-var votes = [{'Jurassic World': 1, 'Interstellar': 1, 'The Lion King': 3, 'The Dukes of Hazzard': 4, "Ocean's Eleven": 5}];
+
 
 function generateRandomVotes(n){
   var order = [];

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<?php include 'header.php';
+require $root.'../../database.php'; ?>
 <html>
 <body>
   <?php include 'top-nav.php'; ?>
@@ -27,6 +29,47 @@
   </div>
 </div>
 <script>
+
+// var listOfCandidates = ['Interstellar','The Lion King','The Dukes of Hazzard','Jurassic World',"Ocean's Eleven"];
+// var votes = [{'Jurassic World': 1, 'Interstellar': 1, 'The Lion King': 3, 'The Dukes of Hazzard': 4, "Ocean's Eleven": 5}];
+
+<?php
+
+$conn = new mysqli($host, $username, $password, "films");
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+
+$sql = "SELECT * FROM selected_films";
+$result = $conn->query($sql);
+if ($result->num_rows > 0){
+  echo "var listOfCandidates =[";
+  while($row = $result->fetch_assoc()){
+    echo '"'.urldecode($row["Film"]).'",';
+  }
+  echo "];";
+}else{
+  echo "// There are no selected films.";
+}
+echo "\n";
+$sql = "SELECT * FROM votes";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0){
+  echo "var votes =[";
+  while($row = $result->fetch_assoc()){
+    echo urldecode($row["Vote"]).",";
+  }
+  echo "];";
+}else{
+  echo "// There are no films.";
+}
+$conn->close();
+?>
+
 
 function closeClapper(){
   document.getElementById('top').style.transform = "rotate(0deg)";
@@ -82,7 +125,7 @@ function createInformationOnAlgorithm(algorithmName, algorithm, listOfCandidates
 
 function runAllAlgorithms(i) {
   if( i === 1){
-    generateRandomVotes(1000);
+    // generateRandomVotes(1000);
     log('Schulze Ranking...');
     setTimeout(createInformationOnAlgorithm,0,'Schulze', schulze, listOfCandidates, votes, document.getElementById('schulze'),function(){runAllAlgorithms(2)});
   }else if(i === 2){
