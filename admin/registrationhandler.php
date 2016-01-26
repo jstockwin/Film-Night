@@ -29,6 +29,7 @@ $result = $conn->query($sql);
 
 if($result == 1){
   echo "You have successfully registered";
+  unset($_SESSION['Email']); //Unset email to force a proper login again. 
 }else{
   echo "Something went wrong. Shout at Jake<br>";
   echo "SQL Call: ".$sql."<br>";
