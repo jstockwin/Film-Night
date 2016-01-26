@@ -2,7 +2,7 @@
 <?php include 'StyleSheet.html'; include 'header.php'; if(!loginCheck($session)) : ?>
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
 <?php else : ?>
-<header></header>
+<?php include 'top-nav.php'; ?>
 
 <script>window.onload = function() { init() };</script>
 

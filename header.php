@@ -9,6 +9,4 @@ require_once $root.'google.php';
 require_once $root.'functions.php';
 $session = "live";
 include $root.'../override.php';
-
-
  ?>
