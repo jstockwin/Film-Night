@@ -8,6 +8,8 @@ function loginCheck($session = "live") {
     $_SESSION['Name'] = "debug";
     $_SESSION['Token'] = "ABC123";
     return "admin";
+  }elseif($session == "dev2"){
+    $_SESSION['Email'] = "debug@example2.com";  
   }else{
     if (isset($_SESSION['Permission'])){
       return $_SESSION['Permission'];
