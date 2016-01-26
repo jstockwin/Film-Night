@@ -3,6 +3,7 @@
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div id="header">
   <div id="page-tabs">
+    <?php echo "<!-- ".$root." ".$_SERVER['PHP_SELF']." -->";?>
     <div  class="tab"><a href="index.php" onclick="slideIndicator(event)">Index</a><?php if($_SERVER['PHP_SELF'] === $root."index.php"){echo '<div id="indicator"></div>';} ?></div>
     <div  class="tab"><a href="voting.php" onclick="slideIndicator(event)">Voting</a> <?php if($_SERVER['PHP_SELF'] === $root."voting.php"){echo '<div id="indicator"></div>';} ?></div>
     <div  class="tab"><a href="results.php" onclick="slideIndicator(event)">Results</a><?php if($_SERVER['PHP_SELF'] === $root."results.php"){echo '<div id="indicator"></div>';} ?></div>
