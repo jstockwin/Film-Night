@@ -9,6 +9,8 @@ $divider-color:        #B6B6B6;
 
 $icon-height: 300px;
 
+$indicator-height: 0.2em;
+
 
 html,body{
   height: 100%;
@@ -17,6 +19,33 @@ html,body{
   width: 100%;
   font-family: 'Open Sans', sans-serif;
   color: $primary-text-color;
+}
+
+#page-tabs{
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  height: 70px;
+  align-items: center;
+}
+
+.tab{
+  margin: 10px;
+  padding-bottom: $indicator-height;
+  position: relative;
+}
+
+.tab a{
+  text-decoration: none;
+  color: white;
+}
+
+#indicator{
+  background-color: $accent-color;
+  bottom: 0;
+  height: $indicator-height;
+  position: absolute;
+  width: 100%;
 }
 
 #header{

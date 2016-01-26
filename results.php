@@ -5,6 +5,11 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   <script type="text/javascript" src="voting-systems.js"></script>
   <div id="header">
+    <div id="page-tabs">
+      <div  class="tab"><a href="index.php" onclick="slideIndicator(event)">Index</a></div>
+      <div  class="tab"><a href="" onclick="slideIndicator(event)">Voting</a></div>
+      <div  class="tab"><a href="results.php" onclick="slideIndicator(event)">Results</a><div id="indicator"></div></div>
+    </div>
   </div>
   <div id="svg-container">
     <svg
@@ -49,6 +54,30 @@
   </div>
 </div>
 <script>
+
+function slideIndicator(event){
+  event.preventDefault();
+  event.stopPropagation();
+
+  var indicator  = document.getElementById('indicator');
+  var targetBBox = event.target.getBoundingClientRect();
+  var currentBBox = indicator.getBoundingClientRect();
+  var deltaLeft = targetBBox.left - currentBBox.left;
+  if(true){
+    indicator.style.transformOrigin = "left center";
+  }else{
+    indicator.style.transformOrigin = "right center";
+  }
+  indicator.style.transition = "all 0.5s ease-in";
+  indicator.style.transform = "translateX("+ deltaLeft / 2+"px) scale("+ 2 +  ",1)";
+  var secondStep = function(){
+    indicator.style.transform = "translateX("+deltaLeft+"px) scale("+targetBBox.width / currentBBox.width +  ",1)";
+    indicator.style.transition = "all 0.5s ease-out";
+  }
+  setTimeout(secondStep, 500);
+  setTimeout(function(){window.location = event.target.href },1000);
+  return false;
+}
 
 function closeClapper(){
   document.getElementById('top').style.transform = "rotate(0deg)";

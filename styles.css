@@ -6,6 +6,29 @@ html, body {
   font-family: 'Open Sans', sans-serif;
   color: #212121; }
 
+#page-tabs {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  height: 70px;
+  align-items: center; }
+
+.tab {
+  margin: 10px;
+  padding-bottom: 0.2em;
+  position: relative; }
+
+.tab a {
+  text-decoration: none;
+  color: white; }
+
+#indicator {
+  background-color: #009688;
+  bottom: 0;
+  height: 0.2em;
+  position: absolute;
+  width: 100%; }
+
 #header {
   background-color: #607D8B;
   height: 100%;
