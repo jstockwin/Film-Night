@@ -1,7 +1,8 @@
 <?php
+ob_start();
 include '../header.php';
 require $root.'../../database.php';
-
+ob_end_clean(); // supresses output.
 
 
 // Create connection
@@ -28,8 +29,8 @@ $sql = 'INSERT INTO users VALUES ("'.$_SESSION['Email'].'", "'.$_POST['name'].'"
 $result = $conn->query($sql);
 
 if($result == 1){
-  echo "You have successfully registered";
-  unset($_SESSION['Email']); //Unset email to force a proper login again. 
+  unset($_SESSION['Email']); //Unset email to force a proper login again.
+  header('location: ../registration.php');
 }else{
   echo "Something went wrong. Shout at Jake<br>";
   echo "SQL Call: ".$sql."<br>";

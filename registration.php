@@ -1,6 +1,6 @@
 <?php include 'header.php'; if(!loginCheck($session)) : ?>
 
-<?php session_start(); if(isset($_SESSION['Email'])) : ?>
+<?php if(isset($_SESSION['Email'])) : ?>
 Please fill in and submit the form below. <br>
 Your Google email has been provided by Google and cannot be changed.<br>
 Please enter an email in the "Email Address" field. This will be the address we
@@ -28,6 +28,6 @@ Please authenticate with Google. It does not matter which account you use, but y
 
 <?php else : ?>
 
-<p> You have already registered, thank you.</p>
+<p> You have successfully registered, thank you.</p>
 
 <?php endif; ?>

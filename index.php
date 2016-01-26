@@ -4,7 +4,7 @@
   if(isset($_SESSION['Email'])){
     echo $_SESSION['Email']." is not in our list of users.";
   }else{
-    echo '<div class="g-signin2" data-onsuccess="onSignIn"></div>"';
+    echo '<div class="g-signin2" data-onsuccess="onSignIn"></div>';
   }
   ?>
 <?php else : ?>
