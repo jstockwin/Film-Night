@@ -2,7 +2,6 @@
 <html>
 <body>
   <?php include 'top-nav.php'; ?>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
   <script type="text/javascript" src="voting-systems.js"></script>
 <p id="log"></p>
 <div id="container">

@@ -1,5 +1,6 @@
 
 <link rel="stylesheet" type="text/css" href="styles.css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div id="header">
   <div id="page-tabs">
     <div  class="tab"><a href="index.php" onclick="slideIndicator(event)">Index</a><?php if($_SERVER['PHP_SELF'] === "/index.php"){echo '<div id="indicator"></div>';} ?></div>
@@ -59,7 +60,16 @@ function changePage(href){
     document.open();
     document.write(xhr.responseText);
     document.close();
+    window.history.pushState({html: xhr.responseText}, "", href);
   }
   xhr.send();
 }
+
+window.onpopstate = function(e){
+    if(e.state){
+      document.open();
+      document.write(e.state.html);
+      document.close();
+    }
+};
 </script>
