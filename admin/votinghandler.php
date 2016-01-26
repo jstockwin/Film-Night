@@ -12,7 +12,9 @@ if(!loginCheck($session)){
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_POST['votes'])){
-
+    $post = file_get_contents('php://input');
+    echo $post;
+    $vote = str_replace("votes=","",$post);
     // Should implement a "if($_POST['votes']=="REMOVE"){delete their vote}" here
 
     echo "Vote: ".$_POST['votes'];
@@ -21,7 +23,7 @@ if(!loginCheck($session)){
     $result = $conn->query($sql);
     if ($result->num_rows == 0){
       // User has not yet voted.
-      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".urlencode($_POST['votes'])."');";
+      $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".$vote."');";
       $result2 = $conn->query($sql2);
       echo "New Vote: ".$result2;
       if($result2==1){
@@ -34,7 +36,7 @@ if(!loginCheck($session)){
       // Should check $result2 == 1 (no errors)
     }else{
       //user has already voted.
-      $sql2 = "UPDATE votes SET Vote='".urlencode($_POST['votes'])."' WHERE ID='".$_SESSION['Email']."';";
+      $sql2 = "UPDATE votes SET Vote='".$vote."' WHERE ID='".$_SESSION['Email']."';";
       $result2 = $conn->query($sql2);
       echo "Updated Vote: ".$result2;
       if($result2==1){
