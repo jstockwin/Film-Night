@@ -36,13 +36,13 @@ function slideIndicator(event){
   var targetBBox = event.target.getBoundingClientRect();
   var currentBBox = indicator.getBoundingClientRect();
   var deltaLeft = targetBBox.left - currentBBox.left;
-  if(true){
+  if(deltaLeft < 0 ){
     indicator.style.transformOrigin = "left center";
   }else{
     indicator.style.transformOrigin = "right center";
   }
-  indicator.style.transition = "all 0.5s ease-in";
-  indicator.style.transform = "translateX("+ deltaLeft / 2+"px) scale("+ 2 +  ",1)";
+  indicator.style.transition = "all 0.5s linear";
+  indicator.style.transform = "translateX("+ deltaLeft / 2+"px) scale("+ (currentBBox.width + Math.abs(deltaLeft) / 4) /currentBBox.width +  ",1)";
   var secondStep = function(){
     indicator.style.transform = "translateX("+deltaLeft+"px) scale("+targetBBox.width / currentBBox.width +  ",1)";
     indicator.style.transition = "all 0.5s ease-out";

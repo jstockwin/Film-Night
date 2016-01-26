@@ -1,5 +1,4 @@
 <?php include 'header.php'; if(!loginCheck($session)) : ?>
-
   <?php session_start();
   if(isset($_SESSION['Email'])){
     echo $_SESSION['Email']." is not in our list of users.";
@@ -8,6 +7,7 @@
   }
   ?>
 <?php else : ?>
+  <?php include 'top-nav.php'; ?>
   <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['Email']; ?>)</p>
     <a href="#" onclick="signOut();">Sign out</a><br>
 
