@@ -204,6 +204,7 @@ function drawDirectedGraph(listOfCandidates, distances){
   var size = graphRadius/numberOfIndicatorSquares;
 
   var svgStart = '<svg id="graph" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="'+ -graphRadius + ' '+ -graphRadius +  ' '+ (2*graphRadius + nodeRadius + 3*size + 25 ) + ' '+ 2*graphRadius + '" style="overflow:visible; height: 300 !important; width: 300 !important;">'
+  var svg = "";
   var defsHTML = "<defs>";
   var coordinates = [];
   for( var i = 0; i < listOfCandidates.length; i++){
