@@ -36,10 +36,8 @@
     }else{
 
       // User authenticated with Google, but is not in our list of users.
-      // For now (registration period), set the Email in the session for
-      // the registration page. This should be changed to return an error
-      // once everyone has registered.
       $_SESSION["Email"] = $email;
+
     }
     $conn->close();
 	}else{
