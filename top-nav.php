@@ -23,7 +23,7 @@
       <div id="profile-dropdown">
         <h3 id="name"><?php echo $_SESSION['Name']?></h3>
         <h4 id="email"><?php echo $_SESSION['Email']?></h4>
-        <button type="button" style="float: right" onclick="signOut">Sign Out</button>
+        <button type="button" style="float: right" onclick="signOut()">Sign Out</button>
       </div>
     </div>
     <?php endif ?>
