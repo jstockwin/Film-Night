@@ -14,7 +14,9 @@ html, body {
   align-items: center; }
 
 #profile-image {
-  height: 35px; }
+  border-radius: 50%;
+  height: 35px;
+  padding: 10px; }
 
 .tab {
   margin: 10px;
