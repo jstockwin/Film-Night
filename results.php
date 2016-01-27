@@ -275,7 +275,7 @@ function drawDirectedGraph(listOfCandidates, distances){
         var length = Math.sqrt(differenceX*differenceX + differenceY*differenceY);
         var targetX = coordinates[j].x + differenceX*(length-10)/length;
         var targetY = coordinates[j].y + differenceY*(length-10)/length;
-        var color = interpolateColors(coldColor, warmColor, (distances[j][i] - min)/Math.min(max - min, 1));
+        var color = interpolateColors(coldColor, warmColor, (distances[j][i] - min)/Math.max(max - min, 1));
         var newMarker = '<marker id="arrow'+color+'" markerWidth="10" markerHeight="10" refx="6" refy="2" orient="auto" markerUnits="strokeWidth" fill="#'+color+'"><path d="M0,0 L0,4 L6,2 z"/></marker>'
         defsHTML = defsHTML + newMarker;
         var line = '<line x1="' + coordinates[j].x + '" y1 = "'+ coordinates[j].y+ '" x2="'+  targetX +'" + y2="'+ targetY +'" stroke-width="2" stroke="#'+color+'" marker-end="url(#arrow'+color+')"/>';
