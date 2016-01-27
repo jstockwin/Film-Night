@@ -17,6 +17,7 @@ require $root.'../../database.php'; ?>
     </div>
     <div id="utilities">
       <div id="utilities-tables">
+        <div id="key"></div>
         <div id="distances"><table id="distances-table"></table></div>
         <div id="svg"></div>
       </div>
@@ -72,6 +73,9 @@ if ($result->num_rows > 0){
 }
 $conn->close();
 ?>
+
+var listOfCandidates =["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where's My Car?",];
+var votes =[{"Four Lions": 1,"Dude, Where's My Car?": 2,"Atonement": 3,"Walk the Line": 4,"Big Fish": 5},{"Four Lions": 1,"Dude, Where's My Car?": 2,"Big Fish": 3,"Atonement": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where's My Car?": 2,"Atonement": 3,"Big Fish": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where's My Car?": 2,"Big Fish": 3,"Atonement": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where's My Car?": 2,"Atonement": 3,"Big Fish": 4,"Walk the Line": 5},{"Four Lions": 1,"Big Fish": 2,"Walk the Line": 3,"Atonement": 4,"Dude, Where's My Car?": 5},{"Atonement": 1,"Walk the Line": 2,"Big Fish": 3,"Four Lions": 4,"Dude, Where's My Car?": 5},{"Four Lions": 1,"Atonement": 2,"Walk the Line": 3,"Big Fish": 4,"Dude, Where's My Car?": 5},{"Atonement": 1,"Big Fish": 2,"Four Lions": 3,"Walk the Line": 4,"Dude, Where's My Car?": 5},];
 
 function hideLog(){
   document.getElementById('log').style.visibility = "hidden";
@@ -134,16 +138,23 @@ function runAllAlgorithms(i) {
   }else if(i === 6){
     log('Baldwin Ranking...');
     var onEnd = function(){
-      var distances = getDistances(listOfCandidates, votes);
-      document.getElementById('winner').innerHTML = calculateWinner();
-      document.getElementById('svg').innerHTML  = drawDirectedGraph(listOfCandidates, distances);
-      document.getElementById('distances-table').innerHTML = populateDistances(listOfCandidates, distances);
-      setTimeout(closeClapper, 300);
-      setTimeout(shrinkHeader, 800);
-      setTimeout(hideLog,500);
+      log('Drawing Graphs...');
+      setTimeout(drawGraphs);
     }
     setTimeout(createInformationOnAlgorithm,100,'Baldwin', baldwin, listOfCandidates, votes, document.getElementById('baldwin'), onEnd);
   }
+}
+
+function drawGraphs(){
+  var distances = getDistances(listOfCandidates, votes);
+  document.getElementById('winner').innerHTML = calculateWinner();
+  document.getElementById('svg').innerHTML  = drawDirectedGraph(listOfCandidates, distances);
+  document.getElementById('distances-table').innerHTML = populateDistances(listOfCandidates, distances);
+  document.getElementById('key').innerHTML = generateKey(listOfCandidates);
+  log('Finished');
+  setTimeout(closeClapper, 300);
+  setTimeout(shrinkHeader, 800);
+  setTimeout(hideLog,500);
 }
 
 function populateTable(results){
@@ -205,11 +216,11 @@ function calculateWinner(){
 function populateDistances(listOfCandidates, distances){
   var html = "<tbody><tr><th></th>"
   for(var i = 0; i < listOfCandidates.length; i++){
-    html = html + "<th>" + listOfCandidates[i] + "</th>";
+    html = html + '<th><span class="key-node" style="background-color:'+nodeColors[i % nodeColors.length]+'">' +  String.fromCharCode(65 + i) + '</span></th>';
   }
   html = html + "</tr>";
   for(var i = 0; i < listOfCandidates.length; i++){
-    html = html + "<tr><th>" + listOfCandidates[i] + "</th>";
+    html = html + '<tr><th><span class="key-node" style="background-color:'+nodeColors[i % nodeColors.length]+'">' +  String.fromCharCode(65 + i) + '</span></th>';
     for(var j = 0; j < listOfCandidates.length; j++){
       if(i === j){
         html = html + "<td class='null'></td>";
@@ -227,8 +238,18 @@ function populateDistances(listOfCandidates, distances){
   return html;
 }
 
+var nodeColors = ['#F44336', '#9C27B0', '#3F51B5', '#009688', '#FF5722', '#795548'];
+
+function generateKey(listOfCandidates){
+  var key = "";
+  for(var i = 0; i < listOfCandidates.length; i++){
+    key = key + '<div><span class="key-node" style="background-color:'+nodeColors[i % nodeColors.length]+'">' +  String.fromCharCode(65 + i) + '</span><span>' + listOfCandidates[i] + '</span></div>';
+  }
+  return key;
+}
+
 function drawDirectedGraph(listOfCandidates, distances){
-  var nodeColors = ['#F44336', '#9C27B0', '#3F51B5', '#009688', '#FF5722', '#795548'];
+
   var coldColor = "1B28BF";
   var warmColor = "BF1B1B";
 
