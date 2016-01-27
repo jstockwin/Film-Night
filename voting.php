@@ -227,19 +227,7 @@
       button.innerHTML="Submitted";
     } */
 
-    function spookify(numberOfSpookyThings){
-      var HTMLToAdd = "";
-    var possibleSpookyThings = ["https://upload.wikimedia.org/wikipedia/commons/1/14/Spider_Web_-_Noun_project_813.svg","https://upload.wikimedia.org/wikipedia/commons/c/c6/Spider.svg","http://colouringbook.org/FAVS/2011/October/COLOURINGBOOK.ORG/Citrouille_Halloween_Pumpkin.svg"];
-      for(var i=0; i<numberOfSpookyThings; i++){
-        HTMLToAdd = HTMLToAdd +  '<img src="' + possibleSpookyThings[Math.floor((Math.random() * 3))] + '" class="falling" style="left:' + Math.floor((Math.random() * 100) + 1) + 'vw; animation-delay:'+ ((Math.random() * 20)+2) +'s; top:'+((Math.random() * -50) - 10)+'vh;">';
-      }
-     document.getElementById("2spooky4me").innerHTML = HTMLToAdd;
-    }
-
    </script>
-
-<div id="2spooky4me" style="overflow:hidden; height:100%; width:100%;"></div>
-
 <div id="background" style="width:94%;background:#d5d5d5;padding:3%;">
 <div id="cards">
 
