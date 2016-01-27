@@ -6,7 +6,7 @@ require $root.'../../database.php'; ?>
 <body>
   <?php include 'top-nav.php'; ?>
 <?php endif ?>
-<?php if($permission === admin): ?>
+<?php if($permission === 'admin'): ?>
 <script type="text/javascript" src="voting-systems.js"></script>
 <p id="log"></p>
 <div id="container">
@@ -72,18 +72,6 @@ if ($result->num_rows > 0){
 }
 $conn->close();
 ?>
-
-
-function closeClapper(){
-  document.getElementById('top').style.transform = "rotate(0deg)";
-}
-
-function shrinkHeader(){
-  document.getElementById('svg-container').style.left = "0";
-  document.getElementById('svg-container').style.top = "0";
-  document.getElementById('svg-container').style.transform = "scale(calc(70 / 300))";
-  document.getElementById('header').style.height = "70px";
-}
 
 function hideLog(){
   document.getElementById('log').style.visibility = "hidden";
