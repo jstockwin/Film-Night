@@ -6,6 +6,7 @@ require $root.'../../database.php'; ?>
 <body>
   <?php include 'top-nav.php'; ?>
 <?php endif ?>
+<?php if($permission === admin): ?>
 <script type="text/javascript" src="voting-systems.js"></script>
 <p id="log"></p>
 <div id="container">
@@ -330,6 +331,7 @@ function hexToRgb(hex) {
   } : null;
 }
 </script>
+<?php endif ?>
 <?php if(!isset($_GET['noheader'])): ?>
 </body>
 </html>
