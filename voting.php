@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php include 'top-nav.php'; ?>
+<?php include 'top-nav.php'; include 'StyleSheet.html'; ?>
 <?php if($permission != FALSE): ?>
 
 <script>window.onload = function() { init() };</script>
