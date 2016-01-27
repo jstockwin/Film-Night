@@ -8,14 +8,24 @@
     <div  class="tab"><a href="voting.php" onclick="slideIndicator(event)">Voting</a> <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo '<div id="indicator"></div>';} ?></div>
     <div  class="tab"><a href="results.php" onclick="slideIndicator(event)">Results</a><?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo '<div id="indicator"></div>';} ?></div>
     <?php $permission = loginCheck($session); if($permission === FALSE) : ?>
-      <?php session_start(); if(isset($_SESSION['Email'])){
-        echo '<img src="/error.svg" id="profile-image" alt="You do not have sufficient permission to view this page.">';
-      }else{
-        echo '<div class="g-signin2" data-onsuccess="onSignIn"></div>';
+      <?php session_start(); if(isset($_SESSION['Email'])) : ?>
+        <img src="/error.svg" id="profile-image" alt="You do not have sufficient permission to view this page.">
+      <?php else: ?>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
       }
-      ?>
+    <?php endif ?>
     <?php else: ?>
+      <div>
+        <label for="profile-toggle">
       <?php echo '<img src="'.$_SESSION['Image'].'" id="profile-image" alt="Signed in as '.$_SESSION['Email'].'">' ?>
+    </lable>
+      <input type="checkbox" id="profile-toggle">
+      <div id="profile-dropdown">
+        <h3 id="name"><?php echo $_SESSION['Name']?></h3>
+        <h4 id="email"><?php echo $_SESSION['Email']?></h4>
+        <button type="button" style="float: right" onclick"signOut">Sign Out</button>
+      </div>
+    </div>
     <?php endif ?>
   </div>
 </div>

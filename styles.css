@@ -1,3 +1,24 @@
+.z-depth-0 {
+  box-shadow: none !important; }
+
+.z-depth-1 {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
+
+.z-depth-1-half {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15); }
+
+.z-depth-2, #profile-dropdown {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+
+.z-depth-3 {
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); }
+
+.z-depth-4 {
+  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22), 0 25px 55px 0 rgba(0, 0, 0, 0.21); }
+
+.z-depth-5 {
+  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22); }
+
 html, body {
   height: 100%;
   margin: 0;
@@ -11,12 +32,69 @@ html, body {
   justify-content: flex-end;
   position: relative;
   height: 70px;
-  align-items: center; }
+  align-items: center;
+  margin-right: 10px;
+  z-index: 250; }
 
 #profile-image {
   border-radius: 50%;
   height: 35px;
   padding: 10px; }
+
+button {
+  background-color: white;
+  border: none;
+  border-radius: 2px;
+  color: #009688;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent; }
+
+#name, #email {
+  font-weight: normal;
+  margin: 10px;
+  white-space: nowrap; }
+
+#email {
+  color: #727272; }
+
+#profile-dropdown {
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  background-color: white;
+  border-radius: 2px;
+  display: none;
+  position: absolute;
+  z-index: 200;
+  right: 0;
+  top: 60px;
+  transform-origin: calc(100% - 27.5px) top; }
+
+@keyframes expand {
+  0% {
+    transform: scale(0, 0);
+    top: 27.5px; }
+  10% {
+    transform: scale(0.1, 0.1);
+    top: 27.5px; }
+  50% {
+    transform: scale(0.5, 0.3);
+    top: 27.5px; }
+  100% {
+    transform: scale(1, 1);
+    top: 60px; } }
+#profile-toggle {
+  display: none; }
+
+#profile-toggle:checked + #profile-dropdown {
+  display: block;
+  animation-name: expand; }
 
 .tab {
   margin: 10px;
