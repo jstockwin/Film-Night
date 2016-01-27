@@ -4,7 +4,7 @@
 <script>
 function onLoad() {
   gapi.load('auth2', function() {
-    gapi.auth2.init(client_id: '387268322087-pnkcj2h1noi2emj25m3n9i1goi6rb2ah.apps.googleusercontent.com');
+    gapi.auth2.init({client_id: '387268322087-pnkcj2h1noi2emj25m3n9i1goi6rb2ah.apps.googleusercontent.com'});
   });
 }
 function signOut() {
