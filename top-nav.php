@@ -70,10 +70,21 @@ function shrinkHeader(){
   document.getElementById('header').style.height = "70px";
 }
 
+function openClapper(){
+  document.getElementById('top').style.transform = "rotate(-45deg)";
+}
+
+function expandHeader(){
+  document.getElementById('svg-container').style.left = "50%";
+  document.getElementById('svg-container').style.top = "50%";
+  document.getElementById('svg-container').style.transform = "translate(-50%, -50%)";
+  document.getElementById('header').style.height = "100%";
+}
+
 function slideIndicator(event){
   event.preventDefault();
   event.stopPropagation();
-
+  expandHeader();
   var indicator  = document.getElementById('indicator');
   var targetBBox = event.target.getBoundingClientRect();
   var currentBBox = indicator.getBoundingClientRect();
@@ -90,7 +101,8 @@ function slideIndicator(event){
     indicator.style.transition = "all 0.5s ease-out";
   }
   setTimeout(secondStep, 500);
-  setTimeout(changePage,1000,event.target.href);
+  setTimeout(openClapper, 2000);
+  setTimeout(changePage,2500,event.target.href);
   return false;
 }
 

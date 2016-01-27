@@ -71,6 +71,8 @@
 
 
     populateList(films);
+    closeClapper();
+    setTimeout(shrinkHeader, 500);
     }
 
     function populateList(values){
