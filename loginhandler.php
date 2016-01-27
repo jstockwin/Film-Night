@@ -11,6 +11,7 @@
 	$response = file_get_contents($link);
 	$var = json_decode($response);
 	$email = $var->{'email'};
+  $image = $var->{'picture'};
   echo "Email: ".$email;
   $aud = $var->{'aud'};
   if ($aud == "387268322087-pnkcj2h1noi2emj25m3n9i1goi6rb2ah.apps.googleusercontent.com"){
@@ -29,6 +30,7 @@
           $_SESSION["Permission"] = $row["Permission"];
           $_SESSION["Name"] = $row["Name"];
           $_SESSION["Token"] = $token;
+          $_SESSION["Image"] = $image;
         }else{
           // Inactive user returned
         }

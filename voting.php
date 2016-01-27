@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<?php include 'StyleSheet.html'; include 'header.php'; if(!loginCheck($session)) : ?>
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
-<?php else : ?>
 <?php include 'top-nav.php'; ?>
+<?php if($permission != FALSE): ?>
 
 <script>window.onload = function() { init() };</script>
 

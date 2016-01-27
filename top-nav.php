@@ -1,4 +1,4 @@
-
+<?php require_once 'header.php'; ?>
 <link rel="stylesheet" type="text/css" href="styles.css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div id="header">
@@ -7,6 +7,16 @@
     <div  class="tab"><a href="index.php" onclick="slideIndicator(event)">Index</a><?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo '<div id="indicator"></div>';} ?></div>
     <div  class="tab"><a href="voting.php" onclick="slideIndicator(event)">Voting</a> <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo '<div id="indicator"></div>';} ?></div>
     <div  class="tab"><a href="results.php" onclick="slideIndicator(event)">Results</a><?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo '<div id="indicator"></div>';} ?></div>
+    <?php $permission = loginCheck($session); if($permission === FALSE) : ?>
+      <?php session_start(); if(isset($_SESSION['Email'])){
+        echo '<img src="/error.svg" id="profile-image" alt="You do not have sufficient permission to view this page.">';
+      }else{
+        echo '<div class="g-signin2" data-onsuccess="onSignIn"></div>';
+      }
+      ?>
+    <?php else: ?>
+      <?php echo '<img src="'.$_SESSION['Image'].'" id="profile-image" alt="Signed in as '.$_SESSION['Email'].'">' ?>
+    <?php endif ?>
   </div>
 </div>
 <div id="svg-container">

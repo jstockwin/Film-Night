@@ -1,16 +1,18 @@
+<?php if(!isset($_GET['noheader'])): ?>
 <!DOCTYPE html>
 <?php include 'header.php';
 require $root.'../../database.php'; ?>
 <html>
 <body>
   <?php include 'top-nav.php'; ?>
-  <script type="text/javascript" src="voting-systems.js"></script>
+<?php endif ?>
+<script type="text/javascript" src="voting-systems.js"></script>
 <p id="log"></p>
 <div id="container">
   <div id="results">
     <div id="winner-div">
       <h3>This week's winner is</h3>
-      <h2 id="winner">TODO</h2>
+      <h2 id="winner"></h2>
     </div>
     <div id="utilities">
       <div id="utilities-tables">
@@ -328,5 +330,7 @@ function hexToRgb(hex) {
   } : null;
 }
 </script>
+<?php if(!isset($_GET['noheader'])): ?>
 </body>
-<html>
+</html>
+<?php endif ?>
