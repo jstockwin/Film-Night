@@ -202,7 +202,7 @@ function kemenyYoung(listOfCandidates, votes) {
       uniqueHighest = true;
     }
   }
-  if(!uniqueHighest){
+  if (!uniqueHighest){
     throw 'Draw for the higest score';
   }
   var result = rankingOfHighest.map(function(i, index) {return {film: listOfCandidates[i], rank: index + 1};});
