@@ -1,0 +1,12 @@
+{
+	"mappings": [
+		{
+		"src": "_sass",
+		"dest": ""
+	},
+	{
+	"src": "_js",
+	"dest": ""
+}
+	]
+}
