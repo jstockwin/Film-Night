@@ -66,7 +66,7 @@ function closeClapper(){
 function shrinkHeader(){
   document.getElementById('svg-container').style.left = "0";
   document.getElementById('svg-container').style.top = "0";
-  document.getElementById('svg-container').style.transform = "scale(calc(70 / 300))";
+  document.getElementById('svg-container').style.transform = "scale(0.233333)";
   document.getElementById('header').style.height = "70px";
 }
 
