@@ -2,17 +2,19 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div id="header">
+  <div id="tabs-wrapper">
   <div id="page-tabs">
     <?php echo "<!-- ".$root2." ".$_SERVER['PHP_SELF']." -->";?>
-    <div  class="tab"><a href="index.php" onclick="slideIndicator(event)">Index</a><?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo '<div id="indicator"></div>';} ?></div>
-    <div  class="tab"><a href="voting.php" onclick="slideIndicator(event)">Voting</a> <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo '<div id="indicator"></div>';} ?></div>
-    <div  class="tab"><a href="results.php" onclick="slideIndicator(event)">Results</a><?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo '<div id="indicator"></div>';} ?></div>
+    <div id="indicator"></div>
+    <a href="index.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo 'data-active="true"';} ?>>Index</a>
+    <a href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
+    <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
     <?php $permission = loginCheck($session); if($permission === FALSE) : ?>
       <?php session_start(); if(isset($_SESSION['Email'])) : ?>
         <div>
-          <label for="profile-toggle">
+        <label for="profile-toggle">
             <img src="/error.svg" id="profile-image" alt="You are not a registered user.">
-          </label>
+        </label>
         <input type="checkbox" id="profile-toggle">
         <div id="profile-dropdown">
           <h3 id="name"><?php echo $_SESSION['Name']?></h3>
@@ -37,6 +39,7 @@
     </div>
     <?php endif ?>
   </div>
+  </div>
 </div>
 <div id="svg-container">
   <svg
@@ -58,6 +61,9 @@
 </svg>
 </div>
 <script>
+
+window.addEventListener("DOMContentLoaded", setActive(findActiveTab()));
+window.addEventListener("resize", function(){setActive(findActiveTab())}, true);;
 
 function closeClapper(){
   document.getElementById('top').style.transform = "rotate(0deg)";
@@ -81,6 +87,23 @@ function expandHeader(){
   document.getElementById('header').style.height = "100%";
 }
 
+function findActiveTab(){
+  var pageTabs = document.getElementById('page-tabs');
+  for(var i = 0; i < pageTabs.children.length; i++){
+    if(pageTabs.children[i].getAttribute('data-active')){
+      return pageTabs.children[i];
+    }
+  }
+}
+
+function setActive(target){
+
+  var indicator  = document.getElementById('indicator');
+  var targetBBox = target.getBoundingClientRect();
+  indicator.style.left = targetBBox.left + "px";
+  indicator.style.right = document.getElementById('header').getBoundingClientRect().width - targetBBox.right + "px";
+}
+
 function slideIndicator(event){
   event.preventDefault();
   event.stopPropagation();
@@ -89,18 +112,13 @@ function slideIndicator(event){
   var targetBBox = event.target.getBoundingClientRect();
   var currentBBox = indicator.getBoundingClientRect();
   var deltaLeft = targetBBox.left - currentBBox.left;
-  if(deltaLeft < 0 ){
-    indicator.style.transformOrigin = "left center";
+  if(deltaLeft < 0){
+    indicator.style.transition = "left 0.2s, right 0.4s";
   }else{
-    indicator.style.transformOrigin = "right center";
+    indicator.style.transition = "right 0.2s, left 0.4s";
   }
-  indicator.style.transition = "all 0.5s linear";
-  indicator.style.transform = "translateX("+ deltaLeft / 2+"px) scale("+ (currentBBox.width + Math.abs(deltaLeft) / 4) /currentBBox.width +  ",1)";
-  var secondStep = function(){
-    indicator.style.transform = "translateX("+deltaLeft+"px) scale("+targetBBox.width / currentBBox.width +  ",1)";
-    indicator.style.transition = "all 0.5s ease-out";
-  }
-  setTimeout(secondStep, 500);
+  indicator.style.left = targetBBox.left + "px";
+  indicator.style.right = document.getElementById('header').getBoundingClientRect().width - targetBBox.right + "px";
   setTimeout(openClapper, 2000);
   setTimeout(changePage,2500,event.target.href);
   return false;

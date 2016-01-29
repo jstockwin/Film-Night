@@ -16,7 +16,7 @@ $better-color: #DDFFDD;
 
 $icon-height: 300px;
 
-$indicator-height: 0.2em;
+$indicator-height: 0.2rem;
 
 //z-index stolen from materializecss
 %z-depth-1 {
@@ -43,6 +43,19 @@ $indicator-height: 0.2em;
   box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22);
 }
 
+* {
+  font-size: 1rem;
+}
+
+div {
+  font-size: 0;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+
 html, body {
   color: $primary-text-color;
   font-family: 'Open Sans', sans-serif;
@@ -55,9 +68,8 @@ html, body {
 #page-tabs {
   align-items: center;
   display: flex;
-  height: 70px;
+  flex-grow: 1;
   justify-content: flex-end;
-  margin-right: 10px;
   position: relative;
   z-index: 250;
 }
@@ -65,7 +77,13 @@ html, body {
 #profile-image {
   border-radius: 50%;
   height: 35px;
-  padding: 10px;
+  margin: 0 10px;
+}
+
+#tabs-wrapper {
+  align-items: center;
+  display: flex;
+  height: 70px;
 }
 
 button {
@@ -144,14 +162,12 @@ button {
 }
 
 .tab {
-  margin: 10px;
+  color: $white;
+  display: block;
+  margin: 0 10px;
   padding-bottom: $indicator-height;
   position: relative;
-
-  a {
-    color: $white;
-    text-decoration: none;
-  }
+  text-decoration: none;
 }
 
 
@@ -159,8 +175,9 @@ button {
   background-color: $accent-color;
   bottom: 0;
   height: $indicator-height;
+  left: 0;
   position: absolute;
-  width: 100%;
+  right: 0;
 }
 
 #header {
@@ -284,9 +301,6 @@ svg {
     vertical-align: middle;
   }
 
-
-
-
   > tbody > tr > td:nth-child(1) {
     text-align: center;
   }
@@ -308,7 +322,7 @@ svg {
 }
 
 #winner-div > h2 {
-  font-size: 4em;
+  font-size: 4rem;
   margin: 0;
   text-align: center;
 }
@@ -349,10 +363,10 @@ svg {
   display: inline-block;
   font-weight: normal;
   height: 1.5rem;
-  line-height: 1.5em;
+  line-height: 1.5rem;
   margin-right: 5px;
   text-align: center;
-  width: 1.5em;
+  width: 1.5rem;
 }
 
 #key {
