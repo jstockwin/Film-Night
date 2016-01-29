@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php include 'top-nav.php'; include 'StyleSheet.html'; ?>
-<?php if($permission != FALSE): ?>
+<?php if(($permission != FALSE && status($root) =="voting") || $permission == "admin"): ?>
 
 <script>window.onload = function() { init() };</script>
 
