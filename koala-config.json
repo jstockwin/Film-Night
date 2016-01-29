@@ -8,5 +8,10 @@
 	"src": "_js",
 	"dest": ""
 }
-	]
+	],
+	"options" :{
+		"sourceMap": true,
+		"outputStyle": "compressed",
+		"autoprefix": true
+	}
 }
