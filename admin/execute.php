@@ -39,7 +39,7 @@ if($result->num_rows > 0){
       <p>Best wishes,<br>The HiveBot</p>
       </body>
       ';
-      mail($to, "Film Night Attendence", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
+      mail($to, "Film Night Attendence", $message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
@@ -61,7 +61,7 @@ if($result->num_rows > 0){
     <p>Best wishes,<br>The HiveBot</p>
     </body>
     ';
-    mail($to,"Film Night Voting", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
+    mail($to,"Film Night Voting", $message, "Content-type:text/html");
   }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
@@ -82,7 +82,7 @@ if($result->num_rows > 0){
     </body>
     </html>
     ';
-    mail($to,"Film Night Results", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
+    mail($to,"Film Night Results", $message, "Content-type:text/html");
 
     echo "results";
   }
