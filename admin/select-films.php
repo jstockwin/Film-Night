@@ -8,9 +8,7 @@ require '../header.php';
 require $root.'../../database.php';
 ob_end_clean(); // supresses output.
 
-if(!loginCheck($session)){
-  // Not signed in.
-}else{
+
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -79,6 +77,6 @@ if(!loginCheck($session)){
       echo "No films found.";
     }
 
-}
+
 
  ?>
