@@ -1,10 +1,10 @@
 <?php
-  require_once '../header.php';
+  include 'top-nav.php';
   require_once $root.'../../database.php';
 
 
   if (loginCheck($session)=="admin"){
-
+    echo "<script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>";
   // Create connection
   $conn = new mysqli($host, $username, $password, "films");
 
@@ -56,7 +56,7 @@
   <input type="submit" value="Submit">
   </form>';
   echo "<br><br>To delete an entry, select the ID and click delete below<br><br>";
-  echo '<form action="adminhandler.php" method="post">';
+  echo '<form action="admin/adminhandler.php" method="post">';
   echo 'ID: <select name="deleteID">';
   foreach($times as &$id){
     echo '<option value="'.$id[0].'">'.$id[0].'</option>';
