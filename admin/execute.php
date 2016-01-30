@@ -22,68 +22,73 @@ if($result->num_rows > 0){
       echo "roll call";
       $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
       $result2 = $conn->query($sql2);
-      $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
-      $result2 = $conn->query($sql2);
-      while($row2 = $result2->fetch_assoc()){
-        $message = 'Bcc: '.$row2['Email']."\r\n".'
-        <html>
-        <head>Film Night</head>
-        <body>
-        <p>Dear '.$row2['Name'].',</p>
-        <br>
-        <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
-        <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetod will not be selected this week.</p>
-        <br>
-        <p>Best wishes,<br>The HiveBot</p>
-        </body>
-        ';
-        mail($row2['Email'],"Film Night Attendence", $message, "Content-type:text/html");
+      $sql3 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+      $result3 = $conn->query($sql3);
+      $to = "jstockwin@gmail.com";
+      while($row3 = $result3->fetch_assoc()){
+        $to = $to.", ".$row3['Email'];
       }
-
+      $message = '
+      <html>
+      <head>Film Night</head>
+      <body>
+      <p>Dear HiveMember,</p>
+      <br>
+      <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
+      <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetod will not be selected this week.</p>
+      <br>
+      <p>Best wishes,<br>The HiveBot</p>
+      </body>
+      ';
+      mail($to, "Film Night Attendence", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
-      header("location: select-films.php");
-      // Email users:
-      $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
-      $result2 = $conn->query($sql2);
-      while($row2 = $result2->fetch_assoc()){
-        $message = '
-        <html>
-        <head>Film Night</head>
-        <body>
-        <p>Dear '.$row2['Name'].',</p>
-        <br>
-        <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this weeks film night.</p>
-        <br>
-        <p>Best wishes,<br>The HiveBot</p>
-        </body>
-        ';
-        mail($row2['Email'],"Film Night Voting", $message, "Content-type:text/html");
+      header("location: select_films.php");
 
-      }
-    }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
-      // Within 5 minutes of results starting. Notify users.
-      echo "results";
-      //mail("localhost","test","test");
-      $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
-      $result2 = $conn->query($sql2);
-      while($row = $result2->fetch_assoc()){
-        $message = '
-        <html>
-        <body>
-        <p>Dear '.$row['Name'].',</p>
-        <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
-        <br>
-        <p>Best wishes,<br>The HiveBot</p>
-        </body>
-        </html>
-        ';
-        mail($row['Email'],"Film Night Voting", $message, "Content-type:text/html");
-
-        echo "results";
-      }
+    // Email users:
+    $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+    $result2 = $conn->query($sql2);
+    $to = "jstockwin@gmail.com";
+    while($row2 = $result2->fetch_assoc()){
+      $to = $to.", ".$row2['Email'];
     }
+    $message = '
+    <html>
+    <head>Film Night</head>
+    <body>
+    <p>Dear HiveMember,</p>
+    <br>
+    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this weeks film night.</p>
+    <br>
+    <p>Best wishes,<br>The HiveBot</p>
+    </body>
+    ';
+    mail($to,"Film Night Voting", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
+  }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
+    // Within 5 minutes of results starting. Notify users.
+    echo "results";
+    //mail("localhost","test","test");
+    $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+    $result2 = $conn->query($sql2);
+    $to = "jstockwin@gmail.com";
+    while($row2 = $result2->fetch_assoc()){
+      $to = $to.", ".$row2['Email'];
+    }
+    $message = '
+    <html>
+    <body>
+    <p>Dear HiveMember,</p>
+    <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
+    <br>
+    <p>Best wishes,<br>The HiveBot</p>
+    </body>
+    </html>
+    ';
+    mail($to,"Film Night Results", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
+
+    echo "results";
   }
+}
 }
 
 ?>
