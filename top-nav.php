@@ -9,6 +9,7 @@
     <a href="index.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo 'data-active="true"';} ?>>Index</a>
     <a href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
     <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
+    <a href="settings.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
     <?php $permission = loginCheck($session); if($permission === FALSE) : ?>
       <?php session_start(); if(isset($_SESSION['Email'])) : ?>
         <div>
