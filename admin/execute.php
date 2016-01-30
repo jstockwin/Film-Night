@@ -30,7 +30,6 @@ if($result->num_rows > 0){
       }
       $message = '
       <html>
-      <head>Film Night</head>
       <body>
       <p>Dear HiveMember,</p>
       <br>
@@ -43,7 +42,7 @@ if($result->num_rows > 0){
       mail($to, "Film Night Attendence", "Bcc: ".$to."\r\n".$message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
-      header("location: select_films.php");
+      header("location: select-films.php");
 
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
@@ -54,7 +53,6 @@ if($result->num_rows > 0){
     }
     $message = '
     <html>
-    <head>Film Night</head>
     <body>
     <p>Dear HiveMember,</p>
     <br>
