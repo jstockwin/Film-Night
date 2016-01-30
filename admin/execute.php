@@ -25,7 +25,7 @@ if($result->num_rows > 0){
       $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
       $result2 = $conn->query($sql2);
       while($row2 = $result2->fetch_assoc()){
-        $message = 'Bcc: '.$row2['Email'].'
+        $message = 'Bcc: '.$row2['Email']."\r\n".'
         <html>
         <head>Film Night</head>
         <body>
