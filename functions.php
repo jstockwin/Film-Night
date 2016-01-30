@@ -1,6 +1,6 @@
 <?php
 function loginCheck($session = "live") {
-
+  session_start();
   if($session == "dev"){
     $_SESSION['Email'] = "debug@example.com";
     $_SESSION['Permission'] = "admin";
