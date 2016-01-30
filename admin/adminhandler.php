@@ -20,7 +20,7 @@ if(loginCheck($session)=="admin"){
     }
     $result = $conn->query($sql);
     if($result == 1){
-      header("location: admin-console.php");
+      header("location: ../admin-console.php");
     }else{
       echo "Something went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
     }
@@ -28,7 +28,7 @@ if(loginCheck($session)=="admin"){
     $sql = 'DELETE FROM timings WHERE ID='.$_POST['deleteID'];
     $result = $conn->query($sql);
     if($result == 1){
-      header("location: admin-console.php");
+      header("location: ../admin-console.php");
     }else{
       echo "Something went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
     }

@@ -1,18 +1,19 @@
 <?php
-  include 'top-nav.php';
-  require_once $root.'../../database.php';
+include 'top-nav.php';
+require_once $root.'../../database.php';
+  echo '<div id="container">';
 
+if (loginCheck($session, TRUE)=="admin"){
 
-  if (loginCheck($session)=="admin"){
-    echo "<script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>";
+  echo "<script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>";
   // Create connection
   $conn = new mysqli($host, $username, $password, "films");
 
   // Check connection
   if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
   }
-  echo "Connected successfully";
+  echo "<p>Connected successfully";
   echo "<br>";
 
   echo "Current time:<br>";
@@ -29,7 +30,7 @@
       array_push($times, array($row['ID'], $row["Roll_Call_Start"], $row["Roll_Call_End"], $row["Voting_Start"], $row["Voting_End"], $row["Results_Start"], $row["Results_End"]));
     }
 
-    echo "<table>";
+    echo "</p><table>";
     echo "<tr><td>ID</td><td>Roll Call Start</td><td>Roll Call End</td><td>Voting Start</td><td>Voting End</td><td>Results Start</td><td>Results End</td></tr>";
     foreach( $times as &$time){
       echo "<tr>";
@@ -39,8 +40,8 @@
     echo "</table>";
   }
   $conn->close();
-  echo "<br><br>To update/insert a new entry, fill in the form below<br><br>";
-  echo '<form action="adminhandler.php" method="post">';
+  echo "<p>To update/insert a new entry, fill in the form below<br>Every start time must be on the 1/2 hour for automatic emails/film selection to work.</p>";
+  echo '<form action="admin/adminhandler.php" method="post">';
   echo 'ID: <select id="updateID" name="updateID" onchange="updateText()">';
   echo '<option value="new">Create New</option>';
   foreach($times as &$id){
@@ -93,10 +94,12 @@
 
 
 
-   echo "}";
-   echo "</script>";
+    echo "}";
+    echo "</script>";
 
-}else{
-  echo "You are not authorised to use this page";
-}
-?>
+
+  }else{
+    echo "You are not authorised to use this page";
+  }
+      echo "</div>";
+  ?>
