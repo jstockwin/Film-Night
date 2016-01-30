@@ -43,7 +43,9 @@ if($result->num_rows > 0){
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
-
+      // Remove old votes
+      $sql3 = "DELETE FROM votes";
+      $result3 = $conn->query($sql3);
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
     $result2 = $conn->query($sql2);
