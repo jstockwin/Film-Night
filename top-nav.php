@@ -11,8 +11,8 @@
     <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
     <a href="settings.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
     <?php $permission = loginCheck($session); if ($permission == "admin"){
-      echo '<a href="/admin/admin-console.php" onClick="slideIndicator(event)" class="tab" ';
-      if($_SERVER['PHP_SELF'] === $root2."admin/admin-console.php"){echo 'data-active="true"';}
+      echo '<a href="admin/admin-console.php" onClick="slideIndicator(event)" class="tab" ';
+      if($_SERVER['PHP_SELF'] === $root2."/admin/admin-console.php"){echo 'data-active="true"';}
       echo ">Admin</a>";
     }
     if($permission === FALSE) : ?>
