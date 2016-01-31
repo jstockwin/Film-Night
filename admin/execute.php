@@ -49,7 +49,7 @@ if($result->num_rows > 0){
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
     $result2 = $conn->query($sql2);
-    $to = "jstockwin@gmail.com";
+    $to = "";
     while($row2 = $result2->fetch_assoc()){
       $to = $to.$row3['Email'].", ";
     }
@@ -70,7 +70,7 @@ if($result->num_rows > 0){
     //mail("localhost","test","test");
     $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
     $result2 = $conn->query($sql2);
-    $to = "jstockwin@gmail.com";
+    $to = "";
     while($row2 = $result2->fetch_assoc()){
       $to = $to.$row3['Email'].", ";
     }
