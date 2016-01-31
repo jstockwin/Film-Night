@@ -22,7 +22,7 @@ if($result->num_rows > 0){
       echo "roll call";
       $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
       $result2 = $conn->query($sql2);
-      $sql3 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+      $sql3 = "SELECT * FROM users WHERE Active=1";
       $result3 = $conn->query($sql3);
       $to = "";
       while($row3 = $result3->fetch_assoc()){
@@ -47,7 +47,7 @@ if($result->num_rows > 0){
       $sql3 = "DELETE FROM votes";
       $result3 = $conn->query($sql3);
     // Email users:
-    $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+    $sql2 = "SELECT * FROM users WHERE Active=1";
     $result2 = $conn->query($sql2);
     $to = "";
     while($row2 = $result2->fetch_assoc()){
@@ -68,7 +68,7 @@ if($result->num_rows > 0){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
     //mail("localhost","test","test");
-    $sql2 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
+    $sql2 = "SELECT * FROM users WHERE Active=1";
     $result2 = $conn->query($sql2);
     $to = "";
     while($row2 = $result2->fetch_assoc()){
