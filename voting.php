@@ -175,7 +175,7 @@
      var id = parameters[0];
      document.getElementById(id).innerHTML = response[0];
      document.getElementById("img"+id).src = response[5];
-     document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+response[4];
+     document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response[4]);
      document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response[1];
      document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response[3];
      document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response[2];
@@ -187,7 +187,7 @@
      var id = parameters[0];
      document.getElementById(id).innerHTML = response[0];
      document.getElementById("img"+id).src = response[5];
-     document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+response[4];
+     document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response[4]);
      document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response[1];
      document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response[3];
      document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response[2];

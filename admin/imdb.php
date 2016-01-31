@@ -19,7 +19,7 @@ if ($result->num_rows > 0){
       // Film found
       $Metascore = $output->{'Metascore'};
       $IMDb = $output->{'imdbRating'};
-      $Plot = $output->{'Plot'};
+      $Plot = rawurlencode($output->{'Plot'});
       $Poster = $output->{'Poster'};
 
       $sql2 = 'UPDATE selected_films SET Metascore="'.$Metascore.'", IMDb="'.$IMDb.'", Plot="'.$Plot.'", Poster="'.$Poster.'" WHERE Film="'.$row["Film"].'";';
