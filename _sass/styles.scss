@@ -457,11 +457,13 @@ svg {
 }
 
 .search-result {
+  animation-duration: 1s;
+  animation-name: slide-in;
   background-color: $primary-color;
   margin: 30px;
+  overflow: hidden;
   position: relative;
-  animation-name: slide-in;
-  animation-duration: 1s;
+  transition: all 3s;
 }
 
 .info-conatiner {
@@ -512,12 +514,13 @@ svg {
 }
 
 @keyframes slide-in{
-  from{
-    transform: translateY(100%);
+  from {
     opacity: 0;
+    transform: translateY(100%);
   }
-  to{
-    transform: translateY(0px);
+
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }

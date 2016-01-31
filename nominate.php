@@ -48,16 +48,19 @@
 
     function updateFilms(searchResults){
       var html = "";
+      var searchResultsDiv = document.getElementById('search-results');
       for(var i = 0; i < searchResults.length; i++){
-        html += '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false">';
+        var div = document.createElement('div');
+        searchResultsDiv.appendChild(div);
+        html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false">';
         html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleFilm(this)">';
         html += '<img src="ic_check.svg" class="select-check">'
         html += '<div class="info-conatiner">';
         html += '<h3 class="search-result-title">' + searchResults[i].Title + '</h3>';
         html += '<h4 class="search-result-year">' + searchResults[i].Year + '</h4>';
         html += '</div></div>';
+        div.outerHTML = html;
       }
-      document.getElementById('search-results').innerHTML += html;
     }
 
     function toggleFilm(img){
