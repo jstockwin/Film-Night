@@ -41,12 +41,22 @@
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function(){
         console.log(JSON.parse(xhr.responseText).Search);
+        updateFilms(JSON.parse(xhr.responseText).Search);
       }
       xhr.send();
     }
 
     function updateFilms(searchResults){
-
+      var html = "";
+      for(var i = 0; i < searchResults.length; i++){
+        html += '<div class="search-result">';
+        html += '<img src="' + searchResults[i].Poster + '" class="search-result-picture">';
+        html += '<div class="info-conatiner">';
+        html += '<h3 class="search-result-title">' + searchResults[i].Title + '</h3>';
+        html += '<h4 class="search-result-year">' + searchResults[i].Year + '</h4>';
+        html +=  '</div><img src="ic_check.svg" class="select-check"></div>'
+      }
+      document.getElementById('search-results').innerHTML += html;
     }
 
     </script>
@@ -66,6 +76,14 @@
         </div>
       </div>
       <div id="search-results">
+        <div class="search-result">
+          <img src="https://ia.media-imdb.com/images/M/MV5BMTY2ODkzMDgwM15BMl5BanBnXkFtZTcwMDA1Mjg1OA@@._V1_SX300.jpg" class="search-result-picture">
+          <div class="info-conatiner">
+            <h3 class="search-result-title">The Guard</h3>
+            <h4 class="search-result-year">The Year</h4>
+          </div>
+          <img src="ic_check.svg" class="select-check">
+        </div>
       </div>
     </div>
   <?php endif ?>
