@@ -51,7 +51,7 @@ if($result->num_rows > 0){
     $result2 = $conn->query($sql2);
     $to = "";
     while($row2 = $result2->fetch_assoc()){
-      $to = $to.$row3['Email'].", ";
+      $to = $to.$row2['Email'].", ";
     }
     $message = '
     <html>
@@ -72,7 +72,7 @@ if($result->num_rows > 0){
     $result2 = $conn->query($sql2);
     $to = "";
     while($row2 = $result2->fetch_assoc()){
-      $to = $to.$row3['Email'].", ";
+      $to = $to.$row2['Email'].", ";
     }
     $message = '
     <html>
