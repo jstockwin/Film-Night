@@ -49,14 +49,28 @@
     function updateFilms(searchResults){
       var html = "";
       for(var i = 0; i < searchResults.length; i++){
-        html += '<div class="search-result">';
-        html += '<img src="' + searchResults[i].Poster + '" class="search-result-picture">';
+        html += '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false">';
+        html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleFilm(this)">';
+        html += '<img src="ic_check.svg" class="select-check">'
         html += '<div class="info-conatiner">';
         html += '<h3 class="search-result-title">' + searchResults[i].Title + '</h3>';
         html += '<h4 class="search-result-year">' + searchResults[i].Year + '</h4>';
-        html +=  '</div><img src="ic_check.svg" class="select-check"></div>'
+        html += '</div></div>';
       }
       document.getElementById('search-results').innerHTML += html;
+    }
+
+    function toggleFilm(img){
+      var selected = img.parentElement.getAttribute('data-selected');
+      if(selected === "true"){
+        img.classList.remove('search-result-picture-hover');
+        img.nextElementSibling.style.transform = "scale(0)";
+        img.parentElement.setAttribute('data-selected', 'false');
+      }else{
+        img.classList.add('search-result-picture-hover');
+        img.nextElementSibling.style.transform = "scale(1)";
+        img.parentElement.setAttribute('data-selected', 'true');
+      }
     }
 
     </script>

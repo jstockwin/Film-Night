@@ -460,6 +460,8 @@ svg {
   background-color: $primary-color;
   margin: 30px;
   position: relative;
+  animation-name: slide-in;
+  animation-duration: 1s;
 }
 
 .info-conatiner {
@@ -487,18 +489,35 @@ svg {
   transition: transform 0.2s;
 }
 
+.search-result-picture-hover {
+  opacity: 0.1;
+}
+
 .search-result-picture {
   height: 444px;
+  object-fit: cover;
   position: relative;
   width: 300px;
   z-index: 2;
 
   &:hover {
-    opacity: 0.1;
+    // scss-lint:disable PlaceholderInExtend
+    @extend .search-result-picture-hover;
   }
 }
 
 .search-result-title {
   font-size: 2rem;
   text-align: center;
+}
+
+@keyframes slide-in{
+  from{
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
