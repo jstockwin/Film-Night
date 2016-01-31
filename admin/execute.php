@@ -30,14 +30,21 @@ if($result->num_rows > 0){
       }
       $message = '
       <html>
+      <div style="background: red;
+      background: -webkit-linear-gradient(red, yellow);
+      background: -o-linear-gradient(red, yellow);
+      background: -moz-linear-gradient(red, yellow);
+      background: linear-gradient(red, yellow);
+    	color: blue">
       <body>
       <p>Dear HiveMember,</p>
       <br>
       <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
       <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetod will not be selected this week.</p>
       <br>
-      <p>Best wishes,<br>The HiveBot</p>
+      <p>Best wishes,<br>The HiveBot&trade;</p>
       </body>
+      </div>
       ';
       mail($to, "Film Night Attendence", $message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
