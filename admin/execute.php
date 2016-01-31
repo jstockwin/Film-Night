@@ -24,11 +24,11 @@ if($result->num_rows > 0){
       $result2 = $conn->query($sql2);
       $sql3 = "SELECT * FROM users WHERE Permission='admin'"; // Change to WHERE Active=1 after testing.
       $result3 = $conn->query($sql3);
-      $to = "jstockwin@gmail.com";
+      $to = "";
       while($row3 = $result3->fetch_assoc()){
-        $to = $to.", ".$row3['Email'];
+        $to = $to.$row3['Email'].", ";
       }
-      $message = '
+      $message = 'Bcc: '.$to."\r\n".'
       <html>
       <body>
       <p>Dear HiveMember,</p>
@@ -39,7 +39,7 @@ if($result->num_rows > 0){
       <p>Best wishes,<br>The HiveBot</p>
       </body>
       ';
-      mail($to, "Film Night Attendence", $message, "Content-type:text/html");
+      mail("", "Film Night Attendence", $message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
@@ -51,9 +51,9 @@ if($result->num_rows > 0){
     $result2 = $conn->query($sql2);
     $to = "jstockwin@gmail.com";
     while($row2 = $result2->fetch_assoc()){
-      $to = $to.", ".$row2['Email'];
+      $to = $to.$row3['Email'].", ";
     }
-    $message = '
+    $message = 'Bcc: '.$to."\r\n".'
     <html>
     <body>
     <p>Dear HiveMember,</p>
@@ -63,7 +63,7 @@ if($result->num_rows > 0){
     <p>Best wishes,<br>The HiveBot</p>
     </body>
     ';
-    mail($to,"Film Night Voting", $message, "Content-type:text/html");
+    mail("","Film Night Voting", $message, "Content-type:text/html");
   }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
@@ -72,9 +72,9 @@ if($result->num_rows > 0){
     $result2 = $conn->query($sql2);
     $to = "jstockwin@gmail.com";
     while($row2 = $result2->fetch_assoc()){
-      $to = $to.", ".$row2['Email'];
+      $to = $to.$row3['Email'].", ";
     }
-    $message = '
+    $message = 'Bcc: '.$to."\r\n".'
     <html>
     <body>
     <p>Dear HiveMember,</p>
@@ -84,7 +84,7 @@ if($result->num_rows > 0){
     </body>
     </html>
     ';
-    mail($to,"Film Night Results", $message, "Content-type:text/html");
+    mail("","Film Night Results", $message, "Content-type:text/html");
 
     echo "results";
   }
