@@ -7,6 +7,7 @@
     <?php echo "<!-- ".$root2." ".$_SERVER['PHP_SELF']." -->";?>
     <div id="indicator"></div>
     <a href="index.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo 'data-active="true"';} ?>>Index</a>
+    <a href="nominate.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."nominate.php"){echo 'data-active="true"';} ?>>Add Films</a>
     <a href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
     <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
     <a href="settings.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
@@ -73,6 +74,11 @@ window.addEventListener("resize", function(){setActive(findActiveTab())}, true);
 
 function closeClapper(){
   document.getElementById('top').style.transform = "rotate(0deg)";
+}
+
+function showContent(){
+  setTimeout(closeClapper, 300);
+  setTimeout(shrinkHeader, 800);
 }
 
 function shrinkHeader(){

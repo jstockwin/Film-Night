@@ -102,6 +102,19 @@ button {
   vertical-align: middle;
 }
 
+.solid-button {
+  @extend %z-depth-1;
+  background-color: $primary-color;
+  color: $white;
+  transition: box-shadow 0.2s, background-color 0.2s;
+
+
+  &:hover {
+    @extend %z-depth-1-half;
+    background-color: $accent-color;
+  }
+}
+
 #name, #email {
   font-weight: normal;
   margin: 10px;
@@ -246,6 +259,7 @@ svg {
 
 #container {
   margin: 0 auto;
+  padding: 50px 0;
   position: relative;
   top: 70px;
   width: 90%;
@@ -380,4 +394,59 @@ svg {
     display: inline-block;
     padding: 10px;
   }
+}
+
+.text-input {
+  border-color: $divider-color;
+  border-radius: 2px;
+  border-style: solid;
+  border-width: 0 0 2px;
+  box-sizing: content-box; //This is needed to counteract search changing the border-box.
+  font-size: 1rem;
+  height: 2rem;
+  line-height: 2rem;
+  outline: none;
+  width: 100%;
+
+  &:focus {
+    border-color: $accent-color;
+
+    + label {
+      color: $accent-color;
+    }
+  }
+
+  + label {
+    bottom: 0;
+    color: $divider-color;
+    font-size: 1rem;
+    left: 0;
+    line-height: 2rem;
+    position: absolute;
+    transform-origin: left center;
+    transition: transform 0.2s;
+    vertical-align: baseline;
+  }
+}
+
+.label-active {
+  transform: translateY(-2rem) scale(0.8);
+}
+
+.input-wrapper {
+  margin: 2rem 10px 0;
+  position: relative;
+}
+
+.warning-image {
+  display: none;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: scale(0.8);
+}
+
+#inputs {
+  display: flex;
 }
