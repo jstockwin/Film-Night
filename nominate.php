@@ -42,10 +42,11 @@
       xhr.onload = function(){
         var results = JSON.parse(xhr.responseText);
         if(results.Search){
-          changeInformation('Select films', '#607D8B', false);
           updateFilms(results.Search);
         }else{
-          changeInformation(results.Error,'#F47738', false);
+          document.getElementById('error-container').style.opacity = 1;
+          document.getElementById('error-message').innerHTML = results.Error;
+          setTimeout(function(){document.getElementById('error-container').style.opacity = 0;}, 2000);
         }
       }
       xhr.send();
@@ -74,12 +75,15 @@
       var selected = img.parentElement.getAttribute('data-selected');
       if(selected === "true"){
         numberSelected--;
+        if(numberSelected === 0){
+          document.getElementById('button-disabler').style.width = "100%";
+        }
         img.classList.remove('search-result-picture-hover');
         img.nextElementSibling.style.transform = "scale(0)";
         img.parentElement.setAttribute('data-selected', 'false');
       }else{
         if(numberSelected === 0){
-          changeInformation('Add films','#607D8B', true);
+          document.getElementById('button-disabler').style.width = '0';
         }
         numberSelected++;
         img.classList.add('search-result-picture-hover');
@@ -96,6 +100,21 @@
       }else{
         document.getElementById('action-button').style.opacity = "0";
       }
+    }
+
+    function submitFilms(){
+      var selectedFilms = [];
+      var results = document.getElementById('search-results');
+      for(var i = 1; i < results.children.length; i++){
+        var child = results.children[i];
+        if(child.getAttribute('data-selected') === "true"){
+          var film = {};
+          film.Title = child.getAttribute('data-film-name');
+          film.Year = child.getAttribute('data-film-year');
+          selectedFilms.push(film);
+        }
+      }
+      console.log(selectedFilms);
     }
 
     </script>
@@ -115,13 +134,22 @@
         </div>
       </div>
       <div id="search-results">
-        <div class="search-result arrow-clip" id="information">
-          <div id="button-container">
-            <div id="background"></div>
-            <div id="ripple"></div>
-            <img id="action-button" src="ic_upload.svg">
+        <div class="search-result" id="information">
+          <div class="tooltip-conatiner">
+              <h3 class="tooltip">Search</h3>
+              <h3 class="tooltip">Select</h3>
+              <div style="position:relative; margin: 5% 0;">
+              <button type="button" id="submit-films" onclick="submitFilms()">Submit</button>
+              <div id="button-disabler">
+                <button type="button" class="disabled">Submit</button>
+              </div>
+            </div>
           </div>
-            <p id="tooltip">Search for films</p>
+          <div id="error-container">
+            <div class="tooltip-conatiner">
+              <h3 class="tooltip" id="error-message">Error</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>
