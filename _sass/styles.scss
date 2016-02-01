@@ -250,6 +250,13 @@ svg {
   width: 100%;
 }
 
+#top {
+  transform: rotate(-45deg);
+  transform-origin: left bottom;
+  transition: transform 0.2s;
+  transition-timing-function: ease-in;
+}
+
 #container {
   margin: 0 auto;
   padding: 50px 0;
