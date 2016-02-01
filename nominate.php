@@ -40,8 +40,13 @@
       xhr.open('GET',href);
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function(){
-        console.log(JSON.parse(xhr.responseText).Search);
-        updateFilms(JSON.parse(xhr.responseText).Search);
+        var results = JSON.parse(xhr.responseText);
+        if(results.Search){
+          changeInformation('Select films', '#607D8B', false);
+          updateFilms(results.Search);
+        }else{
+          changeInformation(results.Error,'#F47738', false);
+        }
       }
       xhr.send();
     }
@@ -63,16 +68,33 @@
       }
     }
 
+    var numberSelected = 0;
+
     function toggleFilm(img){
       var selected = img.parentElement.getAttribute('data-selected');
       if(selected === "true"){
+        numberSelected--;
         img.classList.remove('search-result-picture-hover');
         img.nextElementSibling.style.transform = "scale(0)";
         img.parentElement.setAttribute('data-selected', 'false');
       }else{
+        if(numberSelected === 0){
+          changeInformation('Add films','#607D8B', true);
+        }
+        numberSelected++;
         img.classList.add('search-result-picture-hover');
         img.nextElementSibling.style.transform = "scale(1)";
         img.parentElement.setAttribute('data-selected', 'true');
+      }
+    }
+
+    function changeInformation(message, color, showImage){
+      document.getElementById('information').style.backgroundColor = color;
+      document.getElementById('tooltip').innerHTML = message;
+      if(showImage){
+        document.getElementById('action-button').style.opacity = "1";
+      }else{
+        document.getElementById('action-button').style.opacity = "0";
       }
     }
 
@@ -89,17 +111,17 @@
           <img class="warning-image" src="ic_warning.svg" alt="Not a valid value.">
         </div>
         <div class="input-wrapper">
-          <button type="submit" class="solid-button" onclick="search()">Search</button>
+          <button type="button" class="solid-button" onclick="search()">Search</button>
         </div>
       </div>
       <div id="search-results">
-        <div class="search-result">
-          <img src="https://ia.media-imdb.com/images/M/MV5BMTY2ODkzMDgwM15BMl5BanBnXkFtZTcwMDA1Mjg1OA@@._V1_SX300.jpg" class="search-result-picture">
-          <div class="info-conatiner">
-            <h3 class="search-result-title">The Guard</h3>
-            <h4 class="search-result-year">The Year</h4>
+        <div class="search-result arrow-clip" id="information">
+          <div id="button-container">
+            <div id="background"></div>
+            <div id="ripple"></div>
+            <img id="action-button" src="ic_upload.svg">
           </div>
-          <img src="ic_check.svg" class="select-check">
+            <p id="tooltip">Search for films</p>
         </div>
       </div>
     </div>
