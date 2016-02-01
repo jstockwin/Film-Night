@@ -41,6 +41,7 @@
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function(){
         var results = JSON.parse(xhr.responseText);
+        removeOldFilms();
         if(results.Search){
           updateFilms(results.Search);
         }else{
@@ -50,6 +51,16 @@
         }
       }
       xhr.send();
+    }
+
+    function removeOldFilms(){
+      var results = document.getElementById('search-results');
+      for(var i = results.children.length-1; i > 0; i--){
+        var child = results.children[i];
+        if(child.getAttribute('data-selected') === "false"){
+          child.remove();
+        }
+      }
     }
 
     function updateFilms(searchResults){
@@ -103,6 +114,7 @@
     }
 
     function submitFilms(){
+      removeOldFilms();
       var selectedFilms = [];
       var results = document.getElementById('search-results');
       for(var i = 1; i < results.children.length; i++){
@@ -111,6 +123,7 @@
           var film = {};
           film.Title = child.getAttribute('data-film-name');
           film.Year = child.getAttribute('data-film-year');
+          child.children[0].click();
           selectedFilms.push(film);
         }
       }
@@ -136,9 +149,9 @@
       <div id="search-results">
         <div class="search-result" id="information">
           <div class="tooltip-conatiner">
-              <h3 class="tooltip">Search</h3>
-              <h3 class="tooltip">Select</h3>
-              <div style="position:relative; margin: 5% 0;">
+            <h3 class="tooltip">Search</h3>
+            <h3 class="tooltip">Select</h3>
+            <div style="position:relative; margin: 5% 0;">
               <button type="button" id="submit-films" onclick="submitFilms()">Submit</button>
               <div id="button-disabler">
                 <button type="button" class="disabled">Submit</button>
