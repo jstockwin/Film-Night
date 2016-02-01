@@ -69,9 +69,10 @@
       for(var i = 0; i < searchResults.length; i++){
         var div = document.createElement('div');
         searchResultsDiv.appendChild(div);
-        html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false">';
-        html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleFilm(this)">';
-        html += '<img src="ic_check.svg" class="select-check">'
+        html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false" data-veto="false">';
+        html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleFilm(this)" draggable="false">';
+        html += '<div class="main-icon-container"><div class="check-background"></div><img src="ic_check.svg" class="icon"></div>'
+        html += '<div class="child-icon-container" title="Suitable for vegetarians"><div class="veto-background"></div><span class="veto-v">V</span><span class="veto-eto">eto</span></div>'
         html += '<div class="info-conatiner">';
         html += '<h3 class="search-result-title">' + searchResults[i].Title + '</h3>';
         html += '<h4 class="search-result-year">' + searchResults[i].Year + '</h4>';
@@ -84,24 +85,33 @@
 
     function toggleFilm(img){
       var selected = img.parentElement.getAttribute('data-selected');
-      if(selected === "true"){
+      var veto = img.parentElement.getAttribute('data-veto')
+      if(selected === "true" && veto === "true"){
         numberSelected--;
         if(numberSelected === 0){
           document.getElementById('button-disabler').style.width = "100%";
         }
         img.classList.remove('search-result-picture-hover');
-        img.nextElementSibling.style.transform = "scale(0)";
+        img.nextElementSibling.classList.remove('selected-true');
+        img.nextElementSibling.nextElementSibling.classList.remove('veto-true');
+        img.nextElementSibling.nextElementSibling.classList.remove('slide-down');
         img.parentElement.setAttribute('data-selected', 'false');
+        img.parentElement.setAttribute('data-veto', 'false');
+      }else if(selected === 'true'){
+          img.nextElementSibling.nextElementSibling.classList.add('veto-true');
+          img.parentElement.setAttribute('data-veto', 'true');
       }else{
         if(numberSelected === 0){
           document.getElementById('button-disabler').style.width = '0';
         }
         numberSelected++;
         img.classList.add('search-result-picture-hover');
-        img.nextElementSibling.style.transform = "scale(1)";
+        img.nextElementSibling.nextElementSibling.classList.add('slide-down');
+        img.nextElementSibling.classList.add('selected-true');
         img.parentElement.setAttribute('data-selected', 'true');
       }
     }
+
 
     function changeInformation(message, color, showImage){
       document.getElementById('information').style.backgroundColor = color;
@@ -123,10 +133,15 @@
           var film = {};
           film.Title = child.getAttribute('data-film-name');
           film.Year = child.getAttribute('data-film-year');
+          film.Veto = child.getAttribute('data-veto');
+          if(child.getAttribute('data-veto') === "false"){
+            child.children[0].click();
+          }
           child.children[0].click();
           selectedFilms.push(film);
         }
       }
+      numberSelected = 0;
       console.log(selectedFilms);
     }
 
