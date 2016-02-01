@@ -71,7 +71,7 @@
         searchResultsDiv.appendChild(div);
         html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false" data-veto="false">';
         html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleFilm(this)" draggable="false">';
-        html += '<div class="main-icon-container"><div class="check-background"></div><img src="/assets/icons/ic_check.svg" class="icon"></div>'
+        html += '<div class="main-icon-container"><div class="check-background"></div><img src="assets/icons/ic_check.svg" class="icon"></div>'
         html += '<div class="child-icon-container" title="Suitable for vegetarians"><div class="veto-background"></div><span class="veto-v">V</span><span class="veto-eto">eto</span></div>'
         html += '<div class="info-conatiner">';
         html += '<h3 class="search-result-title">' + searchResults[i].Title + '</h3>';
@@ -155,7 +155,7 @@
         <div class="input-wrapper">
           <input type="tel" class="text-input" id="film-year" onfocus="textInputFocus(this)" onblur="textInputBlur(this)" onchange="validateYear(this)">
           <label for="film-year">Year</label>
-          <img class="warning-image" src="/assets/icons/ic_warning.svg" alt="Not a valid value.">
+          <img class="warning-image" src="assets/icons/ic_warning.svg" alt="Not a valid value.">
         </div>
         <div class="input-wrapper">
           <button type="button" class="solid-button" onclick="search()">Search</button>

@@ -8,7 +8,7 @@ function loginCheck($session = "live", $session_started = FALSE) {
     $_SESSION['Permission'] = "admin";
     $_SESSION['Name'] = "debug";
     $_SESSION['Token'] = "ABC123";
-    $_SESSION['Image'] = "/assets/icons/ic_error.svg";
+    $_SESSION['Image'] = "assets/icons/ic_error.svg";
     return "admin";
   }elseif($session == "dev2"){
     $_SESSION['Email'] = "debug@example2.com";
