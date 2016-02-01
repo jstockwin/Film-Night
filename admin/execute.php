@@ -40,13 +40,13 @@ if($result->num_rows > 0){
       <p>Dear HiveMember,</p>
       <br>
       <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
-      <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetod will not be selected this week.</p>
+      <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetoed will not be selected this week.</p>
       <br>
       <p>Best wishes,<br>The HiveBot&trade;</p>
       </body>
       </div>
       ';
-      mail($to, "Film Night Attendence", $message, "Content-type:text/html");
+      mail($to, "Film Night Attendance", $message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
@@ -65,9 +65,9 @@ if($result->num_rows > 0){
     <body>
     <p>Dear HiveMember,</p>
     <br>
-    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this weeks film night.</p>
+    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this week&apos;s film night.</p>
     <br>
-    <p>Best wishes,<br>The HiveBot</p>
+    <p>Best wishes,<br>The HiveBot&trade;</p>
     </body>
     ';
     mail($to,"Film Night Voting", $message, "Content-type:text/html");
@@ -87,7 +87,7 @@ if($result->num_rows > 0){
     <p>Dear HiveMember,</p>
     <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
     <br>
-    <p>Best wishes,<br>The HiveBot</p>
+    <p>Best wishes,<br>The HiveBot&trade;</p>
     </body>
     </html>
     ';
