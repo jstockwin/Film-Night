@@ -30,12 +30,6 @@ if($result->num_rows > 0){
       }
       $message = '
       <html>
-      <div style="background: red;
-      background: -webkit-linear-gradient(red, yellow);
-      background: -o-linear-gradient(red, yellow);
-      background: -moz-linear-gradient(red, yellow);
-      background: linear-gradient(red, yellow);
-    	color: blue">
       <body>
       <p>Dear HiveMember,</p>
       <br>
@@ -44,7 +38,6 @@ if($result->num_rows > 0){
       <br>
       <p>Best wishes,<br>The HiveBot&trade;</p>
       </body>
-      </div>
       ';
       mail($to, "Film Night Attendance", $message, "Content-type:text/html");
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
