@@ -72,8 +72,10 @@
 window.addEventListener("DOMContentLoaded", setActive(findActiveTab()));
 window.addEventListener("resize", function(){setActive(findActiveTab())}, true);;
 
+var i = Snap("#icon"), t = i.select("#top");
+t.transform("r" + [-45, t.getBBox().x, t.getBBox().y2]);
 function closeClapper(){
-  document.getElementById('top').style.transform = "rotate(0deg)";
+  t.animate({transform: "r" + [0, t.getBBox().x, t.getBBox().y2]}, 200, mina.easein);
 }
 
 function showContent(){
@@ -89,7 +91,7 @@ function shrinkHeader(){
 }
 
 function openClapper(){
-  document.getElementById('top').style.transform = "rotate(-45deg)";
+  t.animate({transform: "r" + [-45, t.getBBox().x, t.getBBox().y2]}, 200, mina.easein);
 }
 
 function expandHeader(){
