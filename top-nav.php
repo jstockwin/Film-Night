@@ -20,7 +20,7 @@
       <?php if(isset($_SESSION['Email'])) : ?>
         <div>
         <label for="profile-toggle">
-            <img src="/error.svg" id="profile-image" alt="You are not a registered user.">
+            <img src="//assets/icons/ic_error.svg" id="profile-image" alt="You are not a registered user.">
         </label>
         <input type="checkbox" id="profile-toggle">
         <div id="profile-dropdown">
