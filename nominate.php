@@ -6,7 +6,7 @@
   <body>
     <?php include 'top-nav.php'; ?>
   <?php endif ?>
-  <?php if(($permission != FALSE): ?>
+  <?php if($permission != FALSE): ?>
     <script>
     showContent();
 
