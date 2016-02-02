@@ -165,7 +165,7 @@
 
     function populateTable(results){
       var html = "";
-      if(results && results[0].score){
+      if(results && results[0].hasOwnProperty('score')){
         html = "<thead><tr><th>Rank</th><th>Film</th><th>Score</th></tr></thead>";
         for(var i = 0; i < results.length; i++){
           if(results[i].rank === 1){
