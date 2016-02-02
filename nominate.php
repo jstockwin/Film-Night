@@ -143,6 +143,14 @@
       }
       numberSelected = 0;
       console.log(selectedFilms);
+      console.log(JSON.stringify(selectedFilms));
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'admin/nominationhandler.php');
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = function() {
+        console.log(xhr.responseText);
+      };
+      xhr.send('nominations=' + JSON.stringify(selectedFilms) );
     }
 
     </script>
