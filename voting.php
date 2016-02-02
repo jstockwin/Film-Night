@@ -220,6 +220,26 @@
      //google.script.run.withSuccessHandler(finishedSubmitting).storeVotes(orderedTitles);
    }
 
+   function withdraw(){
+   console.log("withdraw");
+     var button = document.getElementById("withdraw");
+     var button2 = document.getElementById("submit");
+     button.disabled=true;
+     button2.disabled=true;
+     button.innerHTML="Withdrawing";
+     var xhr = new XMLHttpRequest();
+     xhr.open('POST', 'admin/votinghandler.php');
+     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+     xhr.onload = function() {
+       button.innerHTML="Withdrawn";
+       console.log(xhr.responseText);
+     };
+     xhr.send('votes=WITHDRAW');
+
+
+     //google.script.run.withSuccessHandler(finishedSubmitting).storeVotes(orderedTitles);
+   }
+
 
    /* function finishedSubmitting(){
       var button = document.getElementById("submit");
@@ -232,11 +252,22 @@
 <div id="cards">
 
 </div>
+<?php if($voted){
+  echo '<div style="margin:auto;width:50%;display:block">';
+  echo '<button type="button" id="submit" style="margin-left:5%;margin-right:5%;width:40%;display:inline-block" >Update Vote</button>';
+  echo '<button type="button" id="withdraw" style="margin-left:5%;margin-right:5%;width:40%;display:inline-block" >Withdraw Vote</button>';
+  echo '</div>';
+}else{
+  echo '<button type="button" id="submit" style="margin: auto; width:20%;display:block">Submit Vote</button>';
+}
+?>
 
-<button type="button" id="submit" style="margin:auto;width:20%;display:block" ><?php if($voted){echo "Update Vote";}else{echo "Submit Vote";} ?></button>
 </div>
 <script>
     document.getElementById("submit").addEventListener("click",function(){submit();});
+    <?php if($voted){
+      echo 'document.getElementById("withdraw").addEventListener("click",function(){withdraw();});';
+    } ?>
 </script>
 
 <?php endif; ?>
