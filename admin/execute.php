@@ -44,7 +44,11 @@ if($result->num_rows > 0){
       // Select films:
       header("location: select-films.php");
       // Remove old votes
-      $sql3 = "DELETE FROM votes";
+      $sql3 = "DROP TABLE votesold";
+      $result3 = $conn->query($sql3);
+      $sql3 = "ALTER TABLE votes RENAME TO votesold";
+      $result3 = $conn->query($sql3);
+      $sql3 = "CREATE TABLE votes (ID varchar(127), Vote varchar(255))";
       $result3 = $conn->query($sql3);
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Active=1";
