@@ -213,6 +213,9 @@
      xhr.onload = function() {
        button.innerHTML="Submitted";
        console.log(xhr.responseText);
+       if(xhr.responseText.indexOf("Error")>-1){
+         location.reload();
+       }
      };
      xhr.send('votes={' + orderedTitles + '}');
 

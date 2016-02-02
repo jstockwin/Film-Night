@@ -11,6 +11,10 @@ $conn = new mysqli($host, $username, $password, "films");
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
+  if(session_status()== PHP_SESSION_NONE){
+    session_start();
+  }
+  $_SESSION['ERROR']="nominationhandler.php failed connect to sql database: ".$conn->connect_error;
 }
 $attending=0;
 $voting=0;
@@ -29,7 +33,9 @@ if($_POST['rollCall']=="Yes"){
 }else{
   $rollCall=0;
 }
-session_start();
+if(session_status()== PHP_SESSION_NONE){
+  session_start();
+}
 $sql = 'UPDATE users SET Email="'.$_POST['email'].'", Attending='.$rollCall.', Reminder_Attending='.$attending.', Reminder_Voting='.$voting.', Reminder_Results='.$results.' WHERE ID="'.$_SESSION['Email'].'";';
 $result = $conn->query($sql);
 
@@ -40,5 +46,6 @@ if($result == 1){
   echo "Something went wrong. Shout at Jake<br>";
   echo "SQL Call: ".$sql."<br>";
   echo "Result: ".$result."<br>";
+  $_SESSION['ERROR'] = "Error: Something went updating settings. <br> SQL Call:<br>".$sql."<br>result<br>".$result;
 }
 ?>

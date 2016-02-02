@@ -151,13 +151,13 @@
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function() {
         console.log(xhr.responseText);
+        button.innerHTML = "Submitted";
+        button.style.paddingLeft="5px";
+        button.style.paddingRight="5px";
         if(xhr.responseText.indexOf("Error")>-1){
-          button.innerHTML = "ERROR";
-        }else{
-          button.innerHTML = "Submitted";
-          button.style.paddingLeft="5px";
-          button.style.paddingRight="5px";
+          location.reload(); //Reload to cause php to notice $_SESSION['ERROR'] is set.
         }
+
       };
       xhr.send('nominations=' + JSON.stringify(selectedFilms) );
     }

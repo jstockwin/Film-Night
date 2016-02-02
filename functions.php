@@ -1,6 +1,6 @@
 <?php
 function loginCheck($session = "live", $session_started = FALSE) {
-  if(!$session_started){
+  if(session_status() == PHP_SESSION_NONE){
     session_start();
   }
   if($session == "dev"){

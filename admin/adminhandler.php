@@ -3,11 +3,14 @@ ob_start();
 require '../header.php';
 require $root.'../../database.php';
 ob_end_clean(); // supresses output.
-
+if(session_status()== PHP_SESSION_NONE){
+  session_start();
+}
 if(loginCheck($session)=="admin"){
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+    $_SESSION['ERROR']="adminhandler.php failed to connect to sql db: ".$conn->connect_error;
   }
 
   if(isset($_POST['updateID'])){
@@ -23,6 +26,7 @@ if(loginCheck($session)=="admin"){
       header("location: ../admin-console.php");
     }else{
       echo "Something went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
+      $_SESSION['ERROR']="adminhandler.php went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
     }
   }else if(isset($_POST['deleteID'])){
     $sql = 'DELETE FROM timings WHERE ID='.$_POST['deleteID'];
@@ -31,9 +35,12 @@ if(loginCheck($session)=="admin"){
       header("location: ../admin-console.php");
     }else{
       echo "Something went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
+      $_SESSION['ERROR']="adminhandler.php went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
     }
   }else{
     echo "ERROR: Unknown request";
+    $_SESSION['ERROR']="adminhandler.php reported an unknown request";
+
   }
 
 }else{

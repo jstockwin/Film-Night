@@ -4,12 +4,17 @@ require '../header.php';
 require $root.'../../database.php';
 ob_end_clean(); // supresses output.
 
+if(session_status()== PHP_SESSION_NONE){
+  session_start();
+}
 if(!loginCheck($session)){
-  // Not signed in.
+  echo "Error: User not logged in";
+  $_SESSION['ERROR']="votinghandler.php failed to confirm that you were logged in";
 }else{
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+    $_SESSION['ERROR']="votinghandler.php failed connect to sql database: ".$conn->connect_error;
   }
   if(isset($_POST['votes'])){
     if($_POST['votes'] == "WITHDRAW"){
@@ -18,14 +23,13 @@ if(!loginCheck($session)){
       if($result2==1){
         echo "successfully removed vote";
       }else{
-        echo "There was an error submitting to the database: ".$sql2;
+        echo "Error: There was an error submitting to the database: ".$sql2;
         echo "Returned: ".$result2;
       }
     }else{
       $post = file_get_contents('php://input');
       echo $post;
       $vote = str_replace("votes=","",$post);
-      // Should implement a "if($_POST['votes']=="REMOVE"){delete their vote}" here
 
       echo "Vote: ".$_POST['votes'];
       // Check if they have already voted
@@ -39,11 +43,11 @@ if(!loginCheck($session)){
         if($result2==1){
           echo "successfully sumbitted vote";
         }else{
-          echo "There was an error submitting to the database: ".$sql2;
+          echo "Error: There was an error submitting to the database: ".$sql2;
           echo "Returned: ".$result2;
+          $_SESSION['ERROR'] = "Error: Failed to submit vote:<br> SQL Call:<br>".$sql."<br>result<br>".$result;
         }
 
-        // Should check $result2 == 1 (no errors)
       }else{
         //user has already voted.
         $sql2 = "UPDATE votes SET Vote='".$vote."' WHERE ID='".$_SESSION['Email']."';";
@@ -52,8 +56,9 @@ if(!loginCheck($session)){
         if($result2==1){
           echo "successfully sumbitted vote";
         }else{
-          echo "There was an error submitting to the database: ".$sql2;
+          echo "Error: There was an error submitting to the database: ".$sql2;
           echo "Returned: ".$result2;
+          $_SESSION['ERROR'] = "Error: Failed to submit vote:<br> SQL Call:<br>".$sql."<br>result<br>".$result;
         }
       }
     }

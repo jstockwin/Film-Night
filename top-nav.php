@@ -1,4 +1,7 @@
-<?php require_once 'header.php'; ?>
+<?php if(session_status()== PHP_SESSION_NONE){
+  session_start();
+}
+if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error.php");} require_once 'header.php'; ?>
 <link rel="stylesheet" type="text/css" href="styles.css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div id="header">

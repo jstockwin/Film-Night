@@ -7,9 +7,11 @@ ob_end_clean(); // supresses output.
 
 if(!loginCheck($session)){
   echo "Error: You're not signed in";
+  $_SESSION['ERROR']="nominationhandler.php failed to verify that you are signed in";
 }else{
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
+    $_SESSION['ERROR']="nominationhandler.php failed connect to sql database: ".$conn->connect_error;
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_POST['nominations'])){
@@ -42,6 +44,7 @@ if(!loginCheck($session)){
             echo "Removed veto from film: ".$film->{'Title'}."\n";
           }else{
             echo "Error: Something went wrong removing veto from film: ".$film->{'Title'}."\n";
+            $_SESSION['ERROR'] = "Error: Something went wrong removing veto from film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
           }
         }else if(!$veto && $film->{'Veto'}=="true"){
           // User wants to add a veto to this film.
@@ -51,6 +54,7 @@ if(!loginCheck($session)){
             echo "Added veto to film: ".$film->{'Title'}."\n";
           }else{
             echo "Error: Something went wrong adding veto to film: ".$film->{'Title'}."\n";
+            $_SESSION['ERROR'] = "Error: Something went wrong addomg veto to film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
           }
         }else{
           echo "There is nothing to change for film: ".$film->{'Title'}."\n";
@@ -67,11 +71,13 @@ if(!loginCheck($session)){
               echo "Added a new film: ".$film->{'Title'}."\n";
             }else{
               echo "Error: Adding a new film went wrong";
+              $_SESSION['ERROR'] = "Error: Something went wrong adding film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
             }
           }else if($conn->affected_rows==1){
             echo "Updated film: ".$film->{'Title'}."\n";
           }else{
             echo "Error: Something went wrong updating the film: ".$film->{'Title'}."\n";
+            $_SESSION['ERROR'] = "Error: Something went wrong updating film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
           }
         }else{
           $sql = 'UPDATE nominations SET Frequency = Frequency + 1, Proposed_By = concat(ifnull(Proposed_By,""), "'.$_SESSION['Email'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
@@ -84,17 +90,20 @@ if(!loginCheck($session)){
               echo "Added a new film: ".$film->{'Title'}."\n";
             }else{
               echo "Error: Adding a new film went wrong: ".$film->{'Title'}."\n";
+              $_SESSION['ERROR'] = "Error: Something went wrong adding film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
             }
           }else if($conn->affected_rows==1){
             echo "Updated film";
           }else{
             echo "Error: Something went wrong updating the film: ".$film->{'Title'}."\n";
+            $_SESSION['ERROR'] = "Error: Something went wrong updating film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
           }
         }
       }
     }
   }else{
     echo "Error: Nothing recieved";
+    $_SESSION['ERROR'] = "nominationhandler.php recieved no films";
   }
 
 }

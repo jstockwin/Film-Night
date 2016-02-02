@@ -5,7 +5,9 @@
       die("Connection failed: " . $conn->connect_error);
   }
 
-  session_start();
+  if(session_status()== PHP_SESSION_NONE){
+    session_start();
+  }
 	$token = $_POST["idtoken"];
 	$link = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=".$token;
 	$response = file_get_contents($link);
