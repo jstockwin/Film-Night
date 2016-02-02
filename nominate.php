@@ -144,11 +144,20 @@
       numberSelected = 0;
       console.log(selectedFilms);
       console.log(JSON.stringify(selectedFilms));
+      var button = document.getElementById("Submit");
+      button.innerHTML = "Submitting";
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'admin/nominationhandler.php');
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.onload = function() {
         console.log(xhr.responseText);
+        if(xhr.responseText.indexOf("Error")>-1){
+          button.innerHTML = "ERROR";
+        }else{
+          button.innerHTML = "Submitted";
+          button.style.paddingLeft="5px";
+          button.style.paddingRight="5px";
+        }
       };
       xhr.send('nominations=' + JSON.stringify(selectedFilms) );
     }
@@ -177,7 +186,7 @@
             <div style="position:relative; margin: 5% 0;">
               <button type="button" id="submit-films" onclick="submitFilms()">Submit</button>
               <div id="button-disabler">
-                <button type="button" class="disabled">Submit</button>
+                <button type="button" class="disabled" id="Submit">Submit</button>
               </div>
             </div>
           </div>
