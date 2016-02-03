@@ -43,13 +43,7 @@ if($result->num_rows > 0){
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
-      // Remove old votes
-      $sql3 = "DROP TABLE votesold";
-      $result3 = $conn->query($sql3);
-      $sql3 = "ALTER TABLE votes RENAME TO votesold";
-      $result3 = $conn->query($sql3);
-      $sql3 = "CREATE TABLE votes (ID varchar(127), Vote varchar(255))";
-      $result3 = $conn->query($sql3);
+
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Active=1";
     $result2 = $conn->query($sql2);
@@ -71,6 +65,12 @@ if($result->num_rows > 0){
   }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
+    $sql3 = "DROP TABLE votes";
+    $result3 = $conn->query($sql3);
+    $sql3 = "ALTER TABLE incomingvotes RENAME TO votes";
+    $result3 = $conn->query($sql3);
+    $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
+    $result3 = $conn->query($sql3);
     //mail("localhost","test","test");
     $sql2 = "SELECT * FROM users WHERE Active=1";
     $result2 = $conn->query($sql2);

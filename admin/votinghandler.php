@@ -18,7 +18,7 @@ if(!loginCheck($session)){
   }
   if(isset($_POST['votes'])){
     if($_POST['votes'] == "WITHDRAW"){
-      $sql2 = "DELETE FROM votes WHERE ID='".$_SESSION['Email']."';";
+      $sql2 = "DELETE FROM incomingvotes WHERE ID='".$_SESSION['Email']."';";
       $result2 = $conn->query($sql2);
       if($result2==1){
         echo "successfully removed vote";
@@ -33,11 +33,11 @@ if(!loginCheck($session)){
 
       echo "Vote: ".$_POST['votes'];
       // Check if they have already voted
-      $sql = "SELECT * FROM votes WHERE ID='".$_SESSION['Email']."'";
+      $sql = "SELECT * FROM incomingvotes WHERE ID='".$_SESSION['Email']."'";
       $result = $conn->query($sql);
       if ($result->num_rows == 0){
         // User has not yet voted.
-        $sql2 = "INSERT INTO votes VALUES ('".$_SESSION['Email']."', '".$vote."');";
+        $sql2 = "INSERT INTO incomingvotes VALUES ('".$_SESSION['Email']."', '".$vote."');";
         $result2 = $conn->query($sql2);
         echo "New Vote: ".$result2;
         if($result2==1){
@@ -50,7 +50,7 @@ if(!loginCheck($session)){
 
       }else{
         //user has already voted.
-        $sql2 = "UPDATE votes SET Vote='".$vote."' WHERE ID='".$_SESSION['Email']."';";
+        $sql2 = "UPDATE incomingvotes SET Vote='".$vote."' WHERE ID='".$_SESSION['Email']."';";
         $result2 = $conn->query($sql2);
         echo "Updated Vote: ".$result2;
         if($result2==1){

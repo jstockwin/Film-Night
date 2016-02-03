@@ -6,7 +6,6 @@
   <body>
     <?php include 'top-nav.php'; ?>
   <?php endif ?>
-  <?php if(($permission != FALSE && status($root) == "results") || $permission == "admin"): ?>
     <script type="text/javascript" src="voting-systems.js"></script>
     <p id="log"></p>
     <div id="container">
@@ -346,7 +345,6 @@
       } : null;
     }
     </script>
-  <?php endif ?>
   <?php if(!isset($_GET['noheader'])): ?>
   </body>
   </html>
