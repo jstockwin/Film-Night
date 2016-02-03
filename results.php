@@ -31,14 +31,13 @@
             <div id="minimax"></div>
             <div id="kemenyYoung"></div>
             <div id="baldwin"></div>
+            <div id="first-past-the-post"></div>
+            <div id="av"></div>
           </div>
         </div>
       </div>
     </div>
     <script>
-
-    // var listOfCandidates = ['Interstellar','The Lion King','The Dukes of Hazzard','Jurassic World',"Ocean's Eleven"];
-    // var votes = [{'Jurassic World': 1, 'Interstellar': 1, 'The Lion King': 3, 'The Dukes of Hazzard': 4, "Ocean's Eleven": 5}];
 
     <?php
 
@@ -74,7 +73,7 @@
     }else{
       echo "// There are no films. Use defaults \n";
       echo 'var listOfCandidates =["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
-      echo 'var votes =[{"Four Lions": 1,"Dude, Where\'s My Car?": 2,"Atonement": 3,"Walk the Line": 4,"Big Fish": 5},{"Four Lions": 1,"Dude, Where\'s My Car?": 2,"Big Fish": 3,"Atonement": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where\'s My Car?": 2,"Atonement": 3,"Big Fish": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where\'s My Car?": 2,"Big Fish": 3,"Atonement": 4,"Walk the Line": 5},{"Four Lions": 1,"Dude, Where\'s My Car?": 2,"Atonement": 3,"Big Fish": 4,"Walk the Line": 5},{"Four Lions": 1,"Big Fish": 2,"Walk the Line": 3,"Atonement": 4,"Dude, Where\'s My Car?": 5},{"Atonement": 1,"Walk the Line": 2,"Big Fish": 3,"Four Lions": 4,"Dude, Where\'s My Car?": 5},{"Four Lions": 1,"Atonement": 2,"Walk the Line": 3,"Big Fish": 4,"Dude, Where\'s My Car?": 5},{"Atonement": 1,"Big Fish": 2,"Four Lions": 3,"Walk the Line": 4,"Dude, Where\'s My Car?": 5},];';
+      echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
     }
     $conn->close();
     ?>
@@ -104,7 +103,7 @@
 
     var results= [];
 
-    window.onload = runAllAlgorithms(1);
+    window.addEventListener("load", runAllAlgorithms(1));
 
     function createInformationOnAlgorithm(algorithmName, algorithm, listOfCandidates, votes, divToPopulate, onFinish){
       var start = performance.now();
@@ -141,6 +140,12 @@
         log('Kemeny-Young Ranking...');
         setTimeout(createInformationOnAlgorithm,100,'Kemeny-Young Ranking', kemenyYoung, listOfCandidates, votes, document.getElementById('kemenyYoung'), function(){runAllAlgorithms(6)});
       }else if(i === 6){
+        log('First-Past-The-Post...')
+        setTimeout(createInformationOnAlgorithm,100,'First-Past-The-Post', plurality, listOfCandidates, votes, document.getElementById('first-past-the-post'), function(){runAllAlgorithms(7)});
+      }else if(i === 7){
+        log('AV...')
+        setTimeout(createInformationOnAlgorithm,100,'AV', av, listOfCandidates, votes, document.getElementById('av'), function(){runAllAlgorithms(8)});
+      }else if(i === 8){
         log('Baldwin Ranking...');
         var onEnd = function(){
           log('Drawing Graphs...');
