@@ -15,9 +15,12 @@ $equal-color: #FFE8A2;
 $worse-color: #FFDDDD;
 $better-color: #DDFFDD;
 
+$icon-padding: 50px;
 $icon-height: 300px;
 
 $indicator-height: 0.2rem;
+
+$header-height: 70px;
 
 //z-index stolen from materializecss
 %z-depth-1 {
@@ -84,7 +87,7 @@ html, body {
 #tabs-wrapper {
   align-items: center;
   display: flex;
-  height: 70px;
+  height: $header-height;
 }
 
 button {
@@ -212,22 +215,38 @@ button {
   z-index: 1;
 }
 
-#svg-container {
+.svg-container {
   box-sizing: border-box;
   height: $icon-height;
   left: 50%;
-  padding: 10px;
+  padding: $icon-padding;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
   transform-origin: left top;
-  transition: transform 2s, left 2s, top 2s;
   z-index: 102;
+}
+
+.small-svg-container {
+  left: 0;
+  top: 0;
+  transform: scale($header-height / $icon-height);
+}
+
+#top {
+  height:  0.25 * ($icon-height - 2* $icon-padding);
+  transform: rotate(-45deg);
+  transform-origin: left bottom;
+  transition: transform 0.2s;
+  transition-timing-function: ease-in;
+}
+
+#bottom {
+  height: 0.75 * ($icon-height - 2* $icon-padding);
 }
 
 svg {
   height: 100%;
-  width: 100%;
 }
 
 #log {
@@ -251,12 +270,7 @@ svg {
   width: 100%;
 }
 
-#top {
-  transform: rotate(-45deg);
-  transform-origin: left bottom;
-  transition: transform 0.2s;
-  transition-timing-function: ease-in;
-}
+
 
 #container {
   margin: 0 auto;

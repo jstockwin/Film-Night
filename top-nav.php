@@ -51,23 +51,15 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
   </div>
   </div>
 </div>
-<div id="svg-container">
-  <svg
-  id="icon"
-  xmlns="http://www.w3.org/2000/svg"
-  fill="#fff"
-  viewBox="0 0 24 24"
-  style="overflow: visible">
-  <path
-  d="M 2.005,8 2,18 c 0,1.1 0.9,2 2,2 l 16,0 c 1.1,0 2,-0.9 2,-2 L 22,8 z"
-  id="bottom" />
-  <path
-  d="M0 0h24v24H0z"
-  fill="none"
-  id="border" />
-  <path
-  id="top"
-  d="M 17.999,4 19.9995,8 16.99875,8 14.99825,4 12.997749,4 14.99825,8 11.997499,8 9.9969992,4 7.9964991,4 9.9969992,8 6.9962491,8 4.9957489,4 3.9954989,4 C 2.8952238,4 2.0050013,4.9 2.0050013,6 L 2,8 22,8 22,4 z" />
+<div id="svg-container" class="svg-container">
+  <div id="top">
+    <svg  xmlns="http://www.w3.org/2000/svg"  fill="#fff"  viewBox="2 4 20 4"  style="overflow: visible">
+    <path  d="M 18,4 20,8 17,8 15,4 13 4 15,8 12,8 10,4 8,4 10,8 7,8 5,4 4,4 C 3,4 2,4.9 2,6 L 2,8 22,8 22,4 z" />
+  </div>
+  <div  id="bottom" >
+  <svg    xmlns="http://www.w3.org/2000/svg"  fill="#fff"  viewBox="2 8 20 12"  style="overflow: visible">
+  <path d="M 2,8 2,18 c 0,1.1 0.9,2 2,2 l 16,0 c 1.1,0 2,-0.9 2,-2 L 22,8 z"/>
+</div>
 </svg>
 </div>
 <script>
@@ -85,9 +77,8 @@ function showContent(){
 }
 
 function shrinkHeader(){
-  document.getElementById('svg-container').style.left = "0";
-  document.getElementById('svg-container').style.top = "0";
-  document.getElementById('svg-container').style.transform = "scale(0.233333)";
+  document.getElementById('svg-container').style.transition = "transform 2s,left 2s, top 2s";
+  document.getElementById('svg-container').classList.add('small-svg-container');
   document.getElementById('header').style.height = "70px";
 }
 
@@ -96,9 +87,7 @@ function openClapper(){
 }
 
 function expandHeader(){
-  document.getElementById('svg-container').style.left = "50%";
-  document.getElementById('svg-container').style.top = "50%";
-  document.getElementById('svg-container').style.transform = "translate(-50%, -50%)";
+  document.getElementById('svg-container').classList.remove('small-svg-container');
   document.getElementById('header').style.height = "100%";
 }
 
