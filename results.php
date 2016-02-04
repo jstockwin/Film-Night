@@ -305,7 +305,7 @@
       }
       for(var i = 0; i < listOfCandidates.length; i++){
         var node = '<circle cx="'+ coordinates[i].x + '" cy="'+ coordinates[i].y + '" r="'+nodeRadius+'" fill="'+nodeColors[i % nodeColors.length] + '"/>';
-        var text = '<text x="'+ coordinates[i].x + '" y="'+ coordinates[i].y + '" text-anchor="middle"  fill="white" font-size="' + nodeRadius * 1.5 + '" style="alignment-baseline:central" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
+        var text = '<text x="'+ coordinates[i].x + '" y="'+ coordinates[i].y + '" text-anchor="middle"  fill="white" font-size="' + nodeRadius * 1.5 + '" style="alignment-baseline:central; dominant-baseline: central;" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
         svg = svg + node + text;
       }
       for(var i =0; i < numberOfIndicatorSquares; i++ ){
