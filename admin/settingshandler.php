@@ -14,7 +14,7 @@ if ($conn->connect_error) {
   if(session_status()== PHP_SESSION_NONE){
     session_start();
   }
-  $_SESSION['ERROR']="nominationhandler.php failed connect to sql database: ".$conn->connect_error;
+  $_SESSION['ERROR']="settingshandler.php failed connect to sql database: ".$conn->connect_error;
 }
 $attending=0;
 $voting=0;

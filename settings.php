@@ -1,3 +1,5 @@
+<head><link rel="manifest" href="/manifest.json"></head>
+<body>
 <?php include 'top-nav.php'; include 'StyleSheet.html'; ?>
 <?php if($permission != FALSE): ?>
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
@@ -48,5 +50,8 @@ Which email address would you like to receive these email to?<br>
 <input type="submit" value="Submit">
 </address>
 </form>
+<button id="#registerWorker" type="button" onClick="registerServiceWorker()">Register Service Worker</button>
+<script src="settings.js"></script>
 </div>
 <?php endif; ?>
+<body>

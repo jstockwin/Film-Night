@@ -1,0 +1,7 @@
+{  
+  "name": "Film Night",  
+  "short_name": "Film Night",  
+  "start_url": "/index.php",  
+  "display": "standalone",  
+  "gcm_sender_id": "<Your Project ID Without the Hash>"
+}

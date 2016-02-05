@@ -2,6 +2,8 @@
 ob_start();
 require '../header.php';
 require $root.'../../database.php';
+require $root.'vendor/autoload.php';
+use Minishlink\WebPush\WebPush;
 ob_end_clean(); // supresses output.
 
 include $root.'../../database.php';
@@ -40,6 +42,22 @@ if($result->num_rows > 0){
       </body>
       ';
       mail($to, "Film Night Attendance", $message, "Content-type:text/html");
+      
+      $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
+      $result4 = $conn->query($sql4);
+      $endpoints = array ();
+      while($row4 = $result4->fetch_assoc()){
+        array_push($endpoints, $row4['Endpoint']);
+      }
+
+      $webPush = new WebPush(array('GCM'=>$GCMkey));
+      // send multiple notifications
+      foreach ($endpoints as $endpoint) {
+          error_log(print_r($endpoint, TRUE));
+          $webPush->sendNotification($endpoint, "Hello");
+      }
+      $webPush->flush();
+
     }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
       // Select films:
       header("location: select-films.php");
@@ -62,6 +80,23 @@ if($result->num_rows > 0){
     </body>
     ';
     mail($to,"Film Night Voting", $message, "Content-type:text/html");
+    
+    $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
+    $result4 = $conn->query($sql4);
+    error_log(print_r($result4, TRUE));
+    $endpoints = array ();
+    while($row4 = $result4->fetch_assoc()){
+      array_push($endpoints, $row4['Endpoint']);
+    }
+
+    $webPush = new WebPush(array('GCM'=>$GCMkey));
+    // send multiple notifications
+    foreach ($endpoints as $endpoint) {
+        error_log(print_r($endpoint, TRUE));
+        $webPush->sendNotification($endpoint, "Hello");
+    }
+    $webPush->flush();
+
   }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
@@ -89,6 +124,21 @@ if($result->num_rows > 0){
     </html>
     ';
     mail($to,"Film Night Results", $message, "Content-type:text/html");
+
+    $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
+    $result4 = $conn->query($sql4);
+    $endpoints = array ();
+    while($row4 = $result4->fetch_assoc()){
+      array_push($endpoints, $row4['Endpoint']);
+    }
+
+    $webPush = new WebPush(array('GCM'=>$GCMkey));
+    // send multiple notifications
+    foreach ($endpoints as $endpoint) {
+        error_log(print_r($endpoint, TRUE));
+        $webPush->sendNotification($endpoint, "Hello");
+    }
+    $webPush->flush();
 
     echo "results";
   }
