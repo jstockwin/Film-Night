@@ -27,7 +27,7 @@ if(isset($_POST['voting'])){
 if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
-$sql = 'INSERT INTO users VALUES ("'.$_SESSION['Email'].'", "'.$_POST['name'].'","'.$_POST['email'].'","member",1,1,'.$attending.','.$voting.','.$results.');';
+$sql = 'INSERT INTO users VALUES ("'.$_SESSION['Email'].'", "'.$_POST['name'].'","'.$_POST['email'].'","member",1,1,'.$attending.','.$voting.','.$results.',NULL);';
 $result = $conn->query($sql);
 
 if($result == 1){
