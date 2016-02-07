@@ -154,7 +154,10 @@ function minimax(listOfCandidates, votes) {
   return scores;
 }
 
-function borda(listOfCandidates, votes) {
+function borda(listOfCandidates, votes, topScore) {
+  if (topScore == null) {
+    topScore = listOfCandidates.length + 1;
+  }
   var scores = [];
   for (var k = 0; k < listOfCandidates.length; k++) {
     scores.push({film: listOfCandidates[k], score: 0, rank: k});
@@ -162,7 +165,7 @@ function borda(listOfCandidates, votes) {
 
   for (var i = 0; i < listOfCandidates.length; i++) {
     for (var j = 0; j < votes.length; j++) {
-      scores[i].score = scores[i].score - votes[j][scores[i].film] + 1 + listOfCandidates.length;
+      scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore;
     }
   }
   scores.sort(function(a, b) {return b.score - a.score;});
@@ -237,7 +240,7 @@ function baldwin(listOfCandidates, votes) {
   var currentVotes = JSON.parse(JSON.stringify(votes));
   var results = [];
   while (currentCandidates.length > 0) {
-    var bordaResults = borda(currentCandidates, currentVotes);
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
     var lowestScore = bordaResults[bordaResults.length - 1].score;
     for (var i = bordaResults.length - 1; i > -1; i--) {
       if (bordaResults[i].score === lowestScore) {
@@ -269,7 +272,7 @@ function nanson(listOfCandidates, votes) {
   var currentVotes = JSON.parse(JSON.stringify(votes));
   var results = [];
   while (currentCandidates.length > 0) {
-    var bordaResults = borda(currentCandidates, currentVotes);
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
     var average = 0;
     for (var i = 0; i < bordaResults.length; i++) {
       average += bordaResults[i].score / bordaResults.length;
