@@ -264,6 +264,28 @@ function removeCandidate(currentCandidates, currentVotes, candidateToRemove) {
   }
 }
 
+function nanson(listOfCandidates, votes) {
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var bordaResults = borda(currentCandidates, currentVotes);
+    var average = 0;
+    for (var i = 0; i < bordaResults.length; i++) {
+      average += bordaResults[i].score / bordaResults.length;
+    }
+    for (i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score <= average) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
 function av(listOfCandidates, votes) {
   var currentCandidates = listOfCandidates.slice();
   var currentVotes = JSON.parse(JSON.stringify(votes));

@@ -31,6 +31,7 @@
             <div id="minimax"></div>
             <div id="kemenyYoung"></div>
             <div id="baldwin"></div>
+            <div id="nanson"></div>
             <div id="first-past-the-post"></div>
             <div id="av"></div>
           </div>
@@ -146,6 +147,9 @@
         log('AV...')
         setTimeout(createInformationOnAlgorithm,100,'AV', av, listOfCandidates, votes, document.getElementById('av'), function(){runAllAlgorithms(8)});
       }else if(i === 8){
+        log('Nanson...')
+        setTimeout(createInformationOnAlgorithm,100,'Nanson', nanson, listOfCandidates, votes, document.getElementById('nanson'), function(){runAllAlgorithms(9)});
+      }else if(i === 9){
         log('Baldwin Ranking...');
         var onEnd = function(){
           log('Drawing Graphs...');
