@@ -238,15 +238,17 @@ function baldwin(listOfCandidates, votes) {
   var results = [];
   while (currentCandidates.length > 0) {
     var bordaResults = borda(currentCandidates, currentVotes);
-    if (bordaResults.length > 1 && bordaResults[bordaResults.length - 2].score === bordaResults[bordaResults.length - 1].score) {
-      throw 'Draw for bottom place';
+    var lowestScore = bordaResults[bordaResults.length - 1].score;
+    for (var i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
     }
-    var toEliminate = bordaResults[bordaResults.length - 1].film;
-    removeCandidate(currentCandidates, currentVotes, toEliminate);
-    results.push(toEliminate);
   }
   results.reverse();
-  results = results.map(function(film, index) {return {'film': film, rank: index + 1};});
   return results;
 }
 
@@ -277,6 +279,8 @@ function av(listOfCandidates, votes) {
       if (pluralityResults[i].score === lowestScore) {
         removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
         results.push(pluralityResults[i]);
+      }else {
+        break;
       }
     }
   }
