@@ -8,7 +8,7 @@ function generateRandomVotes(listOfCandidates, n) {
   var votes = [];
   for (i = 0; i < n; i++) {
     var vote = {};
-    shuffle(order);
+    order = shuffle(order);
     for (var j = 0; j < listOfCandidates.length; j++) {
       vote[listOfCandidates[j]] = order[j];
     }
@@ -18,15 +18,16 @@ function generateRandomVotes(listOfCandidates, n) {
 }
 
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+  var indices = [];
+  var shuffledArray = [];
+  for (var i = 0; i < array.length; i++) {
+    indices.push(i);
   }
-  return array;
+  for (i = 0; i < array.length; i++) {
+    var randomIndex = indices.splice(Math.floor(Math.random() * indices.length),1);
+    shuffledArray.push(array[randomIndex]);
+  }
+  return shuffledArray;
 }
 
 function getDistances(listOfCandidates, votes) {
@@ -51,9 +52,10 @@ function getDistances(listOfCandidates, votes) {
 function schulze(listOfCandidates, votes) {
   var distances = getDistances(listOfCandidates, votes);
   var paths = [];
+  var j;
   for (var i = 0; i < listOfCandidates.length; i++) {
     var row = [];
-    for (var j = 0; j < listOfCandidates.length; j++) {
+    for (j = 0; j < listOfCandidates.length; j++) {
       if (distances[i][j] > distances[j][i]) {
         row.push(distances[i][j]);
       }else {
@@ -217,22 +219,17 @@ function permutator(inputArr) {
   var results = [];
 
   function permute(arr, memo) {
-    var cur;
-    var memo = memo || [];
-
     for (var i = 0; i < arr.length; i++) {
-      cur = arr.splice(i, 1);
+      var cur = arr.splice(i, 1);
       if (arr.length === 0) {
         results.push(memo.concat(cur));
       }
       permute(arr.slice(), memo.concat(cur));
       arr.splice(i, 0, cur[0]);
     }
-
     return results;
   }
-
-  return permute(inputArr);
+  return permute(inputArr, []);
 }
 
 function baldwin(listOfCandidates, votes) {
