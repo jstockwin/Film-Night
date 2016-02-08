@@ -218,7 +218,7 @@ function kemenyYoung(listOfCandidates, votes) {
 // Self contained voting methods.
 
 function borda(listOfCandidates, votes, topScore) {
-  // Used in baldwin and nanson
+  // Used in baldwin and nanson. Note that topScore is optional and to make scoring on baldwin and nanson nicer.
   'use strict';
   if (topScore === null || topScore === undefined) {
     topScore = listOfCandidates.length + 1;
@@ -243,6 +243,31 @@ function borda(listOfCandidates, votes, topScore) {
     }
   }
   return scores;
+}
+
+function antiPlurality(listOfCandidates, votes) {
+  // Note that this will return negative scores so that the higher the score the better.
+  'use strict';
+  var results = [];
+  for (var i = 0; i < listOfCandidates.length; i ++) {
+    var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
+    for (var j = 0; j < votes.length; j++) {
+      if (votes[j][listOfCandidates[i]] === listOfCandidates.length) {
+        result.score--;
+      }
+    }
+    results.push(result);
+  }
+  results.sort(function(a, b) {return b.score - a.score;});
+  results[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (results[i].score === results[i - 1].score) {
+      results[i].rank = results[i - 1].rank;
+    }else {
+      results[i].rank = i + 1;
+    }
+  }
+  return results;
 }
 
 function plurality(listOfCandidates, votes) {
@@ -300,6 +325,31 @@ function av(listOfCandidates, votes) {
       if (pluralityResults[i].score === lowestScore) {
         removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
         results.push(pluralityResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
+function coombs(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var antiPluralityResults = antiPlurality(currentCandidates, currentVotes);
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      results = results.concat(pluralityResults.reverse());
+      return results.reverse();
+    }
+    var lowestScore = antiPluralityResults[antiPluralityResults.length - 1].score;
+    for (var i = antiPluralityResults.length - 1; i > 0; i--) {
+      if (antiPluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, antiPluralityResults[i].film);
+        results.push(antiPluralityResults[i]);
       }else {
         break;
       }
