@@ -3,5 +3,5 @@
   "short_name": "Film Night",  
   "start_url": "/index.php",  
   "display": "standalone",  
-  "gcm_sender_id": "<Your Project ID Without the Hash>"
+  "gcm_sender_id": "38726832208"
 }

@@ -54,4 +54,4 @@ Which email address would you like to receive these email to?<br>
 <script src="settings.js"></script>
 </div>
 <?php endif; ?>
-<body>
+</body>

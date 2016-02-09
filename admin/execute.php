@@ -50,11 +50,10 @@ if($result->num_rows > 0){
         array_push($endpoints, $row4['Endpoint']);
       }
 
-      $webPush = new WebPush(array('GCM'=>$GCMkey));
+      $webPush = new WebPush(array('GCM'=>$push_api));
       // send multiple notifications
       foreach ($endpoints as $endpoint) {
-          error_log(print_r($endpoint, TRUE));
-          $webPush->sendNotification($endpoint, "Hello");
+          $webPush->sendNotification($endpoint);
       }
       $webPush->flush();
 
@@ -83,17 +82,16 @@ if($result->num_rows > 0){
     
     $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
     $result4 = $conn->query($sql4);
-    error_log(print_r($result4, TRUE));
     $endpoints = array ();
     while($row4 = $result4->fetch_assoc()){
       array_push($endpoints, $row4['Endpoint']);
     }
-
-    $webPush = new WebPush(array('GCM'=>$GCMkey));
+    
+    $webPush = new WebPush(array('GCM'=>$push_api));
     // send multiple notifications
     foreach ($endpoints as $endpoint) {
         error_log(print_r($endpoint, TRUE));
-        $webPush->sendNotification($endpoint, "Hello");
+        $webPush->sendNotification($endpoint);
     }
     $webPush->flush();
 
@@ -132,11 +130,11 @@ if($result->num_rows > 0){
       array_push($endpoints, $row4['Endpoint']);
     }
 
-    $webPush = new WebPush(array('GCM'=>$GCMkey));
+    $webPush = new WebPush(array('GCM'=>$push_api));
     // send multiple notifications
     foreach ($endpoints as $endpoint) {
         error_log(print_r($endpoint, TRUE));
-        $webPush->sendNotification($endpoint, "Hello");
+        $webPush->sendNotification($endpoint);
     }
     $webPush->flush();
 
