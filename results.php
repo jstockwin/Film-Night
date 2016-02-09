@@ -75,7 +75,7 @@
       echo "];";
     }else{
       echo "// There are no films. Use defaults \n";
-      echo 'var listOfCandidates =["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
+      echo 'var listOfCandidates = ["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
       echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
     }
     $conn->close();

@@ -31,6 +31,19 @@ function generateRandomVotes(listOfCandidates, n) {
   return votes;
 }
 
+function generateListOfCandidates(votes) {
+  var listOfCandidates = [];
+  for (var i = 0; i < votes.length; i++) {
+    var keys = Object.keys(votes[i]);
+    for (var j = 0; j < keys.length; j++) {
+      if (listOfCandidates.indexOf(keys[j]) === -1) {
+        listOfCandidates.push(keys[j]);
+      }
+    }
+  }
+  return listOfCandidates;
+}
+
 // Methods relying on distances
 function getDistances(listOfCandidates, votes) {
   'use strict';
