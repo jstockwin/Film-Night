@@ -199,7 +199,7 @@
    console.log("submit");
     var orderedTitles =[];
      for(var i=0; i< numberOfFields;i++){
-       var targets = [{target: "\!", result: "%21"}, {target: "\*", result: "%2A"},{target: "\(", result: "%27"},{target: "\)", result: "%28"},{target: "\'", result: "%29"}];
+       var targets = [{target: "\\!", result: "%21"}, {target: "\\*", result: "%2A"},{target: "\\(", result: "%27"},{target: "\\)", result: "%28"},{target: "\\'", result: "%29"}];
        var encodedName = encodeURIComponent(document.getElementById(i+1).innerHTML);
        for (var j = 0; j < targets.length; j++){
          encodedName.replace(new RegExp(targets[j].target, 'g'), targets[j].result);
