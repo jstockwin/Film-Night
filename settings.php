@@ -1,4 +1,4 @@
-<head><link rel="manifest" href="/manifest.json"></head>
+<?php<head><link rel="manifest" href=$_SERVER['DOCUMENT_ROOT'].'/filmnight/manifest.json'></head>?>
 <body>
 <?php include 'top-nav.php'; include 'StyleSheet.html'; ?>
 <?php if($permission != FALSE): ?>
