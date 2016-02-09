@@ -52,7 +52,7 @@
     }
 
 
-    $sql = "SELECT * FROM selected_films";
+    /*$sql = "SELECT * FROM selected_films";
     $result = $conn->query($sql);
     if ($result->num_rows > 0){
       echo "var listOfCandidates =[";
@@ -63,8 +63,13 @@
     }else{
       echo "// There are no selected films.";
     }
-    echo "\n";
-    $sql = "SELECT * FROM votes";
+    echo "\n"; */
+    if (loginCheck($session)=="admin" && status($root)=="voting"){
+      $sql = "SELECT * FROM incomingvotes";
+    }else{
+      $sql = "SELECT * FROM votes";
+    }
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0){
@@ -72,10 +77,11 @@
       while($row = $result->fetch_assoc()){
         echo urldecode($row["Vote"]).",";
       }
-      echo "];";
+      echo "];\n";
+      echo 'var listOfCandidates  = generateListOfCandidates(votes);';
     }else{
       echo "// There are no films. Use defaults \n";
-      echo 'var listOfCandidates =["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
+      echo 'var listOfCandidates = ["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
       echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
     }
     $conn->close();
@@ -294,7 +300,7 @@
       var max = 0;
       for( var i =0; i< listOfCandidates.length; i++){
         for(var j = 0; j < listOfCandidates.length; j++){
-          if(distances[i][j] > distances[j][i]){
+          if(distances[i][j] >= distances[j][i] && i !== j){
             min = Math.min(min, distances[i][j]);
             max = Math.max(max, distances[i][j]);
           }
