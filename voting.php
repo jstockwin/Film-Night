@@ -204,6 +204,7 @@
        for (var j = 0; j < targets.length; j++){
          encodedName.replace(new RegExp(targets[j].target, 'g'), targets[j].result);
        }
+       orderedTitles.push(encodedName);
      }
      var button = document.getElementById("submit");
      console.log(orderedTitles);
