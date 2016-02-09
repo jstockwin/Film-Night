@@ -52,7 +52,7 @@
     }
 
 
-    $sql = "SELECT * FROM selected_films";
+    /*$sql = "SELECT * FROM selected_films";
     $result = $conn->query($sql);
     if ($result->num_rows > 0){
       echo "var listOfCandidates =[";
@@ -63,7 +63,7 @@
     }else{
       echo "// There are no selected films.";
     }
-    echo "\n";
+    echo "\n"; */
     $sql = "SELECT * FROM votes";
     $result = $conn->query($sql);
 
@@ -72,7 +72,8 @@
       while($row = $result->fetch_assoc()){
         echo urldecode($row["Vote"]).",";
       }
-      echo "];";
+      echo "];\n";
+      echo 'var listOfCandidates  = generateListOfCandidates(votes);';
     }else{
       echo "// There are no films. Use defaults \n";
       echo 'var listOfCandidates = ["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
