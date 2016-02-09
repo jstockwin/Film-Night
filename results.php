@@ -64,7 +64,12 @@
       echo "// There are no selected films.";
     }
     echo "\n"; */
-    $sql = "SELECT * FROM votes";
+    if (loginCheck($session)=="admin" && status($root)=="voting"){
+      $sql = "SELECT * FROM incomingvotes";
+    }else{
+      $sql = "SELECT * FROM votes";
+    }
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0){
