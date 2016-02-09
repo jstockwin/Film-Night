@@ -294,7 +294,7 @@
       var max = 0;
       for( var i =0; i< listOfCandidates.length; i++){
         for(var j = 0; j < listOfCandidates.length; j++){
-          if(distances[i][j] > distances[j][i]){
+          if(distances[i][j] >= distances[j][i] && i !== j){
             min = Math.min(min, distances[i][j]);
             max = Math.max(max, distances[i][j]);
           }

@@ -243,7 +243,9 @@ function borda(listOfCandidates, votes, topScore) {
 
   for (var i = 0; i < listOfCandidates.length; i++) {
     for (var j = 0; j < votes.length; j++) {
-      scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore;
+      if (votes[j][scores[i].film] !== undefined && votes[j][scores[i].film] !== null) {
+        scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore;
+      }
     }
   }
   scores.sort(function(a, b) {return b.score - a.score;});
@@ -334,7 +336,7 @@ function av(listOfCandidates, votes) {
       return results.reverse();
     }
     var lowestScore = pluralityResults[pluralityResults.length - 1].score;
-    for (var i = pluralityResults.length - 1; i > 0; i--) {
+    for (var i = pluralityResults.length - 1; i > -1; i--) {
       if (pluralityResults[i].score === lowestScore) {
         removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
         results.push(pluralityResults[i]);
@@ -359,7 +361,7 @@ function coombs(listOfCandidates, votes) {
       return results.reverse();
     }
     var lowestScore = antiPluralityResults[antiPluralityResults.length - 1].score;
-    for (var i = antiPluralityResults.length - 1; i > 0; i--) {
+    for (var i = antiPluralityResults.length - 1; i > -1; i--) {
       if (antiPluralityResults[i].score === lowestScore) {
         removeCandidate(currentCandidates, currentVotes, antiPluralityResults[i].film);
         results.push(antiPluralityResults[i]);
