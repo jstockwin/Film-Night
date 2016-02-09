@@ -31,8 +31,11 @@
             <div id="minimax"></div>
             <div id="kemenyYoung"></div>
             <div id="baldwin"></div>
+            <div id="nanson"></div>
             <div id="first-past-the-post"></div>
             <div id="av"></div>
+            <div id="anti-plurality"></div>
+            <div id="coombs"></div>
           </div>
         </div>
       </div>
@@ -116,7 +119,8 @@
       }catch(err){
         divToPopulate.innerHTML = divToPopulate.innerHTML + '<p class="error-message">'+err+'</p>';
       }
-      var timeTaken  = Math.round(performance.now() - start)/1000;
+      var timeTaken  = (performance.now() - start)/1000;
+      timeTaken = timeTaken.toFixed(4);
       document.getElementById(algorithmName + 'Time').innerHTML = timeTaken + 's';
       log(algorithmName + '...' + timeTaken + 's', true);
       onFinish();
@@ -146,6 +150,15 @@
         log('AV...')
         setTimeout(createInformationOnAlgorithm,100,'AV', av, listOfCandidates, votes, document.getElementById('av'), function(){runAllAlgorithms(8)});
       }else if(i === 8){
+        log('Nanson...')
+        setTimeout(createInformationOnAlgorithm,100,'Nanson', nanson, listOfCandidates, votes, document.getElementById('nanson'), function(){runAllAlgorithms(9)});
+      }else if(i === 9) {
+        log('Anti-Plurality...')
+        setTimeout(createInformationOnAlgorithm,100,'Anti-Plurality', antiPlurality, listOfCandidates, votes, document.getElementById('anti-plurality'), function(){runAllAlgorithms(10)});
+      }else if(i === 10) {
+        log("Coombs'...")
+        setTimeout(createInformationOnAlgorithm,100,"Coombs'", coombs, listOfCandidates, votes, document.getElementById('coombs'), function(){runAllAlgorithms(11)});
+      }else if(i === 11) {
         log('Baldwin Ranking...');
         var onEnd = function(){
           log('Drawing Graphs...');

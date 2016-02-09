@@ -1,6 +1,20 @@
-
+//Misc.
+function shuffle(array) {
+  'use strict';
+  var indices = [];
+  var shuffledArray = [];
+  for (var i = 0; i < array.length; i++) {
+    indices.push(i);
+  }
+  for (i = 0; i < array.length; i++) {
+    var randomIndex = indices.splice(Math.floor(Math.random() * indices.length),1);
+    shuffledArray.push(array[randomIndex]);
+  }
+  return shuffledArray;
+}
 
 function generateRandomVotes(listOfCandidates, n) {
+  'use strict';
   var order = [];
   for (var i = 0; i < listOfCandidates.length; i++) {
     order.push(i + 1);
@@ -8,7 +22,7 @@ function generateRandomVotes(listOfCandidates, n) {
   var votes = [];
   for (i = 0; i < n; i++) {
     var vote = {};
-    shuffle(order);
+    order = shuffle(order);
     for (var j = 0; j < listOfCandidates.length; j++) {
       vote[listOfCandidates[j]] = order[j];
     }
@@ -17,19 +31,9 @@ function generateRandomVotes(listOfCandidates, n) {
   return votes;
 }
 
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-  return array;
-}
-
+// Methods relying on distances
 function getDistances(listOfCandidates, votes) {
+  'use strict';
   var distances = [];
 
   for (var i = 0; i < listOfCandidates.length; i++) {
@@ -49,11 +53,13 @@ function getDistances(listOfCandidates, votes) {
 }
 
 function schulze(listOfCandidates, votes) {
+  'use strict';
   var distances = getDistances(listOfCandidates, votes);
   var paths = [];
+  var j;
   for (var i = 0; i < listOfCandidates.length; i++) {
     var row = [];
-    for (var j = 0; j < listOfCandidates.length; j++) {
+    for (j = 0; j < listOfCandidates.length; j++) {
       if (distances[i][j] > distances[j][i]) {
         row.push(distances[i][j]);
       }else {
@@ -103,6 +109,7 @@ function schulze(listOfCandidates, votes) {
 }
 
 function copeland(listOfCandidates, votes) {
+  'use strict';
   var distances = getDistances(listOfCandidates, votes);
   var scores = [];
   for (var i = 0; i < listOfCandidates.length; i++) {
@@ -131,6 +138,7 @@ function copeland(listOfCandidates, votes) {
 }
 
 function minimax(listOfCandidates, votes) {
+  'use strict';
   var distances = getDistances(listOfCandidates, votes);
   var scores = [];
   for (var i = 0; i < listOfCandidates.length; i++) {
@@ -154,30 +162,27 @@ function minimax(listOfCandidates, votes) {
   return scores;
 }
 
-function borda(listOfCandidates, votes) {
-  var scores = [];
-  for (var k = 0; k < listOfCandidates.length; k++) {
-    scores.push({film: listOfCandidates[k], score: 0, rank: k});
-  }
+function permutator(inputArr) {
+  // Used in kemenyYoung
+  'use strict';
+  var results = [];
 
-  for (var i = 0; i < listOfCandidates.length; i++) {
-    for (var j = 0; j < votes.length; j++) {
-      scores[i].score = scores[i].score - votes[j][scores[i].film] + 1 + listOfCandidates.length;
+  function permute(arr, memo) {
+    for (var i = 0; i < arr.length; i++) {
+      var cur = arr.splice(i, 1);
+      if (arr.length === 0) {
+        results.push(memo.concat(cur));
+      }
+      permute(arr.slice(), memo.concat(cur));
+      arr.splice(i, 0, cur[0]);
     }
+    return results;
   }
-  scores.sort(function(a, b) {return b.score - a.score;});
-  scores[0].rank = 1;
-  for (i = 1; i < listOfCandidates.length; i++) {
-    if (scores[i].score === scores[i - 1].score) {
-      scores[i].rank = scores[i - 1].rank;
-    }else {
-      scores[i].rank = i + 1;
-    }
-  }
-  return scores;
+  return permute(inputArr, []);
 }
 
 function kemenyYoung(listOfCandidates, votes) {
+  'use strict';
   var distances = getDistances(listOfCandidates, votes);
   var currentHighest = -1;
   var uniqueHighest = true;
@@ -210,80 +215,63 @@ function kemenyYoung(listOfCandidates, votes) {
   return result;
 }
 
-function permutator(inputArr) {
-  var results = [];
+// Self contained voting methods.
 
-  function permute(arr, memo) {
-    var cur;
-    var memo = memo || [];
-
-    for (var i = 0; i < arr.length; i++) {
-      cur = arr.splice(i, 1);
-      if (arr.length === 0) {
-        results.push(memo.concat(cur));
-      }
-      permute(arr.slice(), memo.concat(cur));
-      arr.splice(i, 0, cur[0]);
-    }
-
-    return results;
+function borda(listOfCandidates, votes, topScore) {
+  // Used in baldwin and nanson. Note that topScore is optional and to make scoring on baldwin and nanson nicer.
+  'use strict';
+  if (topScore === null || topScore === undefined) {
+    topScore = listOfCandidates.length + 1;
+  }
+  var scores = [];
+  for (var k = 0; k < listOfCandidates.length; k++) {
+    scores.push({film: listOfCandidates[k], score: 0, rank: k});
   }
 
-  return permute(inputArr);
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    for (var j = 0; j < votes.length; j++) {
+      scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore;
+    }
+  }
+  scores.sort(function(a, b) {return b.score - a.score;});
+  scores[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (scores[i].score === scores[i - 1].score) {
+      scores[i].rank = scores[i - 1].rank;
+    }else {
+      scores[i].rank = i + 1;
+    }
+  }
+  return scores;
 }
 
-function baldwin(listOfCandidates, votes) {
-  var currentCandidates = listOfCandidates.slice();
-  var currentVotes = JSON.parse(JSON.stringify(votes));
+function antiPlurality(listOfCandidates, votes) {
+  // Note that this will return negative scores so that the higher the score the better.
+  'use strict';
   var results = [];
-  while (currentCandidates.length > 0) {
-    var bordaResults = borda(currentCandidates, currentVotes);
-    if (bordaResults.length > 1 && bordaResults[bordaResults.length - 2].score === bordaResults[bordaResults.length - 1].score) {
-      throw 'Draw for bottom place';
+  for (var i = 0; i < listOfCandidates.length; i ++) {
+    var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
+    for (var j = 0; j < votes.length; j++) {
+      if (votes[j][listOfCandidates[i]] === listOfCandidates.length) {
+        result.score--;
+      }
     }
-    var toEliminate = bordaResults[bordaResults.length - 1].film;
-    removeCandidate(currentCandidates, currentVotes, toEliminate);
-    results.push(toEliminate);
+    results.push(result);
   }
-  results.reverse();
-  results = results.map(function(film, index) {return {'film': film, rank: index + 1};});
+  results.sort(function(a, b) {return b.score - a.score;});
+  results[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (results[i].score === results[i - 1].score) {
+      results[i].rank = results[i - 1].rank;
+    }else {
+      results[i].rank = i + 1;
+    }
+  }
   return results;
 }
 
-function removeCandidate(currentCandidates, currentVotes, candidateToRemove) {
-  currentCandidates.splice(currentCandidates.indexOf(candidateToRemove),1);
-  for (var i = 0; i < currentVotes.length; i++) {
-    var rankOfEliminate = currentVotes[i][candidateToRemove];
-    for (var j = 0; j < currentCandidates.length; j++) {
-      if (currentVotes[i][currentCandidates[j]] > rankOfEliminate) {
-        currentVotes[i][currentCandidates[j]]--;
-      }
-    }
-  }
-}
-
-function av(listOfCandidates, votes) {
-  var currentCandidates = listOfCandidates.slice();
-  var currentVotes = JSON.parse(JSON.stringify(votes));
-  var results = [];
-  while (currentCandidates.length > 0) {
-    var pluralityResults = plurality(currentCandidates, currentVotes);
-    if (pluralityResults[0].score > votes.length / 2) {
-      results = results.concat(pluralityResults.reverse());
-      return results.reverse();
-    }
-    var lowestScore = pluralityResults[pluralityResults.length - 1].score;
-    for (var i = pluralityResults.length - 1; i > 0; i--) {
-      if (pluralityResults[i].score === lowestScore) {
-        removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
-        results.push(pluralityResults[i]);
-      }
-    }
-  }
-  return results.reverse();
-}
-
 function plurality(listOfCandidates, votes) {
+  'use strict';
   var results = [];
   for (var i = 0; i < listOfCandidates.length; i ++) {
     var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
@@ -304,4 +292,112 @@ function plurality(listOfCandidates, votes) {
     }
   }
   return results;
+}
+
+// Runoff methods
+
+function removeCandidate(currentCandidates, currentVotes, candidateToRemove) {
+  'use strict';
+  currentCandidates.splice(currentCandidates.indexOf(candidateToRemove),1);
+  for (var i = 0; i < currentVotes.length; i++) {
+    var rankOfEliminate = currentVotes[i][candidateToRemove];
+    for (var j = 0; j < currentCandidates.length; j++) {
+      if (currentVotes[i][currentCandidates[j]] > rankOfEliminate) {
+        currentVotes[i][currentCandidates[j]]--;
+      }
+    }
+  }
+}
+
+function av(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      results = results.concat(pluralityResults.reverse());
+      return results.reverse();
+    }
+    var lowestScore = pluralityResults[pluralityResults.length - 1].score;
+    for (var i = pluralityResults.length - 1; i > 0; i--) {
+      if (pluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
+        results.push(pluralityResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
+function coombs(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var antiPluralityResults = antiPlurality(currentCandidates, currentVotes);
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      results = results.concat(pluralityResults.reverse());
+      return results.reverse();
+    }
+    var lowestScore = antiPluralityResults[antiPluralityResults.length - 1].score;
+    for (var i = antiPluralityResults.length - 1; i > 0; i--) {
+      if (antiPluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, antiPluralityResults[i].film);
+        results.push(antiPluralityResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
+function baldwin(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
+    var lowestScore = bordaResults[bordaResults.length - 1].score;
+    for (var i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  results.reverse();
+  return results;
+}
+
+function nanson(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
+    var average = 0;
+    for (var i = 0; i < bordaResults.length; i++) {
+      average += bordaResults[i].score / bordaResults.length;
+    }
+    for (i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score <= average) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
 }
