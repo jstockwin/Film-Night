@@ -27,14 +27,14 @@ if(!loginCheck($session)){
         echo "ERROR: User settings not found.";
       }
     } else if($wants == 'notification') {
-      switch(status($root)) {
-        case "rollCall":
+      switch(get_event($root)) {
+        case "Roll_Call_Start":
           echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!"}';
           break;
-        case "voting":
+        case "Voting_Start":
           echo '{"title": "Film Night", "body": "Voting is open."}';
           break;
-        case "results":
+        case "Results_Start":
           echo '{"title": "Film Night", "body": "The time is now. Results are available."}';
           break;
         default:
