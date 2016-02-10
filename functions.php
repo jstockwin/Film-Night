@@ -73,6 +73,7 @@ function get_event($root){
     return "Error";
 
   }
+  return "No event";
 }
 
 
