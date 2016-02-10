@@ -10,6 +10,14 @@ function getSubscription() {
     });
 }
 
+function printSubInfo(end, endpoint) {
+  if(endpoint == '') {
+    console.log(end, 'not subscribed');
+  } else {
+    console.log(end, 'subscribed at', endpoint);
+  }
+}
+
 // Register service worker and check the initial subscription state.
 // Set the UI (button) according to the status.
 if ('serviceWorker' in navigator) {
@@ -19,26 +27,21 @@ if ('serviceWorker' in navigator) {
       subscriptionButton.removeAttribute('disabled');
     });
   getSubscription().then(function(subscription) {
-    if (subscription) {
-      console.log('Already subscribed', subscription.endpoint);
-      
-      fetch('admin/infohandler.php?wants=endpoint', {credentials: 'same-origin'}).then(function(response) {
-        return response.text();
-      }).then(function(data) {
-        console.log('Server subscription at', data);
-        if(data == subscription.endpoint) {
-          setUnsubscribeButton();
-        } else if (data == '') {
-          setSubscribeButton()
-        } else {
-          setChangeSubscriptionButton();
-        }
-      }).catch(function() {
-        console.log('Couldn\'t contact server');
-      });
-    } else {
-      setSubscribeButton();
-    }
+    fetch('admin/infohandler.php?wants=endpoint', {credentials: 'same-origin'}).then(function(response) {
+      return response.text();
+    }).then(function(data) {
+      printSubInfo('Server', data);
+      if(subscription && data == subscription.endpoint) {
+        printSubInfo('Local', subscription.endpoint);
+        setUnsubscribeButton();
+      } else if (data == '') {
+        setSubscribeButton()
+      } else {
+        setChangeSubscriptionButton();
+      }
+    }).catch(function() {
+      console.log('Couldn\'t contact server');
+    });
   });
 }
 
