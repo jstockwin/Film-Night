@@ -14,12 +14,11 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-
 $sql = "SELECT * FROM timings";
 $result = $conn->query($sql);
 if($result->num_rows > 0){
   while($row = $result->fetch_assoc()){
-    if (strtotime($row["Roll_Call_Start"]) - 300 < time() && time() < strtotime($row["Roll_Call_Start"]) + 300){
+    if (get_event($root)=="Roll_Call_Start"){
       // within 5 minutes of roll call start. Reset attendence of all active users.
       echo "roll call";
       $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
@@ -42,7 +41,7 @@ if($result->num_rows > 0){
       </body>
       ';
       mail($to, "Film Night Attendance", $message, "Content-type:text/html");
-      
+
       $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
       $result4 = $conn->query($sql4);
       $endpoints = array ();
@@ -56,10 +55,11 @@ if($result->num_rows > 0){
           $webPush->sendNotification($endpoint);
       }
       $webPush->flush();
-
-    }else if(strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
+    }else if (get_event($root)=="Roll_Call_End"){
       // Select films:
       header("location: select-films.php");
+    }else if(get_event($root)=="Voting_Start"){
+
 
     // Email users:
     $sql2 = "SELECT * FROM users WHERE Active=1";
@@ -79,14 +79,14 @@ if($result->num_rows > 0){
     </body>
     ';
     mail($to,"Film Night Voting", $message, "Content-type:text/html");
-    
+
     $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
     $result4 = $conn->query($sql4);
     $endpoints = array ();
     while($row4 = $result4->fetch_assoc()){
       array_push($endpoints, $row4['Endpoint']);
     }
-    
+
     $webPush = new WebPush(array('GCM'=>$push_api));
     // send multiple notifications
     foreach ($endpoints as $endpoint) {
@@ -95,7 +95,7 @@ if($result->num_rows > 0){
     }
     $webPush->flush();
 
-  }else if(strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) +  300){
+  }else if(get_event($root)=="Results_Start"){
     // Within 5 minutes of results starting. Notify users.
     echo "results";
     $sql3 = "DROP TABLE votes";
