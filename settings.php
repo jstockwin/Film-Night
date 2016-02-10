@@ -1,6 +1,7 @@
-<head><link rel="manifest" href="manifest.json"></head>
+<?php include 'setup.php';?>
+<?php include 'head.php'; head('Film Night Settings', '<link rel="stylesheet" type="text/css" href="extrastyles.css">');?>
 <body>
-<?php include 'top-nav.php'; include 'StyleSheet.html'; ?>
+<?php include 'top-nav.php' ?>
 <?php if($permission != FALSE): ?>
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
 <div id="container">
@@ -55,3 +56,4 @@ Which email address would you like to receive these email to?<br>
 </div>
 <?php endif; ?>
 </body>
+</html>

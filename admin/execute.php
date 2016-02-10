@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require '../header.php';
+require '../setup.php';
 require $root.'../../database.php';
 require $root.'vendor/autoload.php';
 use Minishlink\WebPush\WebPush;

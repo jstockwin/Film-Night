@@ -1,5 +1,5 @@
 <?php
-require '../header.php';
+require '../setup.php';
 require $root.'../../database.php';
 
 $conn = new mysqli($host, $username, $password, "films");

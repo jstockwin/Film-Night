@@ -4,7 +4,7 @@ $numFilms = 5;
 
 
 ob_start();
-require '../header.php';
+require '../setup.php';
 require $root.'../../database.php';
 ob_end_clean(); // supresses output.
 

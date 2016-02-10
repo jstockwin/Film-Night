@@ -1,4 +1,7 @@
-<?php include 'header.php'; if(!loginCheck($session)) : ?>
+<?php include 'setup.php';?>
+<?php include 'head.php'; head('Film Night Registration');?>
+<body>
+<?php if(!loginCheck($session)) : ?>
 
 <?php if(isset($_SESSION['Email'])) : ?>
 Please fill in and submit the form below. <br>
@@ -31,3 +34,5 @@ Please authenticate with Google. It does not matter which account you use, but y
 <p> You have successfully registered, thank you.</p>
 
 <?php endif; ?>
+</body>
+</html>

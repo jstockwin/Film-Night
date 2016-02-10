@@ -1,8 +1,10 @@
+<?php include 'setup.php';?>
+<?php require $root.'../../database.php'; ?>
+<?php include 'head.php'; head('Film Night Admin Console');?>
+<body>
+<?php include 'top-nav.php';?>
+<div id="container">;
 <?php
-include 'top-nav.php';
-require_once $root.'../../database.php';
-  echo '<div id="container">';
-
 if (loginCheck($session, TRUE)=="admin"){
 
   echo "<script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>";
@@ -103,3 +105,5 @@ if (loginCheck($session, TRUE)=="admin"){
   }
       echo "</div>";
   ?>
+</body>
+</html>

@@ -1,5 +1,8 @@
-  <?php include 'top-nav.php'; ?>
-  <?php if($permission != FALSE): ?>
+<?php include 'setup.php';?>
+<?php include 'head.php'; head('Film Night');?>
+<body>
+<?php include 'top-nav.php'; ?>
+<?php if($permission != FALSE): ?>
   <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['Email']; ?>)</p>
     <a href="#" onclick="signOut();">Sign out</a><br>
 
@@ -33,6 +36,6 @@
   }
   $conn->close();
   ?>
-
-
 <?php endif; ?>
+</body>
+</html>

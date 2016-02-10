@@ -1,9 +1,7 @@
 <?php if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
-if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error.php");} require_once 'header.php'; ?>
-<link rel="stylesheet" type="text/css" href="styles.css">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error.php");}?>
 <div id="header">
   <div id="tabs-wrapper">
   <div id="page-tabs">

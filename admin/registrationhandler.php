@@ -1,6 +1,6 @@
 <?php
 ob_start();
-include '../header.php';
+include '../setup.php';
 require $root.'../../database.php';
 ob_end_clean(); // supresses output.
 
