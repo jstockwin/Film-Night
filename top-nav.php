@@ -111,7 +111,6 @@ function setActive(target){
 function slideIndicator(event){
   event.preventDefault();
   event.stopPropagation();
-  expandHeader();
   var indicator  = document.getElementById('indicator');
   var targetBBox = event.target.getBoundingClientRect();
   var currentBBox = indicator.getBoundingClientRect();
@@ -123,8 +122,11 @@ function slideIndicator(event){
   }
   indicator.style.left = targetBBox.left + "px";
   indicator.style.right = document.getElementById('header').getBoundingClientRect().width - targetBBox.right + "px";
-  setTimeout(openClapper, 2000);
-  setTimeout(changePage,2500,event.target.href);
+  if(event.target.dataset['active'] != "true"){
+    expandHeader();
+    setTimeout(openClapper, 2000);
+    setTimeout(changePage, 2500, event.target.href);
+  }
   return false;
 }
 
