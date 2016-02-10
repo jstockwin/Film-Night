@@ -22,7 +22,7 @@ if ('serviceWorker' in navigator) {
     if (subscription) {
       console.log('Already subscribed', subscription.endpoint);
       
-      fetch('admin/infohandler.php?wants=endpoint').then(function(response) {
+      fetch('admin/infohandler.php?wants=endpoint', {credentials: 'same-origin'}).then(function(response) {
         return response.text();
       }).then(function(data) {
         console.log('Server subscription at', data);

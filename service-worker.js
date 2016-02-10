@@ -15,7 +15,7 @@ self.addEventListener('activate', function(event) {
 // Register event listener for the 'push' event.
 self.addEventListener('push', function(event) {
   event.waitUntil(
-    fetch('admin/infohandler.php?wants=notification').then(function(response) {
+    fetch('admin/infohandler.php?wants=notification', {credentials: 'same-origin'}).then(function(response) {
         return response.json();
       }).then(function(data) {
         console.log('Current state: ', JSON.stringify(data, null, 4));
