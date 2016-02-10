@@ -29,16 +29,16 @@ if(!loginCheck($session)){
     } else if($wants == 'notification') {
       switch(get_event($root)) {
         case "Roll_Call_Start":
-          echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!"}';
+          echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!", "url": "settings.php"}';
           break;
         case "Voting_Start":
-          echo '{"title": "Film Night", "body": "Voting is open."}';
+          echo '{"title": "Film Night", "body": "Voting is open.", "url": "voting.php"}';
           break;
         case "Results_Start":
-          echo '{"title": "Film Night", "body": "The time is now. Results are available."}';
+          echo '{"title": "Film Night", "body": "The time is now. Results are available.", "url": "results.php"}';
           break;
         default:
-          echo '{"title": "Film Night", "body": "You have a notification but nothing is happening."}';
+          echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
           break;
       }
     }

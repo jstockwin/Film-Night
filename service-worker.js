@@ -1,6 +1,7 @@
 // Immediately take control of the page, see the 'Immediate Claim' recipe
 // for a detailed explanation of the implementation of the following two
 // event listeners.
+var url = 'index.php';
 
 self.addEventListener('install', function(event) {
   console.log('Installed');
@@ -19,8 +20,10 @@ self.addEventListener('push', function(event) {
         return response.json();
       }).then(function(data) {
         console.log('Current state: ', JSON.stringify(data, null, 4));
+        url = data['url'];
         return self.registration.showNotification(data['title'], {
           body: data['body'],
+          icon: 'assets/icons/notification.png'
         });
       }).catch(function( ) {
         console.log('Couldn\'t contact server');
@@ -39,7 +42,7 @@ self.addEventListener('notificationclick', function(event) {
       }
 
       // Otherwise, open a new page.
-      return self.clients.openWindow('index.php');
+      return self.clients.openWindow(url);
     })
   );
 });
