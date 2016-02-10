@@ -31,7 +31,7 @@ self.addEventListener('notificationclick', function(event) {
       }
 
       // Otherwise, open a new page.
-      return self.clients.openWindow('filmnight/index.php');
+      return self.clients.openWindow('index.php');
     })
   );
 });
