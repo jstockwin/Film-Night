@@ -62,7 +62,8 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
 </div>
 <script>
 
-window.addEventListener("DOMContentLoaded", setActive(findActiveTab()));
+window.addEventListener("DOMContentLoaded", function(){setActive(findActiveTab())});
+window.addEventListener("load", function(){setActive(findActiveTab())});
 window.addEventListener("resize", function(){setActive(findActiveTab())}, true);;
 
 function closeClapper(){
@@ -129,6 +130,9 @@ function slideIndicator(event){
 }
 
 function changePage(href){
+  var indicator  = document.getElementById('indicator');
+  var left = indicator.style.left;
+  var right = indicator.style.right;
   var xhr = new XMLHttpRequest();
   xhr.open('GET',href);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -137,6 +141,10 @@ function changePage(href){
     document.write(xhr.responseText);
     document.close();
     window.history.pushState({html: xhr.responseText}, "", href);
+    indicator = document.getElementById('indicator');
+    indicator.style.left = left;
+    indicator.style.right = right;
+
   }
   xhr.send();
 }
