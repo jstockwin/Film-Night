@@ -14,10 +14,18 @@ self.addEventListener('activate', function(event) {
 
 // Register event listener for the 'push' event.
 self.addEventListener('push', function(event) {
-  console.log(JSON.stringify(event, null, 4));
-  return self.registration.showNotification('Film Night Notification', {
-    body: 'New developments at the film night site!',
-  });
+  event.waitUntil(
+    fetch('admin/infohandler.php?wants=notification').then(function(response) {
+        return response.json();
+      }).then(function(data) {
+        console.log('Current state: ', JSON.stringify(data, null, 4));
+        return self.registration.showNotification(data['title'], {
+          body: data['body'],
+        });
+      }).catch(function( ) {
+        console.log('Couldn\'t contact server');
+      })
+  );
 });
 
 // Register event listener for the 'notificationclick' event.

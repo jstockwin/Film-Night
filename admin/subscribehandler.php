@@ -11,7 +11,7 @@ if(!loginCheck($session)){
 }else{
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
-    $_SESSION['ERROR']="nominationhandler.php failed connect to sql database: ".$conn->connect_error;
+    $_SESSION['ERROR']="subscribehandler.php failed connect to sql database: ".$conn->connect_error;
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_POST['endpoint'])){

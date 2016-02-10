@@ -18,15 +18,28 @@ if ('serviceWorker' in navigator) {
       console.log('service worker registered');
       subscriptionButton.removeAttribute('disabled');
     });
-  getSubscription()
-    .then(function(subscription) {
-      if (subscription) {
-        console.log('Already subscribed', subscription.endpoint);
-        setUnsubscribeButton();
-      } else {
-        setSubscribeButton();
-      }
-    });
+  getSubscription().then(function(subscription) {
+    if (subscription) {
+      console.log('Already subscribed', subscription.endpoint);
+      
+      fetch('admin/infohandler.php?wants=endpoint').then(function(response) {
+        return response.text();
+      }).then(function(data) {
+        console.log('Server subscription at', data);
+        if(data == subscription.endpoint) {
+          setUnsubscribeButton();
+        } else if (data == '') {
+          setSubscribeButton()
+        } else {
+          setChangeSubscriptionButton();
+        }
+      }).catch(function() {
+        console.log('Couldn\'t contact server');
+      });
+    } else {
+      setSubscribeButton();
+    }
+  });
 }
 
 // Get the `registration` from service worker and create a new
@@ -43,9 +56,8 @@ function subscribe() {
       credentials: 'same-origin',
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
-        'Accept': 'text/html,application/xhtml+xml,application/xml'
       },
-      body: 'endpoint='+ subscription.endpoint
+      body: 'endpoint=' + subscription.endpoint
     });
   }).then(setUnsubscribeButton);
 }
@@ -59,14 +71,13 @@ function unsubscribe() {
     return subscription.unsubscribe()
       .then(function() {
         console.log('Unsubscribed', subscription.endpoint);
-        return fetch('unregister', {
+        return fetch('admin/unsubscribehandler.php', {
           method: 'post',
+          credentials: 'same-origin',
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify({
-            endpoint: subscription.endpoint
-          })
+          body: 'endpoint=' + subscription.endpoint
         });
       });
   }).then(setSubscribeButton);
@@ -75,10 +86,15 @@ function unsubscribe() {
 // Change the subscription button's text and action.
 function setSubscribeButton() {
   subscriptionButton.onclick = subscribe;
-  subscriptionButton.textContent = 'Subscribe!';
+  subscriptionButton.textContent = 'Click to Subscribe';
 }
 
 function setUnsubscribeButton() {
   subscriptionButton.onclick = unsubscribe;
-  subscriptionButton.textContent = 'Unsubscribe!';
+  subscriptionButton.textContent = 'Click to Unsubscribe';
+}
+
+function setChangeSubscriptionButton() {
+  subscriptionButton.onclick = subscribe;
+  subscriptionButton.textContent = 'Click to Move Subscription to this Browser';
 }
