@@ -7,7 +7,7 @@
   <div id="container">
     <div id="inputs">
       <div class="input-wrapper"  style="flex-grow: 1;">
-        <input type="text" class="text-input" id="film-name" onfocus="textInputFocus(this)" onblur="textInputBlur(this)">
+        <input type="text" class="text-input" id="film-name" onfocus="textInputFocus(this)" onblur="textInputBlur(this)" onkeydown="keyDown(event)">
         <label for="film-name">Film Name</label>
       </div>
       <div class="input-wrapper">
@@ -49,6 +49,12 @@
   function textInputBlur(input){
     if(input.value.length === 0){
       input.nextElementSibling.classList.remove('label-active');
+    }
+  }
+
+  function keyDown(event){
+    if(event.keyIdentifier === "Enter"){
+      search();
     }
   }
 
