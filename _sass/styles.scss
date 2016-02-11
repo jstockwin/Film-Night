@@ -10,6 +10,7 @@ $primary-text-color:   #212121;
 $secondary-text-color: #727272;
 $divider-color:        #B6B6B6;
 $error-color: #F47738;
+$success-color: #00823B;
 $null-color: #EBEBEB;
 $equal-color: #FFE8A2;
 $worse-color: #FFDDDD;
@@ -669,6 +670,6 @@ svg {
   pointer-events: none;
   position: absolute;
   top: 0;
-  transition: opacity 0.5s;
+  transition: opacity 0.5s, background-color 0.5s;
   width: 100%;
 }

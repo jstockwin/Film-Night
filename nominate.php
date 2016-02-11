@@ -27,7 +27,7 @@
           <div style="position:relative; margin: 5% 0;">
             <button type="button" id="submit-films" onclick="submitFilms()">Submit</button>
             <div id="button-disabler">
-              <button type="button" class="disabled" id="Submit">Submit</button>
+              <button type="button" class="disabled">Submit</button>
             </div>
           </div>
         </div>
@@ -84,6 +84,7 @@
         updateFilms(results.Search);
       }else{
         document.getElementById('error-container').style.opacity = 1;
+        document.getElementById('error-container').style.backgroundColor = "#F47738";
         document.getElementById('error-message').innerHTML = results.Error;
         setTimeout(function(){document.getElementById('error-container').style.opacity = 0;}, 2000);
       }
@@ -186,17 +187,22 @@
     console.log(selectedFilms);
     console.log(JSON.stringify(selectedFilms));
     var button = document.getElementById("Submit");
-    button.innerHTML = "Submitting";
+    document.getElementById('error-container').style.opacity = 1;
+    document.getElementById('error-container').style.backgroundColor = "#FFBF47";
+    document.getElementById('error-message').innerHTML = 'Submitting';
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'admin/nominationhandler.php');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       console.log(xhr.responseText);
-      button.innerHTML = "Submitted";
-      button.style.paddingLeft="5px";
-      button.style.paddingRight="5px";
       if(xhr.responseText.indexOf("Error")>-1){
-        location.reload(); //Reload to cause php to notice $_SESSION['ERROR'] is set.
+        document.getElementById('error-container').style.backgroundColor = "#F47738";
+        document.getElementById('error-message').innerHTML = xhr.responseText;
+        setTimeout(function(){document.getElementById('error-container').style.opacity = 0;}, 2000);
+      }else {
+        document.getElementById('error-container').style.backgroundColor = "#00823B"
+        document.getElementById('error-message').innerHTML = 'Submitted Successfully';
+        setTimeout(function(){document.getElementById('error-container').style.opacity = 0; document.getElementById('error-container').style.backgroundColor = "#F47738";}, 2000);
       }
 
     };
