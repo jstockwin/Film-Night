@@ -23,7 +23,7 @@ self.addEventListener('push', function(event) {
         url = data['url'];
         return self.registration.showNotification(data['title'], {
           body: data['body'],
-          icon: 'assets/icons/notification.png'
+          icon: 'assets/icons/favicon.png'
         });
       }).catch(function( ) {
         console.log('Couldn\'t contact server');
