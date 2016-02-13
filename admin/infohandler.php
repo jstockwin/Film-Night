@@ -25,6 +25,7 @@ if(!loginCheck($session)){
         echo $endpoint;
       }else{
         echo "ERROR: User settings not found.";
+	$_SESSION['ERROR']="subscribehandler.php couldn't any trace of you";
       }
     } else if($wants == 'notification') {
       switch(get_event($root)) {
