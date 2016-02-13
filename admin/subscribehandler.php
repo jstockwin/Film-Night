@@ -15,9 +15,9 @@ if(!loginCheck($session)){
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_POST['endpoint'])){
-  
+
     $endpoint=$_POST['endpoint'];
-    $sql = 'UPDATE users SET Endpoint="'.$endpoint.'" WHERE ID="'.$_SESSION['Email'].'";';
+    $sql = 'UPDATE users SET Endpoint="'.$endpoint.'" WHERE ID="'.$_SESSION['ID'].'";';
     $result = $conn->query($sql);
   }else{
     echo "Error: Nothing recieved";

@@ -3,13 +3,13 @@
 <body>
 <?php if(!loginCheck($session)) : ?>
 
-<?php if(isset($_SESSION['Email'])) : ?>
+<?php if(isset($_SESSION['ID'])) : ?>
 Please fill in and submit the form below. <br>
 Your Google email has been provided by Google and cannot be changed.<br>
 Please enter an email in the "Email Address" field. This will be the address we
 send emails to.
 <form action="admin/registrationhandler.php" method="post">
-  Google email: <?php echo $_SESSION['Email'] ?><br>
+  Google email: <?php echo $_SESSION['ID'] ?><br>
   Full Name: <input type="text" name="name"><br>
   Email Address: <input type="text" name="email"><br>
   Please tick the events for which you would like to recieve emails from us:<br>

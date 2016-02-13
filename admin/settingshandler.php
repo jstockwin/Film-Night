@@ -36,11 +36,11 @@ if($_POST['rollCall']=="Yes"){
 if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
-$sql = 'UPDATE users SET Email="'.$_POST['email'].'", Attending='.$rollCall.', Reminder_Attending='.$attending.', Reminder_Voting='.$voting.', Reminder_Results='.$results.' WHERE ID="'.$_SESSION['Email'].'";';
+$sql = 'UPDATE users SET Email="'.$_POST['email'].'", Attending='.$rollCall.', Reminder_Attending='.$attending.', Reminder_Voting='.$voting.', Reminder_Results='.$results.' WHERE ID="'.$_SESSION['ID'].'";';
 $result = $conn->query($sql);
 
 if($result == 1){
-  unset($_SESSION['Email']); //Unset email to force a proper login again.
+  unset($_SESSION['ID']); //Unset email to force a proper login again.
   header('location: ../settings.php');
 }else{
   echo "Something went wrong. Shout at Jake<br>";

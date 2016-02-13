@@ -28,7 +28,7 @@
       while($row = $result->fetch_assoc()){
         if($row["Active"]==1){
           // Active user returned
-          $_SESSION["Email"] = $row["ID"];
+          $_SESSION["ID"] = $row["ID"];
           $_SESSION["Permission"] = $row["Permission"];
           $_SESSION["Name"] = $row["Name"];
           $_SESSION["Token"] = $token;
@@ -40,7 +40,7 @@
     }else{
 
       // User authenticated with Google, but is not in our list of users.
-      $_SESSION["Email"] = $email;
+      $_SESSION["ID"] = $email;
 
     }
     $conn->close();

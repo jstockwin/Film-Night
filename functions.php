@@ -4,14 +4,14 @@ function loginCheck($session = "live", $session_started = FALSE) {
     session_start();
   }
   if($session == "dev"){
-    $_SESSION['Email'] = "debug@example.com";
+    $_SESSION['ID'] = "debug@example.com";
     $_SESSION['Permission'] = "admin";
     $_SESSION['Name'] = "debug";
     $_SESSION['Token'] = "ABC123";
     $_SESSION['Image'] = "assets/icons/ic_error.svg";
     return "admin";
   }elseif($session == "dev2"){
-    $_SESSION['Email'] = "debug@example2.com";
+    $_SESSION['ID'] = "debug@example2.com";
     return "member";
   }else{
     if (isset($_SESSION['Permission'])){

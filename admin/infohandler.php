@@ -14,10 +14,10 @@ if(!loginCheck($session)){
     die("Connection failed: " . $conn->connect_error);
   }
   if(isset($_GET['wants'])){
-  
+
     $wants=$_GET['wants'];
     if($wants == 'endpoint') {
-      $sql = 'SELECT Endpoint FROM users WHERE ID="'.$_SESSION['Email'].'";';
+      $sql = 'SELECT Endpoint FROM users WHERE ID="'.$_SESSION['ID'].'";';
       $result = $conn->query($sql);
       if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();

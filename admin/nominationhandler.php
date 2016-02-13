@@ -24,9 +24,9 @@ if(!loginCheck($session)){
       if ($result->num_rows > 0){
         // Check if user has already proposed the film.
         while ($row=$result->fetch_assoc()) {
-          if(strpos($row['Proposed_By'],$_SESSION['Email'])!==FALSE){
+          if(strpos($row['Proposed_By'],$_SESSION['ID'])!==FALSE){
             $proposed=TRUE;
-            if(strpos($row['Veto_For'],$_SESSION['Email'])!==FALSE){
+            if(strpos($row['Veto_For'],$_SESSION['ID'])!==FALSE){
               $veto=TRUE;
               // We might need the current veto string:
               $veto_string = $row['Veto_For'];
@@ -38,7 +38,7 @@ if(!loginCheck($session)){
         echo "User has already added film ".$film->{'Title'}."\n";
         if($veto && $film->{'Veto'}=="false"){
           // User no longer wants to veto this film
-          $sql = 'UPDATE nominations SET Veto_For = "'.str_replace($_SESSION['Email'].",","",$veto_string).'" WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
+          $sql = 'UPDATE nominations SET Veto_For = "'.str_replace($_SESSION['ID'].",","",$veto_string).'" WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
           $result = $conn->query($sql);
           if($conn->affected_rows==1){
             echo "Removed veto from film: ".$film->{'Title'}."\n";
@@ -48,7 +48,7 @@ if(!loginCheck($session)){
           }
         }else if(!$veto && $film->{'Veto'}=="true"){
           // User wants to add a veto to this film.
-          $sql = 'UPDATE nominations SET Veto_For = concat(ifnull(Veto_For,""), "'.$_SESSION['Email'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
+          $sql = 'UPDATE nominations SET Veto_For = concat(ifnull(Veto_For,""), "'.$_SESSION['ID'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
           $result = $conn->query($sql);
           if($conn->affected_rows==1){
             echo "Added veto to film: ".$film->{'Title'}."\n";
@@ -61,7 +61,7 @@ if(!loginCheck($session)){
         }
       }else{
         if($film->{'Veto'}=="true"){
-          $sql = 'UPDATE nominations SET Frequency = Frequency + 1, Veto_For = concat(ifnull(Veto_For,""), "'.$_SESSION['Email'].',"), Proposed_By = concat(ifnull(Proposed_By,""), "'.$_SESSION['Email'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
+          $sql = 'UPDATE nominations SET Frequency = Frequency + 1, Veto_For = concat(ifnull(Veto_For,""), "'.$_SESSION['ID'].',"), Proposed_By = concat(ifnull(Proposed_By,""), "'.$_SESSION['ID'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
           $result = $conn->query($sql);
           if($conn->affected_rows==0){
             // film is not already in the list.
@@ -80,7 +80,7 @@ if(!loginCheck($session)){
             $_SESSION['ERROR'] = "Error: Something went wrong updating film: ".$film->{'Title'}."<br> SQL Call:<br>".$sql."<br>result<br>".$result;
           }
         }else{
-          $sql = 'UPDATE nominations SET Frequency = Frequency + 1, Proposed_By = concat(ifnull(Proposed_By,""), "'.$_SESSION['Email'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
+          $sql = 'UPDATE nominations SET Frequency = Frequency + 1, Proposed_By = concat(ifnull(Proposed_By,""), "'.$_SESSION['ID'].',") WHERE Film_Name="'.$film->{'Title'}.'" AND Year='.$film->{'Year'}.';';
           $result = $conn->query($sql);
           if($conn->affected_rows==0){
             // film is not already in the list.

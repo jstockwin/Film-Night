@@ -3,7 +3,7 @@
 <body>
 <?php include 'top-nav.php'; ?>
 <?php if($permission != FALSE): ?>
-  <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['Email']; ?>)</p>
+  <p>You are currently signed in as <?php echo $_SESSION["Name"]; ?> (<?php echo $_SESSION['ID']; ?>)</p>
     <a href="#" onclick="signOut();">Sign out</a><br>
 
   <?php

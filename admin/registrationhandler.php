@@ -27,11 +27,11 @@ if(isset($_POST['voting'])){
 if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
-$sql = 'INSERT INTO users VALUES ("'.$_SESSION['Email'].'", "'.$_POST['name'].'","'.$_POST['email'].'","member",1,1,'.$attending.','.$voting.','.$results.',NULL);';
+$sql = 'INSERT INTO users VALUES ("'.$_SESSION['ID'].'", "'.$_POST['name'].'","'.$_POST['email'].'","member",1,1,'.$attending.','.$voting.','.$results.',NULL);';
 $result = $conn->query($sql);
 
 if($result == 1){
-  unset($_SESSION['Email']); //Unset email to force a proper login again.
+  unset($_SESSION['ID']); //Unset email to force a proper login again.
   header('location: ../registration.php');
 }else{
   echo "Something went wrong. Shout at Jake<br>";

@@ -45,7 +45,7 @@
       echo "var films = []";
     }
 
-    $sql = 'SELECT * FROM incomingvotes WHERE ID="'.$_SESSION['Email'].'";';
+    $sql = 'SELECT * FROM incomingvotes WHERE ID="'.$_SESSION['ID'].'";';
     $result = $conn->query($sql);
     if ($result->num_rows > 0){
       // User has voted previously
