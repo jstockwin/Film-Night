@@ -1,6 +1,3 @@
-<link rel="icon" href="assets/icons/favicon.svg" sizes="any" type="image/svg+xml">
-<meta name="theme-color" content="#607D8B">
-
 <?php if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
