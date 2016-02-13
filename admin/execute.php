@@ -37,6 +37,8 @@ if($result->num_rows > 0){
       <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
       <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetoed will not be selected this week.</p>
       <br>
+      <p><b>NOTIFICATIONS ARE NOW WORKING!</b> click "subscribe" on the link above to receive film night notifications through your browser</p>
+      <br>
       <p>Best wishes,<br>The HiveBot&trade;</p>
       </body>
       ';
