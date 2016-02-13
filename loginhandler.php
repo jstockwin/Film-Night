@@ -28,7 +28,7 @@
       while($row = $result->fetch_assoc()){
         if($row["Active"]==1){
           // Active user returned
-          $_SESSION["Email"] = $row["Email"];
+          $_SESSION["Email"] = $row["ID"];
           $_SESSION["Permission"] = $row["Permission"];
           $_SESSION["Name"] = $row["Name"];
           $_SESSION["Token"] = $token;
