@@ -70,6 +70,10 @@ html, body {
   width: 100%;
 }
 
+#background {
+  margin-top: $header-height;
+}
+
 #page-tabs {
   align-items: center;
   display: flex;
