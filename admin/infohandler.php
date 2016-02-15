@@ -17,15 +17,16 @@ if(!loginCheck($session)){
 
     $wants=$_GET['wants'];
     if($wants == 'endpoint') {
-      $sql = 'SELECT Endpoint FROM users WHERE ID="'.$_SESSION['ID'].'";';
+      $sql = 'SELECT Endpoint FROM endpoints WHERE ID="'.$_SESSION['ID'].'";';
       $result = $conn->query($sql);
-      if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        $endpoint = $row['Endpoint'];
-        echo $endpoint;
+      if ($result->num_rows > 0) {
+        $endpoints = "";
+        while($row = $result->fetch_assoc()){
+        $endpoints = $endpoints.$row['Endpoint'].",";
+      }
+      echo $endpoints;
       }else{
-        echo "ERROR: User settings not found.";
-	$_SESSION['ERROR']="subscribehandler.php couldn't any trace of you";
+        echo "No endpoints set";
       }
     } else if($wants == 'notification') {
       switch(get_event($root)) {

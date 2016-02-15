@@ -1,5 +1,6 @@
 // [Working example](/serviceworker-cookbook/push-subscription-management/).
 var subscriptionButton = document.getElementById('#registerWorker');
+var subscriptionName = document.getElementById('#registerName');
 
 // As subscription object is needed in few places let's create a method which
 // returns a promise.
@@ -31,13 +32,16 @@ if ('serviceWorker' in navigator) {
       return response.text();
     }).then(function(data) {
       printSubInfo('Server', data);
-      if(subscription && data == subscription.endpoint) {
-        printSubInfo('Local', subscription.endpoint);
-        setUnsubscribeButton();
-      } else if (data == '') {
-        setSubscribeButton()
-      } else {
-        setChangeSubscriptionButton();
+      console.log("Data: "+data);
+      setSubscribeButton()
+      var strings = data.split(",");
+      for(var i= 0; i < strings.length; i++){
+        console.log(strings[i]);
+        if(strings[i] == subscription.endpoint) {
+          console.log("Unsubscribed");
+          printSubInfo('Local', subscription.endpoint);
+          setUnsubscribeButton();
+        }
       }
     }).catch(function() {
       console.log('Couldn\'t contact server');
@@ -60,44 +64,58 @@ function subscribe() {
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
       },
-      body: 'endpoint=' + subscription.endpoint
+      body: 'endpoint=' + subscription.endpoint + '& name=' + subscriptionName.value
     });
-  }).then(setUnsubscribeButton);
+  }).then(function(response) {
+        return response.text();
+      }).then(function(data) {
+        console.log(data);
+        if(data.indexOf("Error")>-1){
+          location.reload();
+        }
+      }).then(function(){setUnsubscribeButton; location.reload();});
+
 }
 
 // Get existing subscription from service worker, unsubscribe
 // (`subscription.unsubscribe()`) and unregister it in the server with
 // a POST request to stop sending push messages to
 // unexisting endpoint.
-function unsubscribe() {
-  getSubscription().then(function(subscription) {
-    return subscription.unsubscribe()
-      .then(function() {
-        console.log('Unsubscribed', subscription.endpoint);
-        return fetch('admin/unsubscribehandler.php', {
-          method: 'post',
-          credentials: 'same-origin',
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-          },
-          body: 'endpoint=' + subscription.endpoint
-        });
-      });
-  }).then(setSubscribeButton);
+
+// Changed by Jake, this now only removes the details from our database
+// It removes the entry corresponding to the given primary key, but only if
+// the ID of that entry is the same as the session ID.
+// No longer unsubscribe from google.
+function unsubscribe(key) {
+
+    console.log('Unsubscribed', key);
+    var name = 'registerDelete' + key;
+    document.getElementById(name).style.display = "none";
+    return fetch('admin/unsubscribehandler.php', {
+      method: 'post',
+      credentials: 'same-origin',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded'
+      },
+      body: 'key=' + key
+    });
+
 }
 
 // Change the subscription button's text and action.
 function setSubscribeButton() {
   subscriptionButton.onclick = subscribe;
   subscriptionButton.textContent = 'Click to Subscribe';
+  subscriptionButton.removeAttribute('disabled');
+  subscriptionButton.style.display = "inline-block";
+  subscriptionName.style.display = "inline-block";
 }
 
 function setUnsubscribeButton() {
-  subscriptionButton.onclick = unsubscribe;
-  subscriptionButton.textContent = 'Click to Unsubscribe';
-}
-
-function setChangeSubscriptionButton() {
-  subscriptionButton.onclick = subscribe;
-  subscriptionButton.textContent = 'Click to Move Subscription to this Browser';
+  // Changed so that this now removes the button entirely.
+  subscriptionButton.onclick = "";
+  subscriptionButton.textContent = 'Button disabled';
+  subscriptionButton.disabled = true;
+  subscriptionButton.style.display = "none";
+  subscriptionName.style.display = "none";
 }

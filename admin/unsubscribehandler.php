@@ -14,10 +14,10 @@ if(!loginCheck($session)){
     $_SESSION['ERROR']="unsubscribehandler.php failed connect to sql database: ".$conn->connect_error;
     die("Connection failed: " . $conn->connect_error);
   }
-  if(isset($_POST['endpoint'])){
+  if(isset($_POST['key'])){
 
-    $endpoint=$_POST['endpoint'];
-    $sql = 'UPDATE users SET Endpoint=NULL WHERE ID="'.$_SESSION['ID'].'" AND Endpoint="'.$endpoint.'";';
+    $key=$_POST['key'];
+    $sql = 'DELETE FROM endpoints WHERE ID="'.$_SESSION['ID'].'" AND Identifier="'.$key.'";';
     $result = $conn->query($sql);
   }else{
     echo "Error: Nothing recieved";
