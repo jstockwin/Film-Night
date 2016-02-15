@@ -48,24 +48,24 @@ function status($root){
   return FALSE;
 }
 
-function get_event($root){
+function get_event($root, $advance = 0, $tol = 300){
   include $root.'../../database.php';
   $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT * FROM timings";
   $result = $conn->query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
-      if (strtotime($row["Roll_Call_Start"]) - 300 < time() && time() < strtotime($row["Roll_Call_Start"]) + 300){
+      if (strtotime($row["Roll_Call_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Roll_Call_Start"]) + $tol){
         return "Roll_Call_Start";
-      }else if (strtotime($row["Roll_Call_End"]) - 300 < time() && time() < strtotime($row["Roll_Call_End"]) + 300){
+      }else if (strtotime($row["Roll_Call_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Roll_Call_End"]) + $tol){
         return "Roll_Call_End";
-      }else if (strtotime($row["Voting_Start"]) - 300 < time() && time() < strtotime($row["Voting_Start"]) + 300){
+      }else if (strtotime($row["Voting_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_Start"]) + $tol){
         return "Voting_Start";
-      }else if (strtotime($row["Voting_End"]) - 300 < time() && time() < strtotime($row["Voting_End"]) + 300){
+      }else if (strtotime($row["Voting_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_End"]) + $tol){
         return "Voting_End";
-      }else if (strtotime($row["Results_Start"]) - 300 < time() && time() < strtotime($row["Results_Start"]) + 300){
+      }else if (strtotime($row["Results_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_Start"]) + $tol){
         return "Results_Start";
-      }else if (strtotime($row["Results_End"]) - 300 < time() && time() < strtotime($row["Results_End"]) + 300){
+      }else if (strtotime($row["Results_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_End"]) + $tol){
         return "Results_End";
       }
     }
