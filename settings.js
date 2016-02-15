@@ -34,14 +34,22 @@ if ('serviceWorker' in navigator) {
       printSubInfo('Server', data);
       console.log("Data: "+data);
       setSubscribeButton()
+      console.log(subscription.endpoint);
       var strings = data.split(",");
+      var inList = false;
       for(var i= 0; i < strings.length; i++){
         console.log(strings[i]);
         if(strings[i] == subscription.endpoint) {
-          console.log("Unsubscribed");
+          // This endpoint is already in our list. Remove subscribe button
+          inList = true;
           printSubInfo('Local', subscription.endpoint);
           setUnsubscribeButton();
         }
+      }
+      if(!inList){
+        // Browser is subscribed with Google (else this wouldn't be running?), let's unsubscribe.
+        console.log("Browser not in sql db, removing subscription from Google");
+        subscription.unsubscribe();
       }
     }).catch(function() {
       console.log('Couldn\'t contact server');
