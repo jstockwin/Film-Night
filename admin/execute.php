@@ -23,12 +23,7 @@ if($result->num_rows > 0){
       echo "roll call";
       $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
       $result2 = $conn->query($sql2);
-      $sql3 = "SELECT * FROM users WHERE Active=1";
-      $result3 = $conn->query($sql3);
-      $to = "";
-      while($row3 = $result3->fetch_assoc()){
-        $to = $to.$row3['Email'].", ";
-      }
+      $to = get_emails($root, "Roll_Call_Start");
       $message = '
       <html>
       <body>
@@ -54,7 +49,7 @@ if($result->num_rows > 0){
       $webPush = new WebPush(array('GCM'=>$push_api));
       // send multiple notifications
       foreach ($endpoints as $endpoint) {
-          $webPush->sendNotification($endpoint);
+        $webPush->sendNotification($endpoint);
       }
       $webPush->flush();
     }else if (get_event($root)=="Roll_Call_End"){
@@ -63,86 +58,75 @@ if($result->num_rows > 0){
     }else if(get_event($root)=="Voting_Start"){
 
 
-    // Email users:
-    $sql2 = "SELECT * FROM users WHERE Active=1";
-    $result2 = $conn->query($sql2);
-    $to = "";
-    while($row2 = $result2->fetch_assoc()){
-      $to = $to.$row2['Email'].", ";
-    }
-    $message = '
-    <html>
-    <body>
-    <p>Dear HiveMember,</p>
-    <br>
-    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this week&apos;s film night.</p>
-    <br>
-    <p>Best wishes,<br>The HiveBot&trade;</p>
-    </body>
-    ';
-    mail($to,"Film Night Voting", $message, "Content-type:text/html");
+      // Email users:
+      $to = get_emails($root, "Voting_Start");
+      $message = '
+      <html>
+      <body>
+      <p>Dear HiveMember,</p>
+      <br>
+      <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this week&apos;s film night.</p>
+      <br>
+      <p>Best wishes,<br>The HiveBot&trade;</p>
+      </body>
+      ';
+      mail($to,"Film Night Voting", $message, "Content-type:text/html");
 
-    $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
-    $result4 = $conn->query($sql4);
-    $endpoints = array ();
-    while($row4 = $result4->fetch_assoc()){
-      array_push($endpoints, $row4['Endpoint']);
-    }
+      $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
+      $result4 = $conn->query($sql4);
+      $endpoints = array ();
+      while($row4 = $result4->fetch_assoc()){
+        array_push($endpoints, $row4['Endpoint']);
+      }
 
-    $webPush = new WebPush(array('GCM'=>$push_api));
-    // send multiple notifications
-    foreach ($endpoints as $endpoint) {
+      $webPush = new WebPush(array('GCM'=>$push_api));
+      // send multiple notifications
+      foreach ($endpoints as $endpoint) {
         error_log(print_r($endpoint, TRUE));
         $webPush->sendNotification($endpoint);
-    }
-    $webPush->flush();
+      }
+      $webPush->flush();
 
-  }else if(get_event($root)=="Results_Start"){
-    // Within 5 minutes of results starting. Notify users.
-    echo "results";
-    $sql3 = "DROP TABLE votes";
-    $result3 = $conn->query($sql3);
-    $sql3 = "ALTER TABLE incomingvotes RENAME TO votes";
-    $result3 = $conn->query($sql3);
-    $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
-    $result3 = $conn->query($sql3);
-    //mail("localhost","test","test");
-    $sql2 = "SELECT * FROM users WHERE Active=1";
-    $result2 = $conn->query($sql2);
-    $to = "";
-    while($row2 = $result2->fetch_assoc()){
-      $to = $to.$row2['Email'].", ";
-    }
-    $message = '
-    <html>
-    <body>
-    <p>Dear HiveMember,</p>
-    <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
-    <br>
-    <p>Best wishes,<br>The HiveBot&trade;</p>
-    </body>
-    </html>
-    ';
-    mail($to,"Film Night Results", $message, "Content-type:text/html");
+    }else if(get_event($root)=="Results_Start"){
+      // Within 5 minutes of results starting. Notify users.
+      echo "results";
+      $sql3 = "DROP TABLE votes";
+      $result3 = $conn->query($sql3);
+      $sql3 = "ALTER TABLE incomingvotes RENAME TO votes";
+      $result3 = $conn->query($sql3);
+      $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
+      $result3 = $conn->query($sql3);
+      $to = get_emails($root, "Results_Start");
+      $message = '
+      <html>
+      <body>
+      <p>Dear HiveMember,</p>
+      <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
+      <br>
+      <p>Best wishes,<br>The HiveBot&trade;</p>
+      </body>
+      </html>
+      ';
+      mail($to,"Film Night Results", $message, "Content-type:text/html");
 
-    $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
-    $result4 = $conn->query($sql4);
-    $endpoints = array ();
-    while($row4 = $result4->fetch_assoc()){
-      array_push($endpoints, $row4['Endpoint']);
-    }
+      $sql4 = "SELECT * FROM users WHERE Active=1 AND Endpoint <> ''";
+      $result4 = $conn->query($sql4);
+      $endpoints = array ();
+      while($row4 = $result4->fetch_assoc()){
+        array_push($endpoints, $row4['Endpoint']);
+      }
 
-    $webPush = new WebPush(array('GCM'=>$push_api));
-    // send multiple notifications
-    foreach ($endpoints as $endpoint) {
+      $webPush = new WebPush(array('GCM'=>$push_api));
+      // send multiple notifications
+      foreach ($endpoints as $endpoint) {
         error_log(print_r($endpoint, TRUE));
         $webPush->sendNotification($endpoint);
-    }
-    $webPush->flush();
+      }
+      $webPush->flush();
 
-    echo "results";
+      echo "results";
+    }
   }
-}
 }
 
 ?>

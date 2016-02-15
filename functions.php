@@ -76,5 +76,30 @@ function get_event($root, $advance = 0, $tol = 300){
   return "No event";
 }
 
+function get_emails($root, $event){
+  include $root.'../../database.php';
+  if($event == "Roll_Call_Start"){
+    $field = "Reminder_Attending";
+  }else if($event == "Voting_Start"){
+    $field = "Reminder_Voting";
+  }else if($event == "Results_Start"){
+    $field = "Reminder_Results";
+  }else if($event == "No event"){
+    return "Error: Nothing is happening";
+  }else{
+    return "Error: Unhandled event";
+  }
+  $to="";
+  $conn = new mysqli($host, $username, $password, "films");
+  $sql = "SELECT Email FROM users WHERE Active=1 AND ".$field."=1;";
+  $result = $conn->query($sql);
+  if($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      $to = $to.$row['Email'].", ";
+    }
+  }
+  return $to;
+}
+
 
   ?>
