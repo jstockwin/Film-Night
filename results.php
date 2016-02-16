@@ -34,7 +34,7 @@
           <div id="copeland">
             <h2 class="algorithm-name">Copeland's</h2>
             <div class="algorithm">
-              <p class="algorithm-description"></p>
+              <p class="algorithm-description">Copeland's method (also known as Copeland's pairwise aggregation method) is a Condorcet voting method.<br><br>We say film \(X\) beats film \(Y\) if the number of people who ranked \(X\) higher than \(Y\) is greater than the number of people who ranked \(Y\) higher than \(X\). The score for a film \(X\) is then the number of films \(X\) beats minus the number of films that beat \(X\).  </p>
               <div id="copeland-graph" class="algorithm-graphic"><table id="distances-table"></table></div>
               <div id="copeland-table" class="algorithm-table"></div>
             </div>
@@ -273,6 +273,7 @@ function updateAllTables() {
 }
 
 function drawGraphs(){
+  MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
   var distances = getDistances(listOfCandidates, votes);
   document.getElementById('winner').innerHTML = calculateWinner();
   document.getElementById('schulze-graph').innerHTML  = drawDirectedGraph(listOfCandidates, distances);
