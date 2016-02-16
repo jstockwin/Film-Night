@@ -88,7 +88,7 @@
           <div id="av">
             <h2 class="algorithm-name">Alternative Voting</h2>
             <div class="algorithm">
-              <p class="algorithm-description">Alternative Voting (also known as Instant-Runoff Voting) is a widely used single-winner voting method. It is often used to elect politicians with examples including the leaders of the Labour Party and the Liberal Democrats, the charimen of select committees and the Speaker of the House of Lords. First-past-the-post is still used to elect MPs after 67.9% of voters voted against adopting AV in a referendum on May 5 2011.<br><br>The number of first votes for each candidate are counted. If a candidate has a majority, they are declared the winner, else the candidate(s) with the lowest score are eliminated and the process is repeated.</p>
+              <p class="algorithm-description">Alternative Voting (also known as Instant-Runoff Voting) is a widely used single-winner voting method. It is often used to elect politicians with examples including the leaders of the Labour Party and the Liberal Democrats, the charimen of select committees and the Speaker of the House of Lords. First-past-the-post is still used to elect MPs after 67.9% of voters voted against adopting AV in a referendum on May 5 2011.<br><br>The number of first votes for each candidate are counted. If a candidate has a majority, they are declared the winner, else the candidates with the lowest score are eliminated and the process is repeated.</p>
               <div id="av-graph" class="algorithm-graphic"></div>
               <div id="av-table" class="algorithm-table"></div>
             </div>
