@@ -51,7 +51,7 @@ Which email address would you like to receive these email to?<br>
 <input type="submit" value="Submit">
 </address>
 </form>
-<input type="text" id="#registerName" value="<?php echo gethostname();?>"></input>
+<input type="text" id="#registerName" value="Device Name"></input>
 <button id="#registerWorker" type="button">Subscribe!</button>
 <br>
 <table id='#endpointTable'>
