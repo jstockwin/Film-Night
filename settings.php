@@ -54,14 +54,11 @@ Which email address would you like to receive these email to?<br>
 <input type="text" id="#registerName" value="<?php echo gethostname();?>"></input>
 <button id="#registerWorker" type="button">Subscribe!</button>
 <br>
-<?php
-foreach(get_endpoints($root, "All") as &$entry){
-  if($entry['ID'] == $_SESSION['ID']){
-    echo '<button id="registerDelete'.$entry['Identifier'].'" onClick="unsubscribe('.$entry['Identifier'].')">unsubscribe '.$entry['Name'].'</button>';
-    echo '<br>';
-  }
-}
-?>
+<table id='#endpointTable'>
+  <tr>
+    <th colspan=2>Notification Recipients</th>
+  </tr>
+</table>
 <script src="settings.js"></script>
 </div>
 <?php endif; ?>

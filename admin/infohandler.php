@@ -16,17 +16,17 @@ if(!loginCheck($session)){
   if(isset($_GET['wants'])){
 
     $wants=$_GET['wants'];
-    if($wants == 'endpoint') {
-      $sql = 'SELECT Endpoint FROM endpoints WHERE ID="'.$_SESSION['ID'].'";';
+    if($wants == 'endpoints') {
+      $sql = 'SELECT * FROM endpoints WHERE ID="'.$_SESSION['ID'].'";';
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
-        $endpoints = "";
+        $endpoints = array();
         while($row = $result->fetch_assoc()){
-        $endpoints = $endpoints.$row['Endpoint'].",";
-      }
-      echo $endpoints;
+          array_push($endpoints, $row);
+        }
+        echo json_encode($endpoints);
       }else{
-        echo "No endpoints set";
+        echo "[]";
       }
     } else if($wants == 'notification') {
       switch(get_event($root)) {
