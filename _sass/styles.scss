@@ -230,6 +230,10 @@ button {
   transform: translate(-50%, -50%);
   transform-origin: left top;
   z-index: 102;
+
+  svg {
+    height: 100%;
+  }
 }
 
 .small-svg-container {
@@ -250,9 +254,7 @@ button {
   height: 0.75 * ($icon-height - 2* $icon-padding);
 }
 
-svg {
-  height: 100%;
-}
+
 
 #log {
   color: $white;
@@ -306,14 +308,7 @@ svg {
   text-align: center;
 }
 
-.algorithm {
-  padding: 20px;
 
-  h2 {
-    margin: 0;
-    text-align: center;
-  }
-}
 
 .results-table {
   border-collapse: collapse;
@@ -676,4 +671,42 @@ svg {
   top: 0;
   transition: opacity 0.5s, background-color 0.5s;
   width: 100%;
+}
+
+.algorithm-name {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.algorithm-graphic {
+  display: flex;
+  padding: 0 20px 0 10px;
+  min-width: 300px;
+  width: 20%;
+
+  svg {
+    width: 100%;
+  }
+}
+
+.algorithm-table {
+  border-width: 0 0 0 2px;
+  border-style: dashed;
+  border-color: $divider-color;
+  text-align: center;
+}
+
+.algorithm {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap-reverse;;
+  width: 100%;
+
+  p {
+    flex-grow: 1;
+    text-align: justify;
+    min-width: 300px;
+    padding: 0 10px;
+    width: 0;
+  }
 }

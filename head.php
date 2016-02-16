@@ -11,6 +11,7 @@ function head($title, $extra='') {
   echo '<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" sizes="any">';
   echo '<link rel="icon" type="image/png" href="assets/icons/favicon.png">';
   echo '<meta name="theme-color" content="#607D8B">';
+  echo '<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>';
   require_once $root.'google.php';
   if($extra != '') {
     echo $extra;
