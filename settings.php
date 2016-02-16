@@ -7,6 +7,9 @@
 <div id="container">
 
 <?php
+if(session_status()== PHP_SESSION_NONE){
+  session_start();
+}
   require $root.'../../database.php';
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
@@ -41,6 +44,13 @@ if(status($root)=="rollCall"){
     echo '>No, I won\'t be attending. Please veto my films</option>
     </select><br>';
 
+}else{
+  echo '
+  <select name="rollCall" style="display: none;" disabled>
+  <option value="yes" selected="selected">Yes, I will be attending</option>
+  <option value="no">No, I won\'t be attending. Please veto my films</option>
+  </select><br>
+  ';
 }?>
 Tick which events you would like to receive emails for:<br>
 <input type="checkbox" name="attending" value="attending" <?php if($attending=="1"){echo "checked=true";}?>> At the start of a roll call<br>
