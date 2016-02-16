@@ -104,41 +104,53 @@ if($event=="Results_Start"){
 
   echo "results";
 }
-if(get_event($root, 1800) == "Voting_End"){
-  $to = get_emails($root, "Voting_End30");
-  $message = '
-  <html>
-  <body>
-  <p>Dear HiveMember,</p>
-  <p>You are yet to vote for this weeks film night. Voting closes in half an hour.
-  <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
-  <br>
-  <p>Best wishes,<br>The HiveBot&trade;</p>
-  </body>
-  </html>
-  ';
-  mail($to,"Film Night Results", $message, "Content-type:text/html");
+if(status($root)=="voting"){
+  if(get_event($root, 1800) == "Voting_End"){
+    $to = get_emails($root, "Voting_End30");
+    $message = '
+    <html>
+    <body>
+    <p>Dear HiveMember,</p>
+    <p>You are yet to vote for this weeks film night. Voting closes in half an hour.
+    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+    <br>
+    <p>Best wishes,<br>The HiveBot&trade;</p>
+    </body>
+    </html>
+    ';
+    mail($to,"Film Night Results", $message, "Content-type:text/html");
 
-  $endpoints = get_endpoints($root, "Voting_End30");
-  /* unpairedbracked TODO: Send endpoints. Need to specify new notifications in infohandler.php */
-}
-if(get_event($root, 3600) == "Voting_End"){
-  $to = get_emails($root, "Voting_End60");
-  $message = '
-  <html>
-  <body>
-  <p>Dear HiveMember,</p>
-  <p>You are yet to vote for this weeks film night. Voting closes in an hour.
-  <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
-  <br>
-  <p>Best wishes,<br>The HiveBot&trade;</p>
-  </body>
-  </html>
-  ';
-  mail($to,"Film Night Results", $message, "Content-type:text/html");
+    $webPush = new WebPush(array('GCM'=>$push_api));
+    $endpoints = get_endpoints($root, "Voting_End30");
+    // send multiple notifications
+    foreach ($endpoints as $endpoint) {
+      $webPush->sendNotification($endpoint['Endpoint']);
+    }
+    $webPush->flush();
+  }
+  if(get_event($root, 3600) == "Voting_End"){
+    $to = get_emails($root, "Voting_End60");
+    $message = '
+    <html>
+    <body>
+    <p>Dear HiveMember,</p>
+    <p>You are yet to vote for this weeks film night. Voting closes in an hour.
+    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+    <br>
+    <p>Best wishes,<br>The HiveBot&trade;</p>
+    </body>
+    </html>
+    ';
+    mail($to,"Film Night Results", $message, "Content-type:text/html");
 
-  $endpoints = get_endpoints($root, "Voting_End60");
-  /* unpairedbracked TODO: Send endpoints. Need to specify new notifications in infohandler.php */
+    $webPush = new WebPush(array('GCM'=>$push_api));
+    $endpoints = get_endpoints($root, "Voting_End60");
+    // send multiple notifications
+    foreach ($endpoints as $endpoint) {
+      $webPush->sendNotification($endpoint['Endpoint']);
+    }
+    $webPush->flush();
+  }
 }
 
 ?>
