@@ -40,7 +40,6 @@ $sql = 'UPDATE users SET Email="'.$_POST['email'].'", Attending='.$rollCall.', R
 $result = $conn->query($sql);
 
 if($result == 1){
-  unset($_SESSION['ID']); //Unset email to force a proper login again.
   header('location: ../settings.php');
 }else{
   echo "Something went wrong. Shout at Jake<br>";
