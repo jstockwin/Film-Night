@@ -34,7 +34,7 @@ function status($root){
 
   $sql = "SELECT * FROM timings";
   $result = $conn->query($sql);
-  if($result->num_rows > 0){
+  if($result && $result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       if ($row["Roll_Call_Start"] < $now && $now < $row["Roll_Call_End"]){
         return "rollCall";

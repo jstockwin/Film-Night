@@ -4,6 +4,7 @@
 <body>
 <?php include 'top-nav.php';?>
 <script type="text/javascript" src="voting-systems.js"></script>
+<script type="text/javascript" src="results-graphs.js"></script>
 <p id="log"></p>
 <div id="container">
   <div id="results">
@@ -77,7 +78,7 @@
     echo 'var listOfCandidates  = generateListOfCandidates(votes);';
   }else{
     echo "// There are no films. Use defaults \n";
-    echo 'var listOfCandidates = ["Walk the Line","Four Lions","Atonement","Big Fish","Dude, Where\'s My Car?",];';
+    echo 'var listOfCandidates = ["A", "B", "C", "D", "E", "F"];';
     echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
   }
   $conn->close();
@@ -260,8 +261,6 @@
     return html;
   }
 
-  var nodeColors = ['#F44336', '#9C27B0', '#3F51B5', '#009688', '#FF5722', '#795548'];
-
   function generateKey(listOfCandidates){
     var key = "";
     for(var i = 0; i < listOfCandidates.length; i++){
@@ -270,97 +269,7 @@
     return key;
   }
 
-  function drawDirectedGraph(listOfCandidates, distances){
 
-    var coldColor = "1B28BF";
-    var warmColor = "BF1B1B";
-
-    var graphRadius = 100;
-    var nodeRadius = 10;
-    var numberOfIndicatorSquares = 10;
-    var size = graphRadius/numberOfIndicatorSquares;
-
-    var svgStart = '<svg id="graph" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="'+ -graphRadius + ' '+ -graphRadius +  ' '+ (2*graphRadius + nodeRadius + 3*size + 25 ) + ' '+ 2*graphRadius + '" style="overflow:visible; height: 300px !important; width: 300px !important;">'
-    var svg = "";
-    var defsHTML = "<defs>";
-    var coordinates = [];
-    for( var i = 0; i < listOfCandidates.length; i++){
-      var x = graphRadius * Math.sin( - i / listOfCandidates.length * 2 *Math.PI + Math.PI);
-      var y = graphRadius * Math.cos( - i / listOfCandidates.length * 2 * Math.PI + Math.PI);
-      coordinates.push({'x': x, 'y': y});
-    }
-    var min = Number.POSITIVE_INFINITY;
-    var max = 0;
-    for( var i =0; i< listOfCandidates.length; i++){
-      for(var j = 0; j < listOfCandidates.length; j++){
-        if(distances[i][j] >= distances[j][i] && i !== j){
-          min = Math.min(min, distances[i][j]);
-          max = Math.max(max, distances[i][j]);
-        }
-      }
-    }
-    for( var i =0; i< listOfCandidates.length; i++){
-      for(var j = 0; j < listOfCandidates.length; j++){
-        if(distances[i][j] < distances[j][i]){
-          var differenceX = coordinates[i].x - coordinates[j].x;
-          var differenceY = coordinates[i].y - coordinates[j].y;
-          var length = Math.sqrt(differenceX*differenceX + differenceY*differenceY);
-          var targetX = coordinates[j].x + differenceX*(length-10)/length;
-          var targetY = coordinates[j].y + differenceY*(length-10)/length;
-          var color = interpolateColors(coldColor, warmColor, (distances[j][i] - min)/Math.max(max - min, 1));
-          var newMarker = '<marker id="arrow'+color+'" markerWidth="10" markerHeight="10" refx="6" refy="2" orient="auto" markerUnits="strokeWidth" fill="#'+color+'"><path d="M0,0 L0,4 L6,2 z"/></marker>'
-          defsHTML = defsHTML + newMarker;
-          var line = '<line x1="' + coordinates[j].x + '" y1 = "'+ coordinates[j].y+ '" x2="'+  targetX +'" + y2="'+ targetY +'" stroke-width="2" stroke="#'+color+'" marker-end="url(#arrow'+color+')"/>';
-          svg = svg + line;
-        }
-      }
-    }
-    for(var i = 0; i < listOfCandidates.length; i++){
-      var node = '<circle cx="'+ coordinates[i].x + '" cy="'+ coordinates[i].y + '" r="'+nodeRadius+'" fill="'+nodeColors[i % nodeColors.length] + '"/>';
-      var text = '<text x="'+ coordinates[i].x + '" y="'+ coordinates[i].y + '" text-anchor="middle"  fill="white" font-size="' + nodeRadius * 1.5 + '" style="alignment-baseline:central; dominant-baseline: central;" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
-      svg = svg + node + text;
-    }
-    for(var i =0; i < numberOfIndicatorSquares; i++ ){
-
-      var rect = '<rect x="'+ (graphRadius + nodeRadius + size) + '" y="'+(-graphRadius + i*size*2)+'" width="'+size+'" height="'+size+'" fill="#'+interpolateColors(coldColor, warmColor, 1 - i/numberOfIndicatorSquares)+'"/>';
-      var text = '<text x="'+(graphRadius + nodeRadius + 3 * size) + '" y="'+(-graphRadius + i*size*2 + size/2)+ '" font-size="' + size + '" style="alignment-baseline:central" font-family="Open Sans">' + Math.round((max - (max - min)*i/numberOfIndicatorSquares)) + '</text>';
-      svg = svg + rect + text;
-
-    }
-    defsHTML = defsHTML + '</defs>';
-    return svgStart + defsHTML + svg + '</svg>';
-  }
-
-  function interpolateColors(hex1, hex2, t){
-    var rgb1 = hexToRgb(hex1);
-    var rgb2 = hexToRgb(hex2);
-    return rgbToHex(Math.round((1-t)*rgb1.r + t*rgb2.r), Math.round((1-t)*rgb1.g + t*rgb2.g), Math.round((1-t)*rgb1.b + t*rgb2.b));
-
-  }
-
-  function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
-
-  function rgbToHex(r, g, b) {
-    return componentToHex(r) + componentToHex(g) + componentToHex(b);
-  }
-
-  function hexToRgb(hex) {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-      return r + r + g + g + b + b;
-    });
-
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
-  }
 </script>
 </body>
 </html>

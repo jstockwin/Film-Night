@@ -316,6 +316,7 @@ function removeCandidate(currentCandidates, currentVotes, candidateToRemove) {
   currentCandidates.splice(currentCandidates.indexOf(candidateToRemove),1);
   for (var i = 0; i < currentVotes.length; i++) {
     var rankOfEliminate = currentVotes[i][candidateToRemove];
+    currentVotes[i][candidateToRemove] = NaN;
     for (var j = 0; j < currentCandidates.length; j++) {
       if (currentVotes[i][currentCandidates[j]] > rankOfEliminate) {
         currentVotes[i][currentCandidates[j]]--;
@@ -346,6 +347,52 @@ function av(listOfCandidates, votes) {
     }
   }
   return results.reverse();
+}
+
+function avChanges(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var changes = [];
+  while (currentCandidates.length > 0) {
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      return changes;
+    }
+    var lowestScore = pluralityResults[pluralityResults.length - 1].score;
+    var currentVoteHolder = [];
+    for (var i = 0; i < votes.length; i++) {
+      for (var j = 0; j < pluralityResults.length; j++) {
+        if (currentVotes[i][pluralityResults[j].film] === 1) {
+          currentVoteHolder.push(pluralityResults[j].film);
+        }
+      }
+    }
+    for (i = pluralityResults.length - 1; i > -1; i--) {
+      if (pluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
+      }else {
+        break;
+      }
+    }
+    var change = {};
+    for (i = 0; i < currentVoteHolder.length; i++) {
+      for (var j = 0; j < currentCandidates.length; j++) {
+        if (currentVotes[i][currentCandidates[j]] === 1) {
+          if (!change[currentVoteHolder[i]]) {
+            change[currentVoteHolder[i]] = {};
+          }
+          if (!change[currentVoteHolder[i]][currentCandidates[j]]) {
+            change[currentVoteHolder[i]][currentCandidates[j]] = 1;
+          }else {
+            change[currentVoteHolder[i]][currentCandidates[j]]++;
+          }
+        }
+      }
+    }
+    changes.push(change);
+  }
+  return changes;
 }
 
 function coombs(listOfCandidates, votes) {
