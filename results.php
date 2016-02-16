@@ -72,7 +72,7 @@
           <div id="nanson">
             <h2 class="algorithm-name">Nanson</h2>
             <div class="algorithm">
-              <p class="algorithm-description"></p>
+              <p class="algorithm-description">The Nanson method is a condorcet method based on the work of the mathematician Edward J. Nanson. The method has seen some use in the past including in city elections in the U.S. town of Marquette, Michigan in the 1920s and at the University of Melbourne (where Nanson was Professor of Mathematics).<br><br>In each round the films are ranked according to a Borda count. Films with scores at most the average score are then eliminated. The films are ranked by the score they had when they were elimintaed.</p>
               <div id="nanson-graph" class="algorithm-graphic"></div>
               <div id="nanson-table" class="algorithm-table"></div>
             </div>
@@ -284,11 +284,11 @@ function drawGraphs(){
   }
   document.getElementById('av-graph').innerHTML = drawRunOffGraph(listOfCandidates, initialScores, avChanges(listOfCandidates, votes));
   var bordaResults = borda(listOfCandidates, votes);
-  var initialScores = {};
   for (var i = 0; i < bordaResults.length; i++) {
     initialScores[bordaResults[i].film] = bordaResults[i].score;
   }
   document.getElementById('baldwin-graph').innerHTML = drawRunOffGraph(listOfCandidates, initialScores, baldwinChanges(listOfCandidates, votes));
+  document.getElementById('nanson-graph').innerHTML = drawRunOffGraph(listOfCandidates, initialScores, nansonChanges(listOfCandidates, votes));
   document.getElementById('schulze-graph').innerHTML  = drawDirectedGraph(listOfCandidates, distances);
   document.getElementById('distances-table').innerHTML = populateDistances(listOfCandidates, distances);
   document.getElementById('key').innerHTML = generateKey(listOfCandidates);

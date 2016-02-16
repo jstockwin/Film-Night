@@ -506,3 +506,49 @@ function nanson(listOfCandidates, votes) {
   }
   return results.reverse();
 }
+
+function nansonChanges(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var changes = [];
+  while (currentCandidates.length > 0) {
+    var change = {};
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
+    var average = 0;
+    for (var i = 0; i < bordaResults.length; i++) {
+      average += bordaResults[i].score / bordaResults.length;
+    }
+    var candidatesToRemove = [];
+    for (i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score <= average) {
+        candidatesToRemove.push(bordaResults[i].film);
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+      }else {
+        change[bordaResults[i].film] = {};
+        change[bordaResults[i].film][bordaResults[i].film] = bordaResults[i].score;
+      }
+    }
+    if (currentCandidates.length === 0) {
+      return changes;
+    }
+    for (i = 0; i < votes.length; i++) {
+      for (var j = 0; j < candidatesToRemove.length; j++) {
+        for (var k = 0; k < currentCandidates.length; k++) {
+          if (votes[i][currentCandidates[k]] > votes[i][candidatesToRemove[j]]) {
+            if (!change[candidatesToRemove[j]]) {
+              change[candidatesToRemove[j]] = {};
+            }
+            if (!change[candidatesToRemove[j]][currentCandidates[k]]) {
+              change[candidatesToRemove[j]][currentCandidates[k]] = 1;
+            }else {
+              change[candidatesToRemove[j]][currentCandidates[k]]++;
+            }
+          }
+        }
+      }
+    }
+    changes.push(change);
+  }
+  return changes;
+}
