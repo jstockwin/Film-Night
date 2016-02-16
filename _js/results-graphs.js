@@ -59,8 +59,8 @@ function drawRunOffGraph(listOfCandidates, initialScores, changeInScores) {
       x = x + width;
       svgBody = svgBody + rect;
     }
+    y = y + heightOfCount;
   }
-  y = y + heightOfCount;
   return svgTag + svgBody +  '</svg>';
 }
 

@@ -1,1 +1,508 @@
-function shuffle(r){"use strict";for(var e=[],n=[],t=0;t<r.length;t++)e.push(t);for(t=0;t<r.length;t++){var o=e.splice(Math.floor(Math.random()*e.length),1);n.push(r[o])}return n}function generateRandomVotes(r,e){"use strict";for(var n=[],t=0;t<r.length;t++)n.push(t+1);var o=[];for(t=0;e>t;t++){var s={};n=shuffle(n);for(var a=0;a<r.length;a++)s[r[a]]=n[a];o.push(s)}return o}function generateListOfCandidates(r){for(var e=[],n=0;n<r.length;n++)for(var t=Object.keys(r[n]),o=0;o<t.length;o++)-1===e.indexOf(t[o])&&e.push(t[o]);return e}function getDistances(r,e){"use strict";for(var n=[],t=0;t<r.length;t++){for(var o=[],s=0;s<r.length;s++){for(var a=0,i=0;i<e.length;i++)e[i][r[t]]<e[i][r[s]]&&a++;o.push(a)}n.push(o)}return n}function schulze(r,e){"use strict";for(var n,t=getDistances(r,e),o=[],s=0;s<r.length;s++){var a=[];for(n=0;n<r.length;n++)a.push(t[s][n]>t[n][s]?t[s][n]:0);o.push(a)}for(s=0;s<r.length;s++)for(n=0;n<r.length;n++)if(s!==n)for(var i=0;i<r.length;i++)i!==s&&i!==n&&(o[n][i]=Math.max(o[n][i],Math.min(o[n][s],o[s][i])));var f=function(r,e){return o[r][e]>o[e][r]?-1:o[e][r]>o[r][e]?1:0},l=[];for(s=0;s<r.length;s++)l.push(s);l.sort(f);var c=l.map(function(e){return{film:r[e],index:e}});for(c[0].rank=1,s=1;s<r.length;s++)c[s].rank=o[c[s].index][c[s-1].index]===o[c[s-1].index][c[s].index]?c[s-1].rank:s+1;return c}function copeland(r,e){"use strict";for(var n=getDistances(r,e),t=[],o=0;o<r.length;o++){for(var s=0,a=0;a<r.length;a++)o!==a&&(n[o][a]>n[a][o]?s++:n[o][a]<n[a][o]&&s--);t.push({film:r[o],score:s,rank:o})}for(t.sort(function(r,e){return e.score-r.score}),t[0].rank=1,o=1;o<r.length;o++)t[o].rank=t[o].score===t[o-1].score?t[o-1].rank:o+1;return t}function minimax(r,e){"use strict";for(var n=getDistances(r,e),t=[],o=0;o<r.length;o++){for(var s=0,a=0;a<r.length;a++)n[a][o]>n[o][a]&&n[a][o]>s&&(s=n[a][o]);t.push({film:r[o],score:s,rank:o})}for(t.sort(function(r,e){return r.score-e.score}),t[0].rank=1,o=1;o<r.length;o++)t[o].rank=t[o].score===t[o-1].score?t[o-1].rank:o+1;return t}function permutator(r){"use strict";function e(r,t){for(var o=0;o<r.length;o++){var s=r.splice(o,1);0===r.length&&n.push(t.concat(s)),e(r.slice(),t.concat(s)),r.splice(o,0,s[0])}return n}var n=[];return e(r,[])}function kemenyYoung(r,e){"use strict";for(var n=getDistances(r,e),t=-1,o=!0,s=[],a=[],i=0;i<r.length;i++)a.push(i);var f=permutator(a);for(i=0;i<f.length;i++){for(var l=0,c=0;c<r.length-1;c++)for(var u=c+1;u<r.length;u++)l+=n[f[i][c]][f[i][u]];l===t&&(o=!1),l>t&&(t=l,s=f[i],o=!0)}if(!o)throw"Draw for the higest score";var h=s.map(function(e,n){return{film:r[e],rank:n+1}});return h}function borda(r,e,n){"use strict";(null===n||void 0===n)&&(n=r.length+1);for(var t=[],o=0;o<r.length;o++)t.push({film:r[o],score:0,rank:o});for(var s=0;s<r.length;s++)for(var a=0;a<e.length;a++)void 0!==e[a][t[s].film]&&null!==e[a][t[s].film]&&(t[s].score=t[s].score-e[a][t[s].film]+n);for(t.sort(function(r,e){return e.score-r.score}),t[0].rank=1,s=1;s<r.length;s++)t[s].rank=t[s].score===t[s-1].score?t[s-1].rank:s+1;return t}function antiPlurality(r,e){"use strict";for(var n=[],t=0;t<r.length;t++){for(var o={film:r[t],score:0,rank:t},s=0;s<e.length;s++)e[s][r[t]]===r.length&&o.score--;n.push(o)}for(n.sort(function(r,e){return e.score-r.score}),n[0].rank=1,t=1;t<r.length;t++)n[t].rank=n[t].score===n[t-1].score?n[t-1].rank:t+1;return n}function plurality(r,e){"use strict";for(var n=[],t=0;t<r.length;t++){for(var o={film:r[t],score:0,rank:t},s=0;s<e.length;s++)1===e[s][r[t]]&&o.score++;n.push(o)}for(n.sort(function(r,e){return e.score-r.score}),n[0].rank=1,t=1;t<r.length;t++)n[t].rank=n[t].score===n[t-1].score?n[t-1].rank:t+1;return n}function removeCandidate(r,e,n){"use strict";r.splice(r.indexOf(n),1);for(var t=0;t<e.length;t++){var o=e[t][n];e[t][n]=0/0;for(var s=0;s<r.length;s++)e[t][r[s]]>o&&e[t][r[s]]--}}function av(r,e){"use strict";for(var n=r.slice(),t=JSON.parse(JSON.stringify(e)),o=[];n.length>0;){var s=plurality(n,t);if(s[0].score>e.length/2)return o=o.concat(s.reverse()),o.reverse();for(var a=s[s.length-1].score,i=s.length-1;i>-1&&s[i].score===a;i--)removeCandidate(n,t,s[i].film),o.push(s[i])}return o.reverse()}function avChanges(r,e){"use strict";for(var n=r.slice(),t=JSON.parse(JSON.stringify(e)),o=[];n.length>0;){var s=plurality(n,t);if(s[0].score>e.length/2)return o;for(var a=s[s.length-1].score,i=[],f=0;f<e.length;f++)for(var l=0;l<s.length;l++)1===t[f][s[l].film]&&i.push(s[l].film);for(f=s.length-1;f>-1&&s[f].score===a;f--)removeCandidate(n,t,s[f].film);var c={};for(f=0;f<i.length;f++)for(var l=0;l<n.length;l++)1===t[f][n[l]]&&(c[i[f]]||(c[i[f]]={}),c[i[f]][n[l]]?c[i[f]][n[l]]++:c[i[f]][n[l]]=1);o.push(c)}return o}function coombs(r,e){"use strict";for(var n=r.slice(),t=JSON.parse(JSON.stringify(e)),o=[];n.length>0;){var s=antiPlurality(n,t),a=plurality(n,t);if(a[0].score>e.length/2)return o=o.concat(a.reverse()),o.reverse();for(var i=s[s.length-1].score,f=s.length-1;f>-1&&s[f].score===i;f--)removeCandidate(n,t,s[f].film),o.push(s[f])}return o.reverse()}function baldwin(r,e){"use strict";for(var n=r.slice(),t=JSON.parse(JSON.stringify(e)),o=[];n.length>0;)for(var s=borda(n,t,r.length+1),a=s[s.length-1].score,i=s.length-1;i>-1&&s[i].score===a;i--)removeCandidate(n,t,s[i].film),o.push(s[i]);return o.reverse(),o}function nanson(r,e){"use strict";for(var n=r.slice(),t=JSON.parse(JSON.stringify(e)),o=[];n.length>0;){for(var s=borda(n,t,r.length+1),a=0,i=0;i<s.length;i++)a+=s[i].score/s.length;for(i=s.length-1;i>-1&&s[i].score<=a;i--)removeCandidate(n,t,s[i].film),o.push(s[i])}return o.reverse()}
+//Misc.
+function shuffle(array) {
+  'use strict';
+  var indices = [];
+  var shuffledArray = [];
+  for (var i = 0; i < array.length; i++) {
+    indices.push(i);
+  }
+  for (i = 0; i < array.length; i++) {
+    var randomIndex = indices.splice(Math.floor(Math.random() * indices.length),1);
+    shuffledArray.push(array[randomIndex]);
+  }
+  return shuffledArray;
+}
+
+function generateRandomVotes(listOfCandidates, n) {
+  'use strict';
+  var order = [];
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    order.push(i + 1);
+  }
+  var votes = [];
+  for (i = 0; i < n; i++) {
+    var vote = {};
+    order = shuffle(order);
+    for (var j = 0; j < listOfCandidates.length; j++) {
+      vote[listOfCandidates[j]] = order[j];
+    }
+    votes.push(vote);
+  }
+  return votes;
+}
+
+function generateListOfCandidates(votes) {
+  var listOfCandidates = [];
+  for (var i = 0; i < votes.length; i++) {
+    var keys = Object.keys(votes[i]);
+    for (var j = 0; j < keys.length; j++) {
+      if (listOfCandidates.indexOf(keys[j]) === -1) {
+        listOfCandidates.push(keys[j]);
+      }
+    }
+  }
+  return listOfCandidates;
+}
+
+// Methods relying on distances
+function getDistances(listOfCandidates, votes) {
+  'use strict';
+  var distances = [];
+
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    var row = [];
+    for (var j = 0; j < listOfCandidates.length; j++) {
+      var distance = 0;
+      for (var k = 0; k < votes.length; k++) {
+        if (votes[k][listOfCandidates[i]] < votes[k][listOfCandidates[j]]) {
+          distance++;
+        }
+      }
+      row.push(distance);
+    }
+    distances.push(row);
+  }
+  return distances;
+}
+
+function schulze(listOfCandidates, votes) {
+  'use strict';
+  var distances = getDistances(listOfCandidates, votes);
+  var paths = [];
+  var j;
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    var row = [];
+    for (j = 0; j < listOfCandidates.length; j++) {
+      if (distances[i][j] > distances[j][i]) {
+        row.push(distances[i][j]);
+      }else {
+        row.push(0);
+      }
+    }
+    paths.push(row);
+  }
+  for (i = 0; i < listOfCandidates.length; i++) {
+    for (j = 0; j < listOfCandidates.length; j++) {
+      if (i !== j) {
+        for (var k = 0; k < listOfCandidates.length; k++) {
+          if (k !== i && k !== j) {
+            paths[j][k] = Math.max(paths[j][k], Math.min(paths[j][i], paths[i][k]));
+          }
+        }
+      }
+    }
+  }
+  var sortFunction = function sort(a, b) {
+    if (paths[a][b] > paths[b][a]) {
+      return -1;
+    }
+    if (paths[b][a] > paths[a][b]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  var mapped = [];
+  for (i = 0; i < listOfCandidates.length; i++) {
+    mapped.push(i);
+  }
+  mapped.sort(sortFunction);
+  var result = mapped.map(function(i) {
+    return {film: listOfCandidates[i], index: i};
+  });
+  result[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (paths[result[i].index][result[i - 1].index] === paths[result[i - 1].index][result[i].index]) {
+      result[i].rank = result[i - 1].rank;
+    }else {
+      result[i].rank = i + 1;
+    }
+  }
+  return result;
+}
+
+function copeland(listOfCandidates, votes) {
+  'use strict';
+  var distances = getDistances(listOfCandidates, votes);
+  var scores = [];
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    var score = 0;
+    for (var j = 0; j < listOfCandidates.length; j++) {
+      if (i !== j) {
+        if (distances[i][j] > distances[j][i]) {
+          score++;
+        }else if (distances[i][j] < distances[j][i]) {
+          score--;
+        }
+      }
+    }
+    scores.push({film: listOfCandidates[i], 'score': score, rank: i});
+  }
+  scores.sort(function(a, b) {return b.score - a.score;});
+  scores[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (scores[i].score === scores[i - 1].score) {
+      scores[i].rank = scores[i - 1].rank;
+    }else {
+      scores[i].rank = i + 1;
+    }
+  }
+  return scores;
+}
+
+function minimax(listOfCandidates, votes) {
+  'use strict';
+  var distances = getDistances(listOfCandidates, votes);
+  var scores = [];
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    var highestScore = 0;
+    for (var j = 0; j < listOfCandidates.length; j++) {
+      if (distances[j][i] > distances[i][j] && distances[j][i] > highestScore) {
+        highestScore = distances[j][i];
+      }
+    }
+    scores.push({film: listOfCandidates[i], score: highestScore, rank: i});
+  }
+  scores.sort(function(a, b) { return a.score - b.score;});
+  scores[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (scores[i].score === scores[i - 1].score) {
+      scores[i].rank = scores[i - 1].rank;
+    }else {
+      scores[i].rank = i + 1;
+    }
+  }
+  return scores;
+}
+
+function permutator(inputArr) {
+  // Used in kemenyYoung
+  'use strict';
+  var results = [];
+
+  function permute(arr, memo) {
+    for (var i = 0; i < arr.length; i++) {
+      var cur = arr.splice(i, 1);
+      if (arr.length === 0) {
+        results.push(memo.concat(cur));
+      }
+      permute(arr.slice(), memo.concat(cur));
+      arr.splice(i, 0, cur[0]);
+    }
+    return results;
+  }
+  return permute(inputArr, []);
+}
+
+function kemenyYoung(listOfCandidates, votes) {
+  'use strict';
+  var distances = getDistances(listOfCandidates, votes);
+  var currentHighest = -1;
+  var uniqueHighest = true;
+  var rankingOfHighest = [];
+  var array = [];
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    array.push(i);
+  }
+  var permutations = permutator(array);
+  for (i = 0; i < permutations.length; i++) {
+    var score = 0;
+    for (var j = 0; j < listOfCandidates.length - 1; j++) {
+      for (var k = j + 1; k < listOfCandidates.length; k++) {
+        score = score + distances[permutations[i][j]][permutations[i][k]];
+      }
+    }
+    if (score === currentHighest) {
+      uniqueHighest = false;
+    }
+    if (score > currentHighest) {
+      currentHighest = score;
+      rankingOfHighest = permutations[i];
+      uniqueHighest = true;
+    }
+  }
+  if (!uniqueHighest) {
+    throw 'Draw for the higest score';
+  }
+  var result = rankingOfHighest.map(function(i, index) {return {film: listOfCandidates[i], rank: index + 1};});
+  return result;
+}
+
+// Self contained voting methods.
+
+function borda(listOfCandidates, votes, topScore) {
+  // Used in baldwin and nanson. Note that topScore is optional and to make scoring on baldwin and nanson nicer.
+  'use strict';
+  if (topScore === null || topScore === undefined) {
+    topScore = listOfCandidates.length;
+  }
+  var scores = [];
+  for (var k = 0; k < listOfCandidates.length; k++) {
+    scores.push({film: listOfCandidates[k], score: 0, rank: k});
+  }
+
+  for (var i = 0; i < listOfCandidates.length; i++) {
+    for (var j = 0; j < votes.length; j++) {
+      if (votes[j][scores[i].film] !== undefined && votes[j][scores[i].film] !== null) {
+        scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore + 1;
+      }
+    }
+  }
+  scores.sort(function(a, b) {return b.score - a.score;});
+  scores[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (scores[i].score === scores[i - 1].score) {
+      scores[i].rank = scores[i - 1].rank;
+    }else {
+      scores[i].rank = i + 1;
+    }
+  }
+  return scores;
+}
+
+function antiPlurality(listOfCandidates, votes) {
+  // Note that this will return negative scores so that the higher the score the better.
+  'use strict';
+  var results = [];
+  for (var i = 0; i < listOfCandidates.length; i ++) {
+    var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
+    for (var j = 0; j < votes.length; j++) {
+      if (votes[j][listOfCandidates[i]] === listOfCandidates.length) {
+        result.score--;
+      }
+    }
+    results.push(result);
+  }
+  results.sort(function(a, b) {return b.score - a.score;});
+  results[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (results[i].score === results[i - 1].score) {
+      results[i].rank = results[i - 1].rank;
+    }else {
+      results[i].rank = i + 1;
+    }
+  }
+  return results;
+}
+
+function plurality(listOfCandidates, votes) {
+  'use strict';
+  var results = [];
+  for (var i = 0; i < listOfCandidates.length; i ++) {
+    var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
+    for (var j = 0; j < votes.length; j++) {
+      if (votes[j][listOfCandidates[i]] === 1) {
+        result.score++;
+      }
+    }
+    results.push(result);
+  }
+  results.sort(function(a, b) {return b.score - a.score;});
+  results[0].rank = 1;
+  for (i = 1; i < listOfCandidates.length; i++) {
+    if (results[i].score === results[i - 1].score) {
+      results[i].rank = results[i - 1].rank;
+    }else {
+      results[i].rank = i + 1;
+    }
+  }
+  return results;
+}
+
+// Runoff methods
+
+function removeCandidate(currentCandidates, currentVotes, candidateToRemove) {
+  'use strict';
+  currentCandidates.splice(currentCandidates.indexOf(candidateToRemove),1);
+  for (var i = 0; i < currentVotes.length; i++) {
+    var rankOfEliminate = currentVotes[i][candidateToRemove];
+    currentVotes[i][candidateToRemove] = NaN;
+    for (var j = 0; j < currentCandidates.length; j++) {
+      if (currentVotes[i][currentCandidates[j]] > rankOfEliminate) {
+        currentVotes[i][currentCandidates[j]]--;
+      }
+    }
+  }
+}
+
+function av(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      results = results.concat(pluralityResults.reverse());
+      return results.reverse();
+    }
+    var lowestScore = pluralityResults[pluralityResults.length - 1].score;
+    for (var i = pluralityResults.length - 1; i > -1; i--) {
+      if (pluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
+        results.push(pluralityResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
+function avChanges(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var changes = [];
+  while (currentCandidates.length > 0) {
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      return changes;
+    }
+    var lowestScore = pluralityResults[pluralityResults.length - 1].score;
+    var currentVoteHolder = [];
+    for (var i = 0; i < votes.length; i++) {
+      for (var j = 0; j < pluralityResults.length; j++) {
+        if (currentVotes[i][pluralityResults[j].film] === 1) {
+          currentVoteHolder.push(pluralityResults[j].film);
+        }
+      }
+    }
+    for (i = pluralityResults.length - 1; i > -1; i--) {
+      if (pluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, pluralityResults[i].film);
+      }else {
+        break;
+      }
+    }
+    var change = {};
+    for (i = 0; i < currentVoteHolder.length; i++) {
+      for (var j = 0; j < currentCandidates.length; j++) {
+        if (currentVotes[i][currentCandidates[j]] === 1) {
+          if (!change[currentVoteHolder[i]]) {
+            change[currentVoteHolder[i]] = {};
+          }
+          if (!change[currentVoteHolder[i]][currentCandidates[j]]) {
+            change[currentVoteHolder[i]][currentCandidates[j]] = 1;
+          }else {
+            change[currentVoteHolder[i]][currentCandidates[j]]++;
+          }
+        }
+      }
+    }
+    changes.push(change);
+  }
+  return changes;
+}
+
+function coombs(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var antiPluralityResults = antiPlurality(currentCandidates, currentVotes);
+    var pluralityResults = plurality(currentCandidates, currentVotes);
+    if (pluralityResults[0].score > votes.length / 2) {
+      results = results.concat(pluralityResults.reverse());
+      return results.reverse();
+    }
+    var lowestScore = antiPluralityResults[antiPluralityResults.length - 1].score;
+    for (var i = antiPluralityResults.length - 1; i > -1; i--) {
+      if (antiPluralityResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, antiPluralityResults[i].film);
+        results.push(antiPluralityResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}
+
+function baldwin(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
+    var lowestScore = bordaResults[bordaResults.length - 1].score;
+    for (var i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score === lowestScore) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  results.reverse();
+  return results;
+}
+
+function baldwinChanges(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var changes = [];
+  while (currentCandidates.length > 0) {
+    var change = {};
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
+    var lowestScore = bordaResults[bordaResults.length - 1].score;
+    var candidatesToRemove = [];
+    for (var i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score === lowestScore) {
+        candidatesToRemove.push(bordaResults[i].film);
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+      }else {
+        change[bordaResults[i].film] = {};
+        change[bordaResults[i].film][bordaResults[i].film] = bordaResults[i].score;
+      }
+    }
+    if (currentCandidates.length === 0) {
+      return changes;
+    }
+    for (i = 0; i < votes.length; i++) {
+      for (var j = 0; j < candidatesToRemove.length; j++) {
+        for (var k = 0; k < currentCandidates.length; k++) {
+          if (votes[i][currentCandidates[k]] > votes[i][candidatesToRemove[j]]) {
+            if (!change[candidatesToRemove[j]]) {
+              change[candidatesToRemove[j]] = {};
+            }
+            if (!change[candidatesToRemove[j]][currentCandidates[k]]) {
+              change[candidatesToRemove[j]][currentCandidates[k]] = 1;
+            }else {
+              change[candidatesToRemove[j]][currentCandidates[k]]++;
+            }
+          }
+        }
+      }
+    }
+    changes.push(change);
+  }
+  return changes;
+}
+
+function nanson(listOfCandidates, votes) {
+  'use strict';
+  var currentCandidates = listOfCandidates.slice();
+  var currentVotes = JSON.parse(JSON.stringify(votes));
+  var results = [];
+  while (currentCandidates.length > 0) {
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
+    var average = 0;
+    for (var i = 0; i < bordaResults.length; i++) {
+      average += bordaResults[i].score / bordaResults.length;
+    }
+    for (i = bordaResults.length - 1; i > -1; i--) {
+      if (bordaResults[i].score <= average) {
+        removeCandidate(currentCandidates, currentVotes, bordaResults[i].film);
+        results.push(bordaResults[i]);
+      }else {
+        break;
+      }
+    }
+  }
+  return results.reverse();
+}

@@ -64,7 +64,7 @@
           <div id="baldwin">
             <h2 class="algorithm-name">Baldwin</h2>
             <div class="algorithm">
-              <p class="algorithm-description"></p>
+              <p class="algorithm-description">The Baldwin method is a form of runoff voting developed by Joseph M. Baldwin<br><br>In each round the films are ranked according to a Borda count. The film with the lowest score is then eliminated. The films are then ranked according to how long they remained in the process.</p>
               <div id="baldwin-graph" class="algorithm-graphic"></div>
               <div id="baldwin-table" class="algorithm-table"></div>
             </div>
@@ -282,6 +282,12 @@ function drawGraphs(){
     initialScores[pluralityResults[i].film] = pluralityResults[i].score;
   }
   document.getElementById('av-graph').innerHTML = drawRunOffGraph(listOfCandidates, initialScores, avChanges(listOfCandidates, votes));
+  var bordaResults = borda(listOfCandidates, votes);
+  var initialScores = {};
+  for (var i = 0; i < bordaResults.length; i++) {
+    initialScores[bordaResults[i].film] = bordaResults[i].score;
+  }
+  document.getElementById('baldwin-graph').innerHTML = drawRunOffGraph(listOfCandidates, initialScores, baldwinChanges(listOfCandidates, votes));
   document.getElementById('schulze-graph').innerHTML  = drawDirectedGraph(listOfCandidates, distances);
   document.getElementById('distances-table').innerHTML = populateDistances(listOfCandidates, distances);
   document.getElementById('key').innerHTML = generateKey(listOfCandidates);
