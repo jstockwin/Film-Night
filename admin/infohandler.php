@@ -29,19 +29,25 @@ if(!loginCheck($session)){
         echo "[]";
       }
     } else if($wants == 'notification') {
-      switch(get_event($root)) {
-        case "Roll_Call_Start":
-          echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!", "url": "settings.php"}';
-          break;
-        case "Voting_Start":
-          echo '{"title": "Film Night", "body": "Voting is open.", "url": "voting.php"}';
-          break;
-        case "Results_Start":
-          echo '{"title": "Film Night", "body": "The time is now. Results are available.", "url": "results.php"}';
-          break;
-        default:
-          echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
-          break;
+      if(get_event($root, 1800) == "Voting_End"){
+        echo '{"title": "Film Night", "body": "Voting closes in half an hour. You still haven\'t voted.", "url": "voting.php"}';
+      }else if(get_event($root, 3600) == "Voting_End"){
+        echo '{"title": "Film Night", "body": "Voting closes in an hour. You still haven\'t voted.", "url": "voting.php"}';
+      }else{
+        switch(get_event($root)) {
+          case "Roll_Call_Start":
+            echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!", "url": "settings.php"}';
+            break;
+          case "Voting_Start":
+            echo '{"title": "Film Night", "body": "Voting is open.", "url": "voting.php"}';
+            break;
+          case "Results_Start":
+            echo '{"title": "Film Night", "body": "The time is now. Results are available.", "url": "results.php"}';
+            break;
+          default:
+            echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
+            break;
+        }
       }
     }
   }else{

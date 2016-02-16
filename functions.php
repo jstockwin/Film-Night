@@ -88,6 +88,12 @@ function get_emails($root, $event){
     $field = "Reminder_Results";
   }else if($event == "No event"){
     return "Error: Nothing is happening";
+  }else if($event == "Voting_End30"){
+    // handled later
+    $field = 0;
+  }else if($event == "Voting_End60"){
+    // handled later
+    $field = 0;
   }else{
     return "Error: Unhandled event";
   }
@@ -100,6 +106,36 @@ function get_emails($root, $event){
       $to = $to.$row['Email'].", ";
     }
   }
+  if($event == "Voting_End60"){
+    $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting60=1";
+    $result = $conn->query($sql);
+    if($result->num_rows > 0){
+      while($row = $result->fetch_assoc()){
+        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
+        $result2 = $conn->query($sql2);
+        if($result2->num_rows == 0){
+          // Then the user has not yet voted.
+          $to = $to.$row['Email'].", ";
+        }
+      }
+    }
+  }
+  if($event == "Voting_End30"){
+    $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting30=1";
+    $result = $conn->query($sql);
+    if($result->num_rows > 0){
+      while($row = $result->fetch_assoc()){
+        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
+        $result2 = $conn->query($sql2);
+        if($result2->num_rows == 0){
+          // Then the user has not yet voted.
+          $to = $to.$row['Email'].", ";
+        }
+
+      }
+    }
+  }
+
   return $to;
 }
 
@@ -115,6 +151,12 @@ function get_endpoints($root, $event){
     $field = "Reminder_Results";
   }else if($event == "No event"){
     return "Error: Nothing is happening";
+  }else if($event == "Voting_End30"){
+    // handled later
+    $field = 0;
+  }else if($event == "Voting_End60"){
+    // handled later
+    $field = 0;
   }else{
     return "Error: Unhandled event";
   }
@@ -125,6 +167,35 @@ function get_endpoints($root, $event){
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+    }
+  }
+  if($event == "Voting_End60"){
+    $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting60=1";
+    $result = $conn->query($sql);
+    if($result->num_rows > 0){
+      while($row = $result->fetch_assoc()){
+        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
+        $result2 = $conn->query($sql2);
+        if($result2->num_rows == 0){
+          // Then the user has not yet voted.
+          array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+        }
+      }
+    }
+  }
+  if($event == "Voting_End30"){
+    $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting30=1";
+    $result = $conn->query($sql);
+    if($result->num_rows > 0){
+      while($row = $result->fetch_assoc()){
+        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
+        $result2 = $conn->query($sql2);
+        if($result2->num_rows == 0){
+          // Then the user has not yet voted.
+          array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+        }
+
+      }
     }
   }
   return $endpoints;

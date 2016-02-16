@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 }
 
 $event = get_event($root);
-if (get_event($root)=="Roll_Call_Start"){
+if ($event=="Roll_Call_Start"){
   // within 5 minutes of roll call start. Reset attendence of all active users.
   echo "roll call";
   $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
@@ -43,10 +43,12 @@ if (get_event($root)=="Roll_Call_Start"){
     $webPush->sendNotification($endpoint['Endpoint']);
   }
   $webPush->flush();
-}else if($event=="Roll_Call_End"){
+}
+if($event=="Roll_Call_End"){
   // Select films:
   header("location: select-films.php");
-}else if($event=="Voting_Start"){
+}
+if($event=="Voting_Start"){
   // Email users:
   $to = get_emails($root, $event);
   $message = '
@@ -69,7 +71,8 @@ if (get_event($root)=="Roll_Call_Start"){
   }
   $webPush->flush();
 
-}else if($event=="Results_Start"){
+}
+if($event=="Results_Start"){
   // Within 5 minutes of results starting. Notify users.
   echo "results";
   $sql3 = "DROP TABLE votes";
@@ -100,6 +103,42 @@ if (get_event($root)=="Roll_Call_Start"){
   $webPush->flush();
 
   echo "results";
+}
+if(get_event($root, 1800) == "Voting_End"){
+  $to = get_emails($root, "Voting_End30");
+  $message = '
+  <html>
+  <body>
+  <p>Dear HiveMember,</p>
+  <p>You are yet to vote for this weeks film night. Voting closes in half an hour.
+  <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+  <br>
+  <p>Best wishes,<br>The HiveBot&trade;</p>
+  </body>
+  </html>
+  ';
+  mail($to,"Film Night Results", $message, "Content-type:text/html");
+
+  $endpoints = get_endpoints($root, "Voting_End30");
+  /* unpairedbracked TODO: Send endpoints. Need to specify new notifications in infohandler.php */
+}
+if(get_event($root, 3600) == "Voting_End"){
+  $to = get_emails($root, "Voting_End60");
+  $message = '
+  <html>
+  <body>
+  <p>Dear HiveMember,</p>
+  <p>You are yet to vote for this weeks film night. Voting closes in an hour.
+  <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+  <br>
+  <p>Best wishes,<br>The HiveBot&trade;</p>
+  </body>
+  </html>
+  ';
+  mail($to,"Film Night Results", $message, "Content-type:text/html");
+
+  $endpoints = get_endpoints($root, "Voting_End60");
+  /* unpairedbracked TODO: Send endpoints. Need to specify new notifications in infohandler.php */
 }
 
 ?>
