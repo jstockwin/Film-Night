@@ -149,6 +149,10 @@ button {
   z-index: 200;
 }
 
+.card b{
+  vertical-align: bottom;
+}
+
 @keyframes expand {
   0% {
     top: 27.5px;
