@@ -118,27 +118,13 @@ function get_endpoints($root, $event){
   }else{
     return "Error: Unhandled event";
   }
-  $ids = array();
+  $endpoints = array();
   $conn = new mysqli($host, $username, $password, "films");
-  $sql = "SELECT ID FROM users WHERE Active=1 AND ".$field."=1;";
+  $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Active=1 AND ".$field."=1;";
   $result = $conn->query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
-      array_push($ids, $row['ID']);
-    }
-  }else{
-    return "No users for this event";
-  }
-  $endpoints = array();
-  foreach($ids as &$id){
-    $sql2 = "SELECT * FROM endpoints WHERE ID='".$id."';";
-    $result2 = $conn->query($sql2);
-    if($result2->num_rows > 0){
-      while($row = $result2->fetch_assoc()){
-        array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
-      }
-    }else{
-      // No endpoint for this user
+      array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
     }
   }
   return $endpoints;

@@ -65,8 +65,7 @@ if (get_event($root)=="Roll_Call_Start"){
   $endpoints = get_endpoints($root, $event);
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
-    error_log(print_r($endpoint, TRUE));
-    $webPush->sendNotification($endpoint);
+    $webPush->sendNotification($endpoint['Endpoint']);
   }
   $webPush->flush();
 
@@ -96,8 +95,7 @@ if (get_event($root)=="Roll_Call_Start"){
   $endpoints = get_endpoints($root, $event);
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
-    error_log(print_r($endpoint, TRUE));
-    $webPush->sendNotification($endpoint);
+    $webPush->sendNotification($endpoint['Endpoint']);
   }
   $webPush->flush();
 
