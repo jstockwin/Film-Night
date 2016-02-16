@@ -28,9 +28,8 @@ if(isset($_POST['results'])){
 if(isset($_POST['voting'])){
   $voting=1;
 }
-if($_POST['rollCall']=="Yes"){
-  $rollCall=1;
-}else{
+$rollCall = 1;
+if(isset($_POST['rollCall']) && $_POST['rollCall']!="yes"){
   $rollCall=0;
 }
 if(session_status()== PHP_SESSION_NONE){
