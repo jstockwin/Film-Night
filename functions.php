@@ -78,7 +78,9 @@ function get_event($root, $advance = 0, $tol = 300){
 
 function get_emails($root, $event){
   include $root.'../../database.php';
-  if($event == "Roll_Call_Start"){
+  if($event == "All"){
+    $field = 1;
+  }else if($event == "Roll_Call_Start"){
     $field = "Reminder_Attending";
   }else if($event == "Voting_Start"){
     $field = "Reminder_Voting";
@@ -99,6 +101,33 @@ function get_emails($root, $event){
     }
   }
   return $to;
+}
+
+function get_endpoints($root, $event){
+  include $root.'../../database.php';
+  if($event == "All"){
+    $field = 1;
+  }else if($event == "Roll_Call_Start"){
+    $field = "Reminder_Attending";
+  }else if($event == "Voting_Start"){
+    $field = "Reminder_Voting";
+  }else if($event == "Results_Start"){
+    $field = "Reminder_Results";
+  }else if($event == "No event"){
+    return "Error: Nothing is happening";
+  }else{
+    return "Error: Unhandled event";
+  }
+  $endpoints = array();
+  $conn = new mysqli($host, $username, $password, "films");
+  $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Active=1 AND ".$field."=1;";
+  $result = $conn->query($sql);
+  if($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+    }
+  }
+  return $endpoints;
 }
 
 

@@ -51,7 +51,14 @@ Which email address would you like to receive these email to?<br>
 <input type="submit" value="Submit">
 </address>
 </form>
-<button id="#registerWorker" type="button" onClick="registerServiceWorker()" disabled>Subscribe!</button>
+<input type="text" id="#registerName" value="<?php echo gethostname();?>"></input>
+<button id="#registerWorker" type="button">Subscribe!</button>
+<br>
+<table id='#endpointTable'>
+  <tr>
+    <th colspan=2>Notification Recipients</th>
+  </tr>
+</table>
 <script src="settings.js"></script>
 </div>
 <?php endif; ?>
