@@ -234,7 +234,7 @@ function borda(listOfCandidates, votes, topScore) {
   // Used in baldwin and nanson. Note that topScore is optional and to make scoring on baldwin and nanson nicer.
   'use strict';
   if (topScore === null || topScore === undefined) {
-    topScore = listOfCandidates.length + 1;
+    topScore = listOfCandidates.length;
   }
   var scores = [];
   for (var k = 0; k < listOfCandidates.length; k++) {
@@ -244,7 +244,7 @@ function borda(listOfCandidates, votes, topScore) {
   for (var i = 0; i < listOfCandidates.length; i++) {
     for (var j = 0; j < votes.length; j++) {
       if (votes[j][scores[i].film] !== undefined && votes[j][scores[i].film] !== null) {
-        scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore;
+        scores[i].score = scores[i].score - votes[j][scores[i].film] + topScore + 1;
       }
     }
   }
@@ -426,7 +426,7 @@ function baldwin(listOfCandidates, votes) {
   var currentVotes = JSON.parse(JSON.stringify(votes));
   var results = [];
   while (currentCandidates.length > 0) {
-    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
     var lowestScore = bordaResults[bordaResults.length - 1].score;
     for (var i = bordaResults.length - 1; i > -1; i--) {
       if (bordaResults[i].score === lowestScore) {
@@ -447,7 +447,7 @@ function nanson(listOfCandidates, votes) {
   var currentVotes = JSON.parse(JSON.stringify(votes));
   var results = [];
   while (currentCandidates.length > 0) {
-    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length + 1);
+    var bordaResults = borda(currentCandidates, currentVotes, listOfCandidates.length);
     var average = 0;
     for (var i = 0; i < bordaResults.length; i++) {
       average += bordaResults[i].score / bordaResults.length;
