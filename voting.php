@@ -1,6 +1,6 @@
 <?php include 'setup.php';?>
 <?php require $root.'../../database.php'; ?>
-<?php include 'head.php'; head('Film Night Voting', '<link rel="stylesheet" type="text/css" href="extrastyles.css">');?>
+<?php include 'head.php'; head('Film Night Voting');?>
 <body>
 <?php include 'top-nav.php'?>
 <?php if(($permission != FALSE && status($root) =="voting") || $permission == "admin"): ?>

@@ -1,5 +1,5 @@
 <?php include 'setup.php';?>
-<?php include 'head.php'; head('Film Night Settings', '<link rel="stylesheet" type="text/css" href="extrastyles.css">');?>
+<?php include 'head.php'; head('Film Night Settings');?>
 <body>
 <?php include 'top-nav.php' ?>
 <?php if($permission != FALSE): ?>

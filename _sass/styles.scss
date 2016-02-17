@@ -50,6 +50,7 @@ $header-height: 70px;
 
 * {
   font-size: 1rem;
+  vertical-align:middle;
 }
 
 div {
@@ -69,6 +70,71 @@ html, body {
   padding: 0;
   width: 100%;
 }
+
+.falling{
+animation-name: fall;
+animation-duration: 20s;
+animation-iteration-count: infinite;
+animation-timing-function: linear;
+position: absolute;
+height: 50px;
+}
+
+@keyframes fall{
+0%{transform:translateY(0) translateX(-10px) scale(1) rotate(10deg)}
+10%{transform:translateY(20vh) translateX(-30px) scale(1.1) rotate(20deg);}
+20%{transform:translateY(50vh) translateX(20px) scale(1) rotate(10deg);}
+30%{transform:translateY(60vh) translateX(-10px) scale(0.9) rotate(30deg);}
+50%{transform:translateY(80vh) translateX(30px) scale(1.2) rotate(45deg);}
+60%{transform:translateY(120vh) translateX(-10px) scale(1.4) rotate(0deg);}
+80%{transform:translateY(140vh) translateX(-20px) scale(1.2) rotate(-45deg);}
+100%{transform:translateY(160vh) translateX(-0px) scale(1) rotate(0deg);}
+}
+
+input, .card {
+  position:relative;
+  z-index:2;
+}
+
+.card {
+  padding:3%;
+  padding-bottom:1%;
+  padding-top:1%;
+  box-shadow:0 1px 2px #aaa;
+  background:white;
+  width:80%;
+  margin:0px auto;
+  margin-bottom:20px;
+  border-radius:3px;
+  user-select:none;
+  display:inline-block;
+  h1 {
+  font-size:2rem;
+  font-weight:200;
+  }
+  h2 {
+  font-size:.9rem;
+  line-height:2.5;
+  color:gray;
+  font-weight:400;
+  }
+  strong {
+    font-weight:300;
+    color:#539D00;
+  }
+}
+
+
+.picture {
+  width:150px;
+  height:222px;
+  display: inline-block;
+  float:left;
+  background:whitesmoke;
+  margin: 0px;
+  margin-right:20px;
+  }
+
 
 #background {
   margin-top: $header-height;
