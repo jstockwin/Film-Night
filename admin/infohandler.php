@@ -33,11 +33,11 @@ if(!loginCheck($session)){
         echo '{"title": "Film Night", "body": "Voting closes in an hour. You still haven\'t voted.", "url": "voting.php"}';
       }else{
         $now_events = get_event($root);
-        if(in_array("Roll_Call_Start", $now_events) {
+        if(in_array("Roll_Call_Start", $now_events)) {
             echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!", "url": "settings.php"}';
-        } else if(in_array("Voting_Start", $now_events) {
+        } else if(in_array("Voting_Start", $now_events)) {
             echo '{"title": "Film Night", "body": "Voting is open.", "url": "voting.php"}';
-        } else if(in_array("Results_Start", $now_events) {
+        } else if(in_array("Results_Start", $now_events)) {
             echo '{"title": "Film Night", "body": "The time is now. Results are available.", "url": "results.php"}';
         } else {
             echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
