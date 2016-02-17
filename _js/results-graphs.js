@@ -21,13 +21,15 @@ function drawRunOffGraph(listOfCandidates, initialScores, changeInScores) {
     var width = widthOfGraph * initialScores[listOfCandidates[i]] / totalScore;
     barProperties.push(x);
     var rect = '<rect x="' + x + '" y="' + y + '" width="' + width + '" height="' + heightOfCount + '" fill="' + nodeColors[i % nodeColors.length] + '"/>';
+    var text = '<text x="' + (x + width / 2) + '" y="' + (y + heightOfCount / 2) + '" text-anchor="middle"  fill="white"  style="alignment-baseline:central; dominant-baseline: central;font-size:' + heightOfCount / 2 + ' !important" font-family="Open Sans">' + String.fromCharCode(65 + i) + '</text>';
     x = x + width;
-    svgBody = svgBody + rect;
+    svgBody = svgBody + rect + text;
   }
   y = heightOfCount;
   for (i = 0; i < changeInScores.length; i ++) {
     x = 0;
     var count = [];
+    var topFlows = "";
     for (var j = 0; j < listOfCandidates.length; j++) {
       for (var k = 0; k < listOfCandidates.length; k++) {
         if (changeInScores[i][listOfCandidates[k]] && changeInScores[i][listOfCandidates[k]][listOfCandidates[j]]) {
@@ -36,7 +38,12 @@ function drawRunOffGraph(listOfCandidates, initialScores, changeInScores) {
           var path = '<path opacity="0.8" stroke-width="' + strokeWidth + '" stroke="' + nodeColors[k % nodeColors.length] + '" fill="none" d="M' + (barProperties[k] + strokeWidth / 2) + ' ' + y + ' c ' + cubicBezier.x1 * deltaX + ' ' + cubicBezier.y1 * heightOfChange + ' ' + cubicBezier.x2 * deltaX + ' ' + cubicBezier.y2 * heightOfCount + ' ' + deltaX + ' ' + heightOfChange + '"/>';
           x = x + strokeWidth;
           barProperties[k] = barProperties[k] + strokeWidth;
-          svgBody = svgBody + path;
+          if (j === k) {
+            svgBody = svgBody + path;
+          }else {
+            topFlows = topFlows + path;
+          }
+
           if (count[j]) {
             count[j] = count[j] + changeInScores[i][listOfCandidates[k]][listOfCandidates[j]];
           }else {
@@ -45,19 +52,19 @@ function drawRunOffGraph(listOfCandidates, initialScores, changeInScores) {
         }
       }
     }
+    svgBody = svgBody + topFlows;
     barProperties = [];
     y = y + heightOfChange;
     x = 0;
     for (j = 0; j < listOfCandidates.length; j++) {
+      barProperties.push(x);
       if(count[j]){
         width = widthOfGraph * count[j] / totalScore;
-      }else{
-        width = 0;
+        var rect = '<rect x="' + x + '" y="' + y + '" width="' + width + '" height="' + heightOfCount + '" fill="' + nodeColors[j % nodeColors.length] + '"/>';
+        var text = '<text x="' + (x + width / 2) + '" y="' + (y + heightOfCount / 2) + '" text-anchor="middle"  fill="white"  style="alignment-baseline:central; dominant-baseline: central;font-size:' + heightOfCount / 2 + ' !important" font-family="Open Sans">' + String.fromCharCode(65 + j) + '</text>';
+        x = x + width;
+        svgBody = svgBody + rect + text;
       }
-      barProperties.push(x);
-      var rect = '<rect x="' + x + '" y="' + y + '" width="' + width + '" height="' + heightOfCount + '" fill="' + nodeColors[j % nodeColors.length] + '"/>';
-      x = x + width;
-      svgBody = svgBody + rect;
     }
     y = y + heightOfCount;
   }
