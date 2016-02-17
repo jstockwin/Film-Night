@@ -19,34 +19,28 @@ if(!loginCheck($session)){
     if($wants == 'endpoints') {
       $sql = 'SELECT * FROM endpoints WHERE ID="'.$_SESSION['ID'].'";';
       $result = $conn->query($sql);
+      $endpoints = array();
       if ($result->num_rows > 0) {
-        $endpoints = array();
         while($row = $result->fetch_assoc()){
           array_push($endpoints, $row);
         }
-        echo json_encode($endpoints);
-      }else{
-        echo "[]";
       }
+      echo json_encode($endpoints);
     } else if($wants == 'notification') {
-      if(get_event($root, 1800) == "Voting_End"){
+      if(in_array("Voting_End", get_event($root, 1800))){
         echo '{"title": "Film Night", "body": "Voting closes in half an hour. You still haven\'t voted.", "url": "voting.php"}';
-      }else if(get_event($root, 3600) == "Voting_End"){
+      }else if(in_array("Voting_End", get_event($root, 3600))){
         echo '{"title": "Film Night", "body": "Voting closes in an hour. You still haven\'t voted.", "url": "voting.php"}';
       }else{
-        switch(get_event($root)) {
-          case "Roll_Call_Start":
+        $now_events = get_event($root);
+        if(in_array("Roll_Call_Start", $now_events) {
             echo '{"title": "Film Night", "body": "Coming to film night this week? Roll Call!", "url": "settings.php"}';
-            break;
-          case "Voting_Start":
+        } else if(in_array("Voting_Start", $now_events) {
             echo '{"title": "Film Night", "body": "Voting is open.", "url": "voting.php"}';
-            break;
-          case "Results_Start":
+        } else if(in_array("Results_Start", $now_events) {
             echo '{"title": "Film Night", "body": "The time is now. Results are available.", "url": "results.php"}';
-            break;
-          default:
+        } else {
             echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
-            break;
         }
       }
     }
