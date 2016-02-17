@@ -53,27 +53,30 @@ function get_event($root, $advance = 0, $tol = 300){
   $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT * FROM timings";
   $result = $conn->query($sql);
+  $events = array();
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       if (strtotime($row["Roll_Call_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Roll_Call_Start"]) + $tol){
-        return "Roll_Call_Start";
-      }else if (strtotime($row["Roll_Call_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Roll_Call_End"]) + $tol){
-        return "Roll_Call_End";
-      }else if (strtotime($row["Voting_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_Start"]) + $tol){
-        return "Voting_Start";
-      }else if (strtotime($row["Voting_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_End"]) + $tol){
-        return "Voting_End";
-      }else if (strtotime($row["Results_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_Start"]) + $tol){
-        return "Results_Start";
-      }else if (strtotime($row["Results_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_End"]) + $tol){
-        return "Results_End";
+        array_push($events,"Roll_Call_Start");
+      }
+      if (strtotime($row["Roll_Call_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Roll_Call_End"]) + $tol){
+        array_push($events,"Roll_Call_End");
+      }
+      if (strtotime($row["Voting_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_Start"]) + $tol){
+        array_push($events,"Voting_Start");
+      }
+      if (strtotime($row["Voting_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Voting_End"]) + $tol){
+        array_push($events,"Voting_End");
+      }
+      if (strtotime($row["Results_Start"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_Start"]) + $tol){
+        array_push($events,"Results_Start");
+      }
+      if (strtotime($row["Results_End"]) - $tol < time() + $advance && time() + $advance < strtotime($row["Results_End"]) + $tol){
+        array_push($events,"Results_End");
       }
     }
-  }else{
-    return "Error";
-
   }
-  return "No event";
+  return $events;
 }
 
 function get_emails($root, $event){

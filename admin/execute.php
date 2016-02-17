@@ -14,13 +14,13 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$event = get_event($root);
-if ($event=="Roll_Call_Start"){
+$events = get_event($root);
+if (in_array("Roll_Call_Start",$events)){
   // within 5 minutes of roll call start. Reset attendence of all active users.
   echo "roll call";
   $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
   $result2 = $conn->query($sql2);
-  $to = get_emails($root, $event);
+  $to = get_emails($root, "Roll_Call_Start");
   $message = '
   <html>
   <body>
@@ -37,20 +37,20 @@ if ($event=="Roll_Call_Start"){
   mail($to, "Film Night Attendance", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, $event);
+  $endpoints = get_endpoints($root, "Roll_Call_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
   }
   $webPush->flush();
 }
-if($event=="Roll_Call_End"){
+if(in_array("Roll_Call_End",$events)){
   // Select films:
   header("location: select-films.php");
 }
-if($event=="Voting_Start"){
+if(in_array("Voting_Start",$events)){
   // Email users:
-  $to = get_emails($root, $event);
+  $to = get_emails($root, "Voting_Start");
   $message = '
   <html>
   <body>
@@ -64,7 +64,7 @@ if($event=="Voting_Start"){
   mail($to,"Film Night Voting", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, $event);
+  $endpoints = get_endpoints($root, "Voting_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
@@ -72,7 +72,7 @@ if($event=="Voting_Start"){
   $webPush->flush();
 
 }
-if($event=="Results_Start"){
+if(in_array("Results_Start",$events)){
   // Within 5 minutes of results starting. Notify users.
   echo "results";
   $sql3 = "DROP TABLE votes";
@@ -81,7 +81,7 @@ if($event=="Results_Start"){
   $result3 = $conn->query($sql3);
   $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
   $result3 = $conn->query($sql3);
-  $to = get_emails($root, $event);
+  $to = get_emails($root, "Results_Start");
   $message = '
   <html>
   <body>
@@ -95,7 +95,7 @@ if($event=="Results_Start"){
   mail($to,"Film Night Results", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, $event);
+  $endpoints = get_endpoints($root, "Results_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
@@ -105,7 +105,7 @@ if($event=="Results_Start"){
   echo "results";
 }
 if(status($root)=="voting"){
-  if(get_event($root, 1800) == "Voting_End"){
+  if(in_array("Voting_End",get_event($root, 1800))){
     $to = get_emails($root, "Voting_End30");
     $message = '
     <html>
@@ -128,7 +128,7 @@ if(status($root)=="voting"){
     }
     $webPush->flush();
   }
-  if(get_event($root, 3600) == "Voting_End"){
+  if(in_array("Voting_End",get_event($root, 3600))){
     $to = get_emails($root, "Voting_End60");
     $message = '
     <html>
