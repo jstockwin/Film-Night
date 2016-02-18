@@ -7,7 +7,6 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
   <div id="page-tabs">
     <?php echo "<!-- ".$root2." ".$_SERVER['PHP_SELF']." -->";?>
     <div id="indicator"></div>
-    <a href="index.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."index.php"){echo 'data-active="true"';} ?>>Index</a>
     <a href="nominate.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."nominate.php"){echo 'data-active="true"';} ?>>Add Films</a>
     <a href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
     <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
