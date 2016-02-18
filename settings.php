@@ -53,18 +53,39 @@ if(status($root)=="rollCall"){
     </select><br>';
 
 }?>
-Tick which events you would like to receive emails for:<br>
-<input type="checkbox" name="attending" value="attending" <?php if($attending=="1"){echo "checked=true";}?>> At the start of a roll call<br>
-<input type="checkbox" name="voting" value="voting" <?php if($voting=="1"){echo "checked=true";}?>> When voting begins<br>
-<input type="checkbox" name="voting60" value="voting60" <?php if($voting60=="1"){echo "checked=true";}?>> An hour before voting closes, if you have not yet voted<br>
-<input type="checkbox" name="voting30" value="voting30" <?php if($voting30=="1"){echo "checked=true";}?>> Half an hour before voting closes, if you have not yet voted<br>
-<input type="checkbox" name="results" value="results" <?php if($results=="1"){echo "checked=true";}?>> When results are made available<br>
-Tick which events you would like to recieve browser notifications for:<br>
-<input type="checkbox" name="attendingNotification" value="attendingNotification" <?php if($attendingNotification=="1"){echo "checked=true";}?>> At the start of a roll call<br>
-<input type="checkbox" name="votingNotification" value="votingNotification" <?php if($votingNotification=="1"){echo "checked=true";}?>> When voting begins<br>
-<input type="checkbox" name="voting60Notification" value="voting60Notification" <?php if($voting60Notification=="1"){echo "checked=true";}?>> An hour before voting closes, if you have not yet voted<br>
-<input type="checkbox" name="voting30Notification" value="voting30Notification" <?php if($voting30Notification=="1"){echo "checked=true";}?>> Half an hour before voting closes, if you have not yet voted<br>
-<input type="checkbox" name="resultsNotification" value="resultsNotification" <?php if($resultsNotification=="1"){echo "checked=true";}?>> When results are made available<br>
+<p>If you wish to update your settings then please fill in the form below. Make sure you click the Submit button or your changes will not be saved</p>
+<table>
+  <tr>
+    <td>Event</td><td>Email<br>Notification</td><td>Broswer<br>Notification</td>
+  </tr>
+  <tr>
+    <td>At the start of a roll call</td>
+    <td><input type="checkbox" name="attending" value="attending" <?php if($attending=="1"){echo "checked=true";}?>></td>
+    <td><input type="checkbox" name="attendingNotification" value="attendingNotification" <?php if($attendingNotification=="1"){echo "checked=true";}?>></td>
+  </tr>
+  <tr>
+    <td>When voting begins</td>
+    <td><input type="checkbox" name="voting" value="voting" <?php if($voting=="1"){echo "checked=true";}?>></td>
+    <td><input type="checkbox" name="votingNotification" value="votingNotification" <?php if($votingNotification=="1"){echo "checked=true";}?>></td>
+  </tr>
+  <tr>
+    <td>An hour before voting closes, if you have not yet voted</td>
+    <td><input type="checkbox" name="voting60" value="voting60" <?php if($voting60=="1"){echo "checked=true";}?>></td>
+    <td><input type="checkbox" name="voting60Notification" value="voting60Notification" <?php if($voting60Notification=="1"){echo "checked=true";}?>></td>
+  </tr>
+  <tr>
+    <td>Half an hour before voting closes, if you have not yet voted</td>
+    <td><input type="checkbox" name="voting30" value="voting30" <?php if($voting30=="1"){echo "checked=true";}?>></td>
+    <td><input type="checkbox" name="voting30Notification" value="voting30Notification" <?php if($voting30Notification=="1"){echo "checked=true";}?>></td>
+  </tr>
+  <tr>
+    <td>When results are made available</td>
+    <td><input type="checkbox" name="results" value="results" <?php if($results=="1"){echo "checked=true";}?>></td>
+    <td><input type="checkbox" name="resultsNotification" value="resultsNotification" <?php if($resultsNotification=="1"){echo "checked=true";}?>></td>
+  </tr>
+</table>
+ <br>
+
 Which email address would you like to receive these email to?<br>
 <input type="text" name="email" value=<?php echo '"'.$email.'"' ?>><br>
 <input type="submit" value="Submit">
