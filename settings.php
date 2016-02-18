@@ -4,8 +4,6 @@
 <?php include 'top-nav.php' ?>
 <?php if($permission != FALSE): ?>
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
-<div id="container">
-
 <?php
 if(session_status()== PHP_SESSION_NONE){
   session_start();
@@ -39,8 +37,8 @@ if(session_status()== PHP_SESSION_NONE){
   $conn->close();
 
 
-
-echo "<form action='admin/settingshandler.php' method='POST'>";
+echo '<div id="background" style="width:94%;background:#d5d5d5;padding:3%;height:100%;">';
+echo "<form action='admin/settingshandler.php' method='POST' class='card'>";
 if(status($root)=="rollCall"){
   echo 'Will you be attending this weeks film night?<br>
   <select name="rollCall">
@@ -91,12 +89,16 @@ Which email address would you like to receive these email to?<br>
 <input type="submit" value="Submit">
 </address>
 </form>
+
+<div class='card' id='#registerCard'>
+  <p>Name this device and click subscribe to recieve push notifications to your browser</p>
 <input type="text" id="#registerName" value="Device Name"></input>
 <button id="#registerWorker" type="button">Subscribe!</button>
-<br>
-<table id='#endpointTable'>
+</div>
+
+<table id='#endpointTable' class='card'>
   <tr>
-    <th colspan=2>Notification Recipients</th>
+    <th colspan=2>Notification Recipients:</th>
   </tr>
 </table>
 <script src="settings.js"></script>

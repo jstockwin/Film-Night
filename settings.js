@@ -1,5 +1,6 @@
 var subscriptionButton = document.getElementById('#registerWorker');
 var subscriptionName = document.getElementById('#registerName');
+var subscriptionCard = document.getElementById('#registerCard');
 var table = document.getElementById('#endpointTable');
 var endpoints = [];
 var thisIndex = -1;
@@ -143,8 +144,7 @@ function showSubscribeButton() {
   subscriptionButton.onclick = subscribe;
   subscriptionButton.textContent = 'Click to Subscribe';
   subscriptionButton.removeAttribute('disabled');
-  subscriptionButton.style.display = "inline-block";
-  subscriptionName.style.display = "inline-block";
+  subscriptionCard.style.display = "inline-block";
 }
 
 function hideSubscribeButton() {
@@ -152,6 +152,5 @@ function hideSubscribeButton() {
   subscriptionButton.onclick = "";
   subscriptionButton.textContent = 'Button disabled';
   subscriptionButton.disabled = true;
-  subscriptionButton.style.display = "none";
-  subscriptionName.style.display = "none";
+  subscriptionCard.style.display = "none";
 }
