@@ -5,6 +5,15 @@ var table = document.getElementById('#endpointTable');
 var endpoints = [];
 var thisIndex = -1;
 
+navigator.sayswho= (function(){
+    var N= navigator.appName, ua= navigator.userAgent, tem;
+    var M= ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+    M= M? [M[1], M[2]]: [N, navigator.appVersion,'-?'];
+    return M;
+})();
+
+subscriptionName.value = navigator.sayswho[0] + ', ' + navigator.platform;
 // As subscription object is needed in few places let's create a method which
 // returns a promise.
 function getSubscription() {
@@ -25,7 +34,7 @@ function addTableRow(endpointData, isThisBrowser) {
   if(isThisBrowser) {
       unregisterCell.addEventListener('click', function(){unsubscribeThis()});
   } else {
-      unregisterCell.addEventListener('click', function(){unsubscribe(id)});
+      unregisterCell.addEventListener('click', function(ev){unsubscribe(ev, id)});
   }
 }
 
@@ -92,6 +101,7 @@ function subscribe() {
         location.reload();
       } else {
         hideSubscribeButton();
+        thisIndex = data.Identifier;
         addTableRow(data, true);
       }
     });
@@ -105,30 +115,25 @@ function subscribe() {
 function unsubscribeThis() {
   getSubscription().then(function(subscription) {
     return subscription.unsubscribe()
-      .then(function() {
-        if(table.rows[1].cells[1].firstChild.id == "registerDelete"+thisIndex)
-        {table.deleteRow(1);}
-        console.log('Unsubscribed', subscription.endpoint);
-        return fetch('admin/unsubscribehandler.php', {
-          method: 'post',
-          credentials: 'same-origin',
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded'
-          },
-          body: 'key=' + thisIndex
-        });
-      });
-  }).then(showSubscribeButton);
+  }).then(function() {
+    console.log('Unsubscribed', thisIndex);
+    return doUnsubscribe(1, thisIndex);
+  }).then(function() {
+    showSubscribeButton();
+    thisIndex = -1
+  });
 }
 
 // Changed by Jake, this now only removes the details from our database
 // It removes the entry corresponding to the given primary key, but only if
 // the ID of that entry is the same as the session ID.
 // No longer unsubscribe from google.
-function unsubscribe(key) {
+function unsubscribe(ev, key) {
     console.log('Unsubscribed', key);
-    var name = 'registerDelete' + key;
-    document.getElementById(name).style.display = "none";
+    doUnsubscribe(ev.target.parentNode.parentNode.rowIndex, key);
+}
+
+function doUnsubscribe(row, key) {
     return fetch('admin/unsubscribehandler.php', {
       method: 'post',
       credentials: 'same-origin',
@@ -136,6 +141,8 @@ function unsubscribe(key) {
         'Content-type': 'application/x-www-form-urlencoded'
       },
       body: 'key=' + key
+    }).then(function() {
+      table.deleteRow(row);
     });
 }
 
