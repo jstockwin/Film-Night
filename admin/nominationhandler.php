@@ -65,7 +65,7 @@ if(!loginCheck($session)){
           $result = $conn->query($sql);
           if($conn->affected_rows==0){
             // film is not already in the list.
-            $sql = 'INSERT INTO nominations VALUES ("'.$film->{'Title'}.'",'.$film->{'Year'}.', 1, "'.$_SESSION{'Email'}.',","'.$_SESSION{'Email'}.',");';
+            $sql = 'INSERT INTO nominations VALUES ("'.$film->{'Title'}.'",'.$film->{'Year'}.', 1, "'.$_SESSION{'ID'}.',","'.$_SESSION{'ID'}.',");';
             $result = $conn->query($sql);
             if($result == 1){
               echo "Added a new film: ".$film->{'Title'}."\n";
@@ -84,7 +84,7 @@ if(!loginCheck($session)){
           $result = $conn->query($sql);
           if($conn->affected_rows==0){
             // film is not already in the list.
-            $sql = 'INSERT INTO nominations VALUES ("'.$film->{'Title'}.'",'.$film->{'Year'}.', 1,"'.$_SESSION{'Email'}.',","");';
+            $sql = 'INSERT INTO nominations VALUES ("'.$film->{'Title'}.'",'.$film->{'Year'}.', 1,"'.$_SESSION{'ID'}.',","");';
             $result = $conn->query($sql);
             if($result == 1){
               echo "Added a new film: ".$film->{'Title'}."\n";
