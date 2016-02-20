@@ -76,7 +76,7 @@ $result = $conn->query($sql);
 echo $result;
 echo $sql;
 if($result == 1){
-  //header('location: ../settings.php');
+  header('location: ../settings.php');
 }else{
   echo "Something went wrong. Shout at Jake<br>";
   echo "SQL Call: ".$sql."<br>";
