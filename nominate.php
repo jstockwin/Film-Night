@@ -73,7 +73,7 @@
     if(!filmYear.match(/^\d+$/)){
       filmYear = "";
     }
-    var href = 'https://www.omdbapi.com/?s=' + filmName +'&y=' + filmYear + '&plot=short&r=json';
+    var href = 'https://www.omdbapi.com/?s=' + filmName +'&y=' + filmYear + '&plot=short&r=json&type=movie';
     var xhr = new XMLHttpRequest();
     xhr.open('GET',href);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
