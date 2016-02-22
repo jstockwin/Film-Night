@@ -111,6 +111,7 @@
       if(searchResults[i].Poster == "N/A") {
         searchResults[i].Poster = "assets/icons/nothing.png";
       } else {
+        searchResults[i].Poster = searchResults[i].Poster.replace('http://', 'https://');
       }
       html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false" data-veto="false">';
       html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleSelected(this.parentElement)" draggable="false">';
