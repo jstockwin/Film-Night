@@ -20,7 +20,7 @@ function getSubscription() {
   return navigator.serviceWorker.ready
     .then(function(registration) {
       return registration.pushManager.getSubscription();
-    });
+    }, function(error){console.log('Service worker failed to ready: ', error)});
 }
 
 function addTableRow(endpointData, isThisBrowser) {
@@ -44,7 +44,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
     .then(function() {
       console.log('service worker registered');
-      subscriptionButton.removeAttribute('disabled');
     });
   getSubscription().then(function(subscription) {
     fetch('admin/infohandler.php?wants=endpoints', {credentials: 'same-origin'}).then(function(response) {
@@ -71,10 +70,8 @@ if ('serviceWorker' in navigator) {
         if(subscription) {subscription.unsubscribe()};
         showSubscribeButton();
       }
-    }).catch(function() {
-      console.log('Couldn\'t contact server');
-    });
-  });
+    }, function(error){console.log(error)});
+  }, function(error){console.log('Getting sub failed', error)});
 }
 
 // Get the `registration` from service worker and create a new
