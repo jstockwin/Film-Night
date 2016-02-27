@@ -75,8 +75,8 @@ if ('serviceWorker' in navigator) {
     });
   })
 } else {
-  document.getElementById('#registerCard').style='display: none';
-  document.getElementById('#endpointTable').style='display: none';
+  document.getElementById('#registerCard').style.display = 'none';
+  document.getElementById('#endpointTable').style.display = 'none';
 }
 
 // Get the `registration` from service worker and create a new
