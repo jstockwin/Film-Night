@@ -161,7 +161,14 @@ function get_emails($event){
 }
 
 function get_user_endpoints($user){
-  return query('SELECT * FROM endpoints WHERE ID="'.$user.'";');
+  $result = query('SELECT * FROM endpoints WHERE ID="'.$user.'";');
+  $endpoints = array();
+  if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()){
+      array_push($endpoints, $row);
+    }
+  }
+  return $endpoints;
 }
 
 function get_endpoints($event){
