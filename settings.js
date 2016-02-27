@@ -14,13 +14,15 @@ navigator.sayswho= (function(){
 })();
 
 subscriptionName.value = navigator.sayswho[0] + ', ' + navigator.platform;
+
 // As subscription object is needed in few places let's create a method which
 // returns a promise.
 function getSubscription() {
-  return navigator.serviceWorker.ready
-    .then(function(registration) {
-      return registration.pushManager.getSubscription();
-    });
+  return navigator.serviceWorker.ready.then(function(registration) {
+    return registration.pushManager.getSubscription();
+  }).catch(function(error) {
+    console.log("Couldn't get subscription: ", error)
+  });
 }
 
 function addTableRow(endpointData, isThisBrowser) {
@@ -41,18 +43,15 @@ function addTableRow(endpointData, isThisBrowser) {
 // Register service worker and check the initial subscription state.
 // Set the UI (button) according to the status.
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(function() {
-      console.log('service worker registered');
-      subscriptionButton.removeAttribute('disabled');
-    });
-  getSubscription().then(function(subscription) {
-    fetch('admin/infohandler.php?wants=endpoints', {credentials: 'same-origin'}).then(function(response) {
+  navigator.serviceWorker.register('service-worker.js').then(function() {
+    console.log('service worker registered');
+    return getSubscription();
+  }).then(function(subscription) {
+    return fetch('admin/infohandler.php?wants=endpoints', {credentials: 'same-origin'}).then(function(response) {
       return response.json();
     }).then(function(endpointList) {
       endpoints = endpointList;
       localEndpoint = subscription ? subscription.endpoint : "No local subscription";
-      console.log(endpoints);
       console.log(localEndpoint);
       endpoints.forEach(function(endpointData){
         console.log(endpointData);
@@ -71,10 +70,10 @@ if ('serviceWorker' in navigator) {
         if(subscription) {subscription.unsubscribe()};
         showSubscribeButton();
       }
-    }).catch(function() {
-      console.log('Couldn\'t contact server');
+    }).catch(function(error) {
+      console.log("Something went wrong:", error);
     });
-  });
+  })
 }
 
 // Get the `registration` from service worker and create a new
