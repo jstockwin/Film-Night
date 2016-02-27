@@ -74,6 +74,9 @@ if ('serviceWorker' in navigator) {
       console.log("Something went wrong:", error);
     });
   })
+} else {
+  document.getElementById('#registerCard').style.display = 'none';
+  document.getElementById('#endpointTable').style.display = 'none';
 }
 
 // Get the `registration` from service worker and create a new

@@ -1,15 +1,14 @@
 <?php
 ob_start();
 require '../setup.php';
-require $GLOBALS['root'].'../../database.php';
+require $root.'../../database.php';
 ob_end_clean(); // supresses output.
 
 if(isset($_GET['wants'])){
   $wants=$_GET['wants'];
   if($wants == 'endpoints') {
-    if(!loginCheck($session)){
-      $endpoints = array();
-    }else{
+    $endpoints = array();
+    if(loginCheck($session)){
       $endpoints = get_user_endpoints($_SESSION['ID']);
     }
     echo json_encode($endpoints);
@@ -31,6 +30,7 @@ if(isset($_GET['wants'])){
       }
     }
   }
+} else {
+  echo '{"error": "Nothing Received"}';
 }
-echo '{"error": "Nothing Received"}'
 ?>
