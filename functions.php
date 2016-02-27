@@ -2,30 +2,24 @@
 
 function dbconnect(){
   // Ensures that there is a database connection in $GLOBALS['conn']
-  if(!isset($GLOBALS['conn'])){
+  static $conn;
+  
+  if(!isset($conn)) {
     include $GLOBALS['root'].'../../database.php';
     $conn = new mysqli($host, $username, $password, "films");
-    if ($conn->connect_error) {
+  }
+  
+  if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
-    }
-    $GLOBALS['conn'] = $conn;
   }
-}
-
-function dbdisconnect(){
-  if(isset($GLOBALS['conn'])){
-    $GLOBALS['conn']->close();
-    unset($GLOBALS['conn']);
-  }
+  return $conn;
 }
 
 function query($query){
   // Queries the films database with $query and returns the response
-  dbconnect(); // Ensure a connection is started
   // In most cases a connection should already be initialised by the time
   // any queries are run.
-
-  return $GLOBALS['conn']->query($query);
+  return dbconnect()->query($query);
 }
 
 function loginCheck($session = "live", $session_started = FALSE) {
@@ -161,7 +155,7 @@ function get_emails($event){
 }
 
 function get_user_endpoints($user){
-  $result = query('SELECT * FROM endpoints WHERE ID="'.$user.'";');
+  $result = query("SELECT * FROM endpoints WHERE ID='$user';");
   $endpoints = array();
   if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()){
