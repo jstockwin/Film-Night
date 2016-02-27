@@ -1,10 +1,20 @@
 <?php
 ob_start();
 require '../setup.php';
-require $GLOBALS['root'].'vendor/autoload.php';
+include $root.'../../push.php';
+require $root.'vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 ob_end_clean(); // supresses output.
 
+if(isset($_GET["notify"])) {
+  $webPush = new WebPush(array('GCM'=>$push_api));
+  $endpoints = get_endpoints("All");
+  // send multiple notifications
+  foreach ($endpoints as $endpoint) {
+    $webPush->sendNotification($endpoint['Endpoint']);
+  }
+  $webPush->flush();
+}
 
 $events = get_event();
 if (in_array("Roll_Call_Start",$events)){

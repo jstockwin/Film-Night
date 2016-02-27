@@ -88,7 +88,7 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
           echo $row['Film_Name']." caused an sql error.\nCalled: ".$sql2.".\nsql returned ".$result2."\n";
         }
       }else{
-        echo $row['Film_Name']." not found on omdb<br>";
+        echo $row['Film_Name']." not found on omdb\n";
       }
     }
   }else{
