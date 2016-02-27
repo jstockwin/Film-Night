@@ -45,7 +45,7 @@ if (loginCheck($session, TRUE)=="admin"){
   echo "<p>To update/insert a new entry, fill in the form below<br>Every start time must be on the 1/2 hour for automatic emails/film selection to work.</p>";
   echo '<form action="admin/adminhandler.php" method="post">';
   echo 'ID: <select id="updateID" name="updateID" onchange="updateText()">';
-  echo '<option value="new">Create New</option>';
+  echo '<option value="'.end($times)[0].'">Create New</option>';
   foreach($times as &$id){
     echo '<option value="'.$id[0].'">'.$id[0].'</option>';
   }
