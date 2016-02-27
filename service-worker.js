@@ -21,7 +21,7 @@ self.addEventListener('push', function(event) {
         console.log('Current state: ', JSON.stringify(data, null, 4));
         url = data['url'];
         return data;
-      }, function(error) {
+      }).catch(function(error) {
         console.log('Error: ', error);
         return {'title': 'Film Night', 'body': 'You received a notification, but there was an error finding out what it is'}
       }).then(function(data) {
