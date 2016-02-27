@@ -1,12 +1,12 @@
 <?php
 ob_start();
 require '../setup.php';
-require $root.'../../database.php';
-require $root.'vendor/autoload.php';
+require $GLOBALS['root'].'../../database.php';
+require $GLOBALS['root'].'vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 ob_end_clean(); // supresses output.
 
-include $root.'../../database.php';
+include $GLOBALS['root'].'../../database.php';
 $conn = new mysqli($host, $username, $password, "films");
 
 // Check connection
@@ -14,13 +14,13 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$events = get_event($root);
+$events = get_event();
 if (in_array("Roll_Call_Start",$events)){
   // within 5 minutes of roll call start. Reset attendence of all active users.
   echo "roll call";
   $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
   $result2 = $conn->query($sql2);
-  $to = get_emails($root, "Roll_Call_Start");
+  $to = get_emails("Roll_Call_Start");
   $message = '
   <html>
   <body>
@@ -37,7 +37,7 @@ if (in_array("Roll_Call_Start",$events)){
   mail($to, "Film Night Attendance", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, "Roll_Call_Start");
+  $endpoints = get_endpoints("Roll_Call_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
@@ -50,7 +50,7 @@ if(in_array("Roll_Call_End",$events)){
 }
 if(in_array("Voting_Start",$events)){
   // Email users:
-  $to = get_emails($root, "Voting_Start");
+  $to = get_emails("Voting_Start");
   $message = '
   <html>
   <body>
@@ -64,7 +64,7 @@ if(in_array("Voting_Start",$events)){
   mail($to,"Film Night Voting", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, "Voting_Start");
+  $endpoints = get_endpoints("Voting_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
@@ -81,7 +81,7 @@ if(in_array("Results_Start",$events)){
   $result3 = $conn->query($sql3);
   $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
   $result3 = $conn->query($sql3);
-  $to = get_emails($root, "Results_Start");
+  $to = get_emails("Results_Start");
   $message = '
   <html>
   <body>
@@ -95,7 +95,7 @@ if(in_array("Results_Start",$events)){
   mail($to,"Film Night Results", $message, "Content-type:text/html");
 
   $webPush = new WebPush(array('GCM'=>$push_api));
-  $endpoints = get_endpoints($root, "Results_Start");
+  $endpoints = get_endpoints("Results_Start");
   // send multiple notifications
   foreach ($endpoints as $endpoint) {
     $webPush->sendNotification($endpoint['Endpoint']);
@@ -104,9 +104,9 @@ if(in_array("Results_Start",$events)){
 
   echo "results";
 }
-if(status($root)=="voting"){
-  if(in_array("Voting_End",get_event($root, 1800))){
-    $to = get_emails($root, "Voting_End30");
+if(status()=="voting"){
+  if(in_array("Voting_End",get_event(1800))){
+    $to = get_emails("Voting_End30");
     $message = '
     <html>
     <body>
@@ -121,15 +121,15 @@ if(status($root)=="voting"){
     mail($to,"Film Night Results", $message, "Content-type:text/html");
 
     $webPush = new WebPush(array('GCM'=>$push_api));
-    $endpoints = get_endpoints($root, "Voting_End30");
+    $endpoints = get_endpoints("Voting_End30");
     // send multiple notifications
     foreach ($endpoints as $endpoint) {
       $webPush->sendNotification($endpoint['Endpoint']);
     }
     $webPush->flush();
   }
-  if(in_array("Voting_End",get_event($root, 3600))){
-    $to = get_emails($root, "Voting_End60");
+  if(in_array("Voting_End",get_event(3600))){
+    $to = get_emails("Voting_End60");
     $message = '
     <html>
     <body>
@@ -144,7 +144,7 @@ if(status($root)=="voting"){
     mail($to,"Film Night Results", $message, "Content-type:text/html");
 
     $webPush = new WebPush(array('GCM'=>$push_api));
-    $endpoints = get_endpoints($root, "Voting_End60");
+    $endpoints = get_endpoints("Voting_End60");
     // send multiple notifications
     foreach ($endpoints as $endpoint) {
       $webPush->sendNotification($endpoint['Endpoint']);

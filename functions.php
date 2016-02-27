@@ -22,8 +22,8 @@ function loginCheck($session = "live", $session_started = FALSE) {
   }
 }
 
-function status($root){
-  include $root.'../../database.php';
+function status(){
+  include $GLOBALS['root'].'../../database.php';
   $conn = new mysqli($host, $username, $password, "films");
 
   // Check connection
@@ -48,8 +48,8 @@ function status($root){
   return FALSE;
 }
 
-function get_event($root, $advance = 0, $tol = 300){
-  include $root.'../../database.php';
+function get_event($advance = 0, $tol = 300){
+  include $GLOBALS['root'].'../../database.php';
   $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT * FROM timings";
   $result = $conn->query($sql);
@@ -79,8 +79,8 @@ function get_event($root, $advance = 0, $tol = 300){
   return $events;
 }
 
-function get_emails($root, $event){
-  include $root.'../../database.php';
+function get_emails($event){
+  include $GLOBALS['root'].'../../database.php';
   if($event == "All"){
     $field = 1;
   }else if($event == "Roll_Call_Start"){
@@ -142,8 +142,8 @@ function get_emails($root, $event){
   return $to;
 }
 
-function get_endpoints($root, $event){
-  include $root.'../../database.php';
+function get_endpoints($event){
+  include $GLOBALS['root'].'../../database.php';
   if($event == "All"){
     $field = 1;
   }else if($event == "Roll_Call_Start"){

@@ -1,7 +1,7 @@
 <?php
 ob_start();
 include '../setup.php';
-require $root.'../../database.php';
+require $GLOBALS['root'].'../../database.php';
 ob_end_clean(); // supresses output.
 
 

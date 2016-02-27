@@ -1,6 +1,6 @@
 <?php
 include '../setup.php';
-require $root.'../../database.php';
+require $GLOBALS['root'].'../../database.php';
 
 
 ##########################

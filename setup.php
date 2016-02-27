@@ -1,12 +1,12 @@
 <?php
 if (strpos(gethostname(), 'rpi') !== FALSE){
-  $root = $_SERVER['DOCUMENT_ROOT'].'/filmnight/';
-  $root2 = '/filmnight/';
+  $GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].'/filmnight/';
+  $GLOBALS['root2'] = '/filmnight/';
   $session = "live";
 }else{
-  $root = $_SERVER['DOCUMENT_ROOT'].'/';
-  $root2 = '/';
+  $GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].'/';
+  $GLOBALS['root2'] = '/';
   $session = "dev";
 }
-require_once $root.'functions.php';
+require_once $GLOBALS['root'].'functions.php';
 ?>
