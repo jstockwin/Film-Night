@@ -17,17 +17,20 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('push', function(event) {
   event.waitUntil(
     fetch('admin/infohandler.php?wants=notification', {credentials: 'same-origin'}).then(function(response) {
-        return response.json();
-      }).then(function(data) {
+      return response.json().then(function(data) {
         console.log('Current state: ', JSON.stringify(data, null, 4));
         url = data['url'];
+        return data;
+      }, function(error) {
+        console.log('Error: ', error);
+        return {'title': 'Film Night', 'body': 'You received a notification, but there was an error finding out what it is'}
+      }).then(function(data) {
         return self.registration.showNotification(data['title'], {
           body: data['body'],
           icon: 'assets/icons/favicon.png'
-        });
-      }).catch(function( ) {
-        console.log('Couldn\'t contact server');
-      })
+        })
+      });
+    })
   );
 });
 
