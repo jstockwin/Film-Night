@@ -23,7 +23,7 @@ function query($query){
   // Queries the films database with $query and returns the response
   dbconnect(); // Ensure a connection is started
   // In most cases a connection should already be initialised by the time
-  // any queries are run. 
+  // any queries are run.
 
   return $GLOBALS['conn']->query($query);
 }
@@ -160,6 +160,10 @@ function get_emails($event){
   return $to;
 }
 
+function get_user_endpoints($user){
+  return query('SELECT * FROM endpoints WHERE ID="'.$user.'";')
+}
+
 function get_endpoints($event){
   include $GLOBALS['root'].'../../database.php';
   if($event == "All"){
@@ -221,5 +225,115 @@ function get_endpoints($event){
   return $endpoints;
 }
 
+function imdb(){
+  $sql = "SELECT * FROM selected_films";
+  $result = query($sql);
 
-  ?>
+  if ($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      $json = file_get_contents("http://www.omdbapi.com/?t=".urlencode($row['Film'])."&y=".$row['Year']);
+      $output = json_decode($json);
+      $Response = $output->{'Response'};
+      if($Response=="True"){
+        // Film found
+        $Metascore = $output->{'Metascore'};
+        $IMDb = $output->{'imdbRating'};
+        $Plot = rawurlencode($output->{'Plot'});
+        $Poster = $output->{'Poster'};
+
+        $sql2 = 'UPDATE selected_films SET Metascore="'.$Metascore.'", IMDb="'.$IMDb.'", Plot="'.$Plot.'", Poster="'.$Poster.'" WHERE Film="'.$row["Film"].'";';
+        $result2 = query($sql2);
+        if ($result2 == 1){
+          // Updated successfully
+          echo $row['Film']." updated successfully<br>";
+        }else{
+          // something wen't wrong with sql.
+          echo $row['Film']." caused an sql error.<br>Called: ".$sql2.".<br>sql returned ".$result2."\n";
+        }
+      }else{
+        echo $row['Film']." not found on omdb<br>";
+      }
+    }
+  }else{
+    echo "There are no films.";
+  }
+}
+
+function selectFilms(){
+  $numFilms = 5;
+  // Get users who aren't attending
+  $absent = [];
+  $sql = "SELECT * FROM users WHERE attending=0";
+  $result = query($sql);
+  while($row = $result->fetch_assoc()){
+    array_push($absent, $row['ID']);
+  }
+
+
+  $sql = "SELECT * FROM nominations WHERE Frequency>0";
+  $result = query($sql);
+  $films = [];
+  if ($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      $vetos = explode(",", $row['Veto_For']);
+      $veto = FALSE;
+      foreach($vetos as &$v){
+        if(in_array($v, $absent)){
+          $veto=TRUE;
+        }
+      }
+      if(!$veto){
+        array_push($films, array($row['Film_Name'],$row['Year']));
+      }
+    }
+    $numbers = [];
+    if(sizeof($films)>=$numFilms){
+      for ($i = 0; $i <$numFilms; $i++){
+        while(true){
+          $x = rand(0,sizeof($films)-1);
+          if(!in_array($x, $numbers)){
+            array_push($numbers, $x);
+            break;
+          }
+        }
+      }
+      $selected = [];
+      foreach($numbers as &$j){
+        array_push($selected, $films[$j]);
+      }
+      print_r($selected);
+      $sql = "DELETE FROM selected_films";
+      $result = query($sql);
+
+      foreach($selected as &$film){
+        $sql = 'INSERT INTO selected_films VALUES ("'.$film[0].'", '.$film[1].',NULL,NULL,NULL,NULL)';
+        $result = query($sql);
+        $ok = TRUE;
+        if (!$result == 1){
+          $ok = FALSE;
+        }
+      }
+      if($ok){
+        imdb();
+      }
+
+    }else{
+      echo "Not enough available films";
+    }
+  }else{
+    echo "No films found.";
+  }
+}
+
+function resetAttendence(){
+  query("UPDATE users SET Attending=1 WHERE Active=1");
+}
+
+function resetVotes(){
+  query("DROP TABLE votes");
+  query("ALTER TABLE incomingvotes RENAME TO votes");
+  query("CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))");
+}
+
+
+?>

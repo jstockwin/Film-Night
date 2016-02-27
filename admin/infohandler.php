@@ -8,23 +8,11 @@ if(!loginCheck($session)){
   echo "Error: You're not signed in";
   $_SESSION['ERROR']="subscribehandler.php failed to verify that you are signed in";
 }else{
-  $conn = new mysqli($host, $username, $password, "films");
-  if ($conn->connect_error) {
-    $_SESSION['ERROR']="subscribehandler.php failed connect to sql database: ".$conn->connect_error;
-    die("Connection failed: " . $conn->connect_error);
-  }
   if(isset($_GET['wants'])){
 
     $wants=$_GET['wants'];
     if($wants == 'endpoints') {
-      $sql = 'SELECT * FROM endpoints WHERE ID="'.$_SESSION['ID'].'";';
-      $result = $conn->query($sql);
-      $endpoints = array();
-      if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()){
-          array_push($endpoints, $row);
-        }
-      }
+      $endpoints = get_user_endpoints($_SESSION['ID']);
       echo json_encode($endpoints);
     } else if($wants == 'notification') {
       if(in_array("Voting_End", get_event(1800))){

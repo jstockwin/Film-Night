@@ -1,25 +1,16 @@
 <?php
 ob_start();
 require '../setup.php';
-require $GLOBALS['root'].'../../database.php';
 require $GLOBALS['root'].'vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 ob_end_clean(); // supresses output.
 
-include $GLOBALS['root'].'../../database.php';
-$conn = new mysqli($host, $username, $password, "films");
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
 
 $events = get_event();
 if (in_array("Roll_Call_Start",$events)){
   // within 5 minutes of roll call start. Reset attendence of all active users.
   echo "roll call";
-  $sql2 = "UPDATE users SET Attending=1 WHERE Active=1";
-  $result2 = $conn->query($sql2);
+  resetAttendence();
   $to = get_emails("Roll_Call_Start");
   $message = '
   <html>
@@ -46,7 +37,7 @@ if (in_array("Roll_Call_Start",$events)){
 }
 if(in_array("Roll_Call_End",$events)){
   // Select films:
-  header("location: select-films.php");
+  selectFilms();
 }
 if(in_array("Voting_Start",$events)){
   // Email users:
@@ -75,12 +66,7 @@ if(in_array("Voting_Start",$events)){
 if(in_array("Results_Start",$events)){
   // Within 5 minutes of results starting. Notify users.
   echo "results";
-  $sql3 = "DROP TABLE votes";
-  $result3 = $conn->query($sql3);
-  $sql3 = "ALTER TABLE incomingvotes RENAME TO votes";
-  $result3 = $conn->query($sql3);
-  $sql3 = "CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))";
-  $result3 = $conn->query($sql3);
+  resetVotes();
   $to = get_emails("Results_Start");
   $message = '
   <html>
