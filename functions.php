@@ -1,4 +1,33 @@
 <?php
+
+function dbconnect(){
+  // Ensures that there is a database connection in $GLOBALS['conn']
+  if(!isset($GLOBALS['conn'])){
+    include $GLOBALS['root'].'../../database.php';
+    $conn = new mysqli($host, $username, $password, "films");
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+    $GLOBALS['conn'] = $conn;
+  }
+}
+
+function dbdisconnect(){
+  if(isset($GLOBALS['conn'])){
+    $GLOBALS['conn']->close();
+    unset($GLOBALS['conn']);
+  }
+}
+
+function query($query){
+  // Queries the films database with $query and returns the response
+  dbconnect(); // Ensure a connection is started
+  // In most cases a connection should already be initialised by the time
+  // any queries are run. 
+
+  return $GLOBALS['conn']->query($query);
+}
+
 function loginCheck($session = "live", $session_started = FALSE) {
   if(session_status() == PHP_SESSION_NONE){
     session_start();
@@ -23,17 +52,10 @@ function loginCheck($session = "live", $session_started = FALSE) {
 }
 
 function status(){
-  include $GLOBALS['root'].'../../database.php';
-  $conn = new mysqli($host, $username, $password, "films");
 
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
   $now = date('Y-m-d H:i:s');
-
   $sql = "SELECT * FROM timings";
-  $result = $conn->query($sql);
+  $result = query($sql);
   if($result && $result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       if ($row["Roll_Call_Start"] < $now && $now < $row["Roll_Call_End"]){
@@ -49,10 +71,8 @@ function status(){
 }
 
 function get_event($advance = 0, $tol = 300){
-  include $GLOBALS['root'].'../../database.php';
-  $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT * FROM timings";
-  $result = $conn->query($sql);
+  $result = query($sql);
   $events = array();
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
@@ -80,7 +100,6 @@ function get_event($advance = 0, $tol = 300){
 }
 
 function get_emails($event){
-  include $GLOBALS['root'].'../../database.php';
   if($event == "All"){
     $field = 1;
   }else if($event == "Roll_Call_Start"){
@@ -101,9 +120,8 @@ function get_emails($event){
     return "Error: Unhandled event";
   }
   $to="";
-  $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT Email FROM users WHERE Active=1 AND ".$field."=1;";
-  $result = $conn->query($sql);
+  $result = query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       $to = $to.$row['Email'].", ";
@@ -111,11 +129,11 @@ function get_emails($event){
   }
   if($event == "Voting_End60"){
     $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting60=1";
-    $result = $conn->query($sql);
+    $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = $conn->query($sql2);
+        $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
           $to = $to.$row['Email'].", ";
@@ -125,11 +143,11 @@ function get_emails($event){
   }
   if($event == "Voting_End30"){
     $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting30=1";
-    $result = $conn->query($sql);
+    $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = $conn->query($sql2);
+        $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
           $to = $to.$row['Email'].", ";
@@ -164,9 +182,8 @@ function get_endpoints($event){
     return "Error: Unhandled event";
   }
   $endpoints = array();
-  $conn = new mysqli($host, $username, $password, "films");
   $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Active=1 AND ".$field."=1;";
-  $result = $conn->query($sql);
+  $result = query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
       array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
@@ -174,11 +191,11 @@ function get_endpoints($event){
   }
   if($event == "Voting_End60"){
     $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting60=1";
-    $result = $conn->query($sql);
+    $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = $conn->query($sql2);
+        $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
           array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
@@ -188,11 +205,11 @@ function get_endpoints($event){
   }
   if($event == "Voting_End30"){
     $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting30=1";
-    $result = $conn->query($sql);
+    $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
         $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = $conn->query($sql2);
+        $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
           array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
