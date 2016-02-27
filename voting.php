@@ -1,9 +1,9 @@
 <?php include 'setup.php';?>
-<?php require $root.'../../database.php'; ?>
+<?php require $GLOBALS['root'].'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Voting');?>
 <body>
 <?php include 'top-nav.php'?>
-<?php if(($permission != FALSE && status($root) =="voting") || $permission == "admin"): ?>
+<?php if(($permission != FALSE && status() =="voting") || $permission == "admin"): ?>
 
 <script>window.onload = function() { init() };</script>
 <script>
@@ -15,7 +15,7 @@
 
   function init(){
     <?php
-    require $root.'../../database.php';
+    require $GLOBALS['root'].'../../database.php';
     $conn = new mysqli($host, $username, $password, "films");
 
     // Check connection

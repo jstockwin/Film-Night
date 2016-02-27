@@ -1,5 +1,5 @@
 <?php include 'setup.php';?>
-<?php require $root.'../../database.php'; ?>
+<?php require $GLOBALS['root'].'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Admin Console');?>
 <body>
 <?php include 'top-nav.php';?>
@@ -22,7 +22,7 @@ if (loginCheck($session, TRUE)=="admin"){
   $now = date('Y-m-d H:i:s');
   echo $now;
   echo "<br>Current status:<br>";
-  echo status($root);
+  echo status();
   $times = [];
   $sql = "SELECT * FROM timings";
   $result = $conn->query($sql);

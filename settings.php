@@ -8,7 +8,7 @@
 if(session_status()== PHP_SESSION_NONE){
   session_start();
 }
-  require $root.'../../database.php';
+  require $GLOBALS['root'].'../../database.php';
   $conn = new mysqli($host, $username, $password, "films");
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -39,7 +39,7 @@ if(session_status()== PHP_SESSION_NONE){
 
 echo '<div id="background" style="width:94%;background:#d5d5d5;padding:3%;height:100%;">';
 echo "<form action='admin/settingshandler.php' method='POST' class='card'>";
-if(status($root)=="rollCall"){
+if(status()=="rollCall"){
   echo 'Will you be attending this weeks film night?<br>
   <select name="rollCall">
     <option value="yes" ';

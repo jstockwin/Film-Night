@@ -1,5 +1,5 @@
 <?php include 'setup.php';?>
-<?php require $root.'../../database.php'; ?>
+<?php require $GLOBALS['root'].'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Results');?>
 <body>
   <?php include 'top-nav.php';?>
@@ -135,7 +135,7 @@ echo "];";
 echo "// There are no selected films.";
 }
 echo "\n"; */
-if (loginCheck($session)=="admin" && status($root)=="voting"){
+if (loginCheck($session)=="admin" && status()=="voting"){
   $sql = "SELECT * FROM incomingvotes";
 }else{
   $sql = "SELECT * FROM votes";

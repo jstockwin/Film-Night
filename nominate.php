@@ -1,5 +1,5 @@
 <?php include 'setup.php';?>
-<?php require $root.'../../database.php'; ?>
+<?php require $GLOBALS['root'].'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Nominations');?>
 <body>
 <?php include 'top-nav.php'; ?>

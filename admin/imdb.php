@@ -1,6 +1,6 @@
 <?php
 require '../setup.php';
-require $root.'../../database.php';
+require $GLOBALS['root'].'../../database.php';
 
 $conn = new mysqli($host, $username, $password, "films");
 if ($conn->connect_error) {
