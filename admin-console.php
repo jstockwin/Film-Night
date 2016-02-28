@@ -1,5 +1,4 @@
 <?php include 'setup.php';?>
-<?php require $GLOBALS['root'].'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Admin Console');?>
 <body>
 <?php include 'top-nav.php';?>
@@ -8,13 +7,7 @@
 if (loginCheck($session, TRUE)=="admin"){
 
   echo "<script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>";
-  // Create connection
-  $conn = new mysqli($host, $username, $password, "films");
 
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
   echo "<p>Connected successfully";
   echo "<br>";
 
@@ -23,15 +16,8 @@ if (loginCheck($session, TRUE)=="admin"){
   echo $now;
   echo "<br>Current status:<br>";
   echo status();
-  $times = [];
-  $sql = "SELECT * FROM timings";
-  $result = $conn->query($sql);
-  if($result->num_rows > 0){
-
-    while($row = $result->fetch_assoc()){
-      array_push($times, array($row['ID'], $row["Roll_Call_Start"], $row["Roll_Call_End"], $row["Voting_Start"], $row["Voting_End"], $row["Results_Start"], $row["Results_End"]));
-    }
-
+  $times = getFilmNights();
+  if($times != "None"){
     echo "</p><table>";
     echo "<tr><td>ID</td><td>Roll Call Start</td><td>Roll Call End</td><td>Voting Start</td><td>Voting End</td><td>Results Start</td><td>Results End</td></tr>";
     foreach( $times as &$time){
@@ -41,7 +27,6 @@ if (loginCheck($session, TRUE)=="admin"){
     }
     echo "</table>";
   }
-  $conn->close();
   echo "<p>To update/insert a new entry, fill in the form below<br>Every start time must be on the 1/2 hour for automatic emails/film selection to work.</p>";
   echo '<form action="admin/adminhandler.php" method="post">';
   echo 'ID: <select id="updateID" name="updateID" onchange="updateText()">';

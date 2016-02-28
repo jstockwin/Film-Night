@@ -3,12 +3,12 @@
 function dbconnect(){
   // Ensures that there is a database connection in $GLOBALS['conn']
   static $conn;
-  
+
   if(!isset($conn)) {
     include $GLOBALS['root'].'../../database.php';
     $conn = new mysqli($host, $username, $password, "films");
   }
-  
+
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
@@ -334,6 +334,29 @@ function resetVotes(){
   query("DROP TABLE votes");
   query("ALTER TABLE incomingvotes RENAME TO votes");
   query("CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))");
+}
+
+function getFilmNights(){
+  // Returns an array of timings
+  $times = [];
+  $sql = "SELECT * FROM timings";
+  $result = query($sql);
+  if($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      array_push($times, array($row['ID'], $row["Roll_Call_Start"], $row["Roll_Call_End"], $row["Voting_Start"], $row["Voting_End"], $row["Results_Start"], $row["Results_End"]));
+    }
+    return $times;
+  }
+  return "None";
+
+}
+
+function getUserDetails($ID){
+  $sql = "SELECT * FROM users WHERE ID='".$ID."';";
+  $result = query($sql);
+  if($result->num_rows = 1){
+    return $result->fetch_assoc();
+  }
 }
 
 
