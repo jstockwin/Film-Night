@@ -53,7 +53,9 @@
   }
 
   function keyDown(event){
-    if(event.keyIdentifier === "Enter"){
+    if("keyIdentifier" in event && event.keyIdentifier === "Enter"){
+      search();
+    } else if ("key" in event && event.key === "Enter") {
       search();
     }
   }
