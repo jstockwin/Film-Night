@@ -1,0 +1,33 @@
+.text-input {
+  border-color: $divider-color;
+  border-radius: 2px;
+  border-style: solid;
+  border-width: 0 0 2px;
+  box-sizing: content-box; //This is needed to counteract search changing the border-box.
+  font-size: 1rem;
+  height: 2rem;
+  line-height: 2rem;
+  outline: none;
+  width: 100%;
+
+  &:focus {
+    border-color: $accent-color;
+
+    + label {
+      color: $accent-color;
+    }
+  }
+
+  + label {
+    bottom: 0;
+    color: $divider-color;
+    font-size: 1rem;
+    left: 0;
+    line-height: 2rem;
+    position: absolute;
+    transform-origin: left center;
+    transition: transform 0.2s;
+    vertical-align: baseline;
+    z-index: 2;
+  }
+}

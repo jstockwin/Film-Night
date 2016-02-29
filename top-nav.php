@@ -1,4 +1,4 @@
-<?php if(session_status()== PHP_SESSION_NONE){
+<?php if(session_status() == PHP_SESSION_NONE){
   session_start();
 }
 if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error.php");}?>
@@ -17,21 +17,7 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
       echo ">Admin</a>";
     }
     if($permission === FALSE) : ?>
-      <?php if(isset($_SESSION['ID'])) : ?>
-        <div>
-        <label for="profile-toggle">
-            <img src="assets/icons/ic_error.svg" id="profile-image" alt="You are not a registered user.">
-        </label>
-        <input type="checkbox" id="profile-toggle">
-        <div id="profile-dropdown">
-          <h3 id="name"><?php echo $_SESSION['Name']?></h3>
-          <h4 id="email"><?php echo $_SESSION['ID']?></h4>
-          <button type="button" style="float: right" onclick="signOut()">Sign Out</button>
-        </div>
-      </div>
-      <?php else: ?>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <?php endif ?>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <?php else: ?>
       <div>
         <label for="profile-toggle">
