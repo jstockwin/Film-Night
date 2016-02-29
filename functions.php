@@ -24,7 +24,7 @@ function query($query){
 
 function loginCheck($session = "live", $session_started = FALSE) {
   if($session == "dev"){
-    $_SESSION['ID'] = "debug@example.com";
+    $_SESSION['ID'] = "jstockwin@gmail.com";
     $_SESSION['Permission'] = "admin";
     $_SESSION['Name'] = "debug";
     $_SESSION['Token'] = "ABC123";
@@ -462,6 +462,14 @@ function sessionStart(){
   if(session_status()== PHP_SESSION_NONE){
     session_start();
   }
+}
+
+function getSelectedFilms(){
+  return query("SELECT * FROM selected_films");
+}
+
+function getUserVotes($ID){
+  return query("SELECT * FROM incomingvotes WHERE ID='$ID'");
 }
 
 

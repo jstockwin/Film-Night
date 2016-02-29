@@ -15,17 +15,7 @@
 
   function init(){
     <?php
-    require $GLOBALS['root'].'../../database.php';
-    $conn = new mysqli($host, $username, $password, "films");
-
-    // Check connection
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
-
-
-    $sql = "SELECT * FROM selected_films";
-    $result = $conn->query($sql);
+    $result = getSelectedFilms();
 
     if ($result->num_rows > 0){
       echo 'var films = [';
@@ -44,9 +34,7 @@
       // Selected films is empty.
       echo "var films = []";
     }
-
-    $sql = 'SELECT * FROM incomingvotes WHERE ID="'.$_SESSION['ID'].'";';
-    $result = $conn->query($sql);
+    $result = getUserVotes($_SESSION['ID']);
     if ($result->num_rows > 0){
       // User has voted previously
       $voted = TRUE;
@@ -64,8 +52,6 @@
       $voted = FALSE;
     }
 
-
-    $conn->close();
 
     ?>
 
