@@ -2,9 +2,6 @@
 ob_start();
 require '../setup.php';
 ob_end_clean(); // supresses output.
-if(session_status()== PHP_SESSION_NONE){
-  session_start();
-}
 if(loginCheck($session)=="admin"){
   if(isset($_POST['updateID'])){
       $sql = 'REPLACE INTO timings

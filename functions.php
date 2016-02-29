@@ -23,9 +23,6 @@ function query($query){
 }
 
 function loginCheck($session = "live", $session_started = FALSE) {
-  if(session_status() == PHP_SESSION_NONE){
-    session_start();
-  }
   if($session == "dev"){
     $_SESSION['ID'] = "debug@example.com";
     $_SESSION['Permission'] = "admin";
@@ -352,10 +349,12 @@ function getFilmNights(){
 }
 
 function getUserDetails($ID){
-  $sql = "SELECT * FROM users WHERE ID='".$ID."';";
+  $sql = "SELECT * FROM users WHERE ID='$ID';";
   $result = query($sql);
-  if($result->num_rows = 1){
+  if($result->num_rows == 1){
     return $result->fetch_assoc();
+  }else{
+    return "Error";
   }
 }
 
@@ -457,6 +456,12 @@ function getResults(){
 
 function getIncomingResults(){
   return query("SELECT * FROM incomingvotes");
+}
+
+function sessionStart(){
+  if(session_status()== PHP_SESSION_NONE){
+    session_start();
+  }
 }
 
 

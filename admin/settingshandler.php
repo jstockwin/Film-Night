@@ -11,9 +11,6 @@ $conn = new mysqli($host, $username, $password, "films");
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
-  if(session_status()== PHP_SESSION_NONE){
-    session_start();
-  }
   $_SESSION['ERROR']="settingshandler.php failed connect to sql database: ".$conn->connect_error;
 }
 $attending=0;
@@ -62,9 +59,6 @@ if(isset($_POST['voting60Notification'])){
 $rollCall = 1;
 if(isset($_POST['rollCall']) && $_POST['rollCall']!="yes"){
   $rollCall=0;
-}
-if(session_status()== PHP_SESSION_NONE){
-  session_start();
 }
 $sql = 'UPDATE users SET Email="'.$_POST['email'].'", Attending='.$rollCall.', Reminder_Attending='.$attending.',
 Reminder_Voting='.$voting.', Reminder_Results='.$results.'

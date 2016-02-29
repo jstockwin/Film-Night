@@ -4,9 +4,6 @@ require '../setup.php';
 require $GLOBALS['root'].'../../database.php';
 ob_end_clean(); // supresses output.
 
-if(session_status()== PHP_SESSION_NONE){
-  session_start();
-}
 if(!loginCheck($session)){
   echo "Error: User not logged in";
   $_SESSION['ERROR']="votinghandler.php failed to confirm that you were logged in";
