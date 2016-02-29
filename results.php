@@ -114,34 +114,13 @@
   </div>
   <script>
   <?php
-
-  $conn = new mysqli($host, $username, $password, "films");
-
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-
-
-  /*$sql = "SELECT * FROM selected_films";
-  $result = $conn->query($sql);
-  if ($result->num_rows > 0){
-  echo "var listOfCandidates =[";
-  while($row = $result->fetch_assoc()){
-  echo '"'.urldecode($row["Film"]).'",';
-}
-echo "];";
-}else{
-echo "// There are no selected films.";
-}
-echo "\n"; */
 if (loginCheck($session)=="admin" && status()=="voting"){
-  $sql = "SELECT * FROM incomingvotes";
+  $result = getIncomingResults();
 }else{
-  $sql = "SELECT * FROM votes";
+  $result = getResults();
 }
 
-$result = $conn->query($sql);
+
 
 if ($result->num_rows > 0){
   echo "var votes =[";
@@ -155,7 +134,6 @@ if ($result->num_rows > 0){
   echo 'var listOfCandidates = ["A", "B", "C", "D", "E", "F"];';
   echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
 }
-$conn->close();
 ?>
 
 function hideLog(){

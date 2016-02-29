@@ -451,5 +451,13 @@ function nominateFilm($film){
   }
 }
 
+function getResults(){
+  query("SELECT * FROM votes");
+}
+
+function getIncomingResults(){
+  query("SELECT * FROM incomingvotes");
+}
+
 
 ?>
