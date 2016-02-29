@@ -5,37 +5,25 @@
 <?php if($permission != FALSE): ?>
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
 <?php
-if(session_status()== PHP_SESSION_NONE){
-  session_start();
-}
-  require $GLOBALS['root'].'../../database.php';
-  $conn = new mysqli($host, $username, $password, "films");
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-  $sql = 'SELECT * FROM users WHERE ID="'.$_SESSION['ID'].'"';
-  $result = $conn->query($sql);
-  if ($result->num_rows > 0){
-    while($row = $result->fetch_assoc()){
-      $rollCall = $row['Attending'];
-      $attending = $row['Reminder_Attending'];
-      $voting = $row['Reminder_Voting'];
-      $results = $row['Reminder_Results'];
-      $email = $row['Email'];
-      $voting30 = $row['Reminder_Voting30'];
-      $voting60 = $row['Reminder_Voting60'];
+  $details = getUserDetails($_SESSION['ID']);
+if(!$details == "Error"){
+      $rollCall = $details['Attending'];
+      $attending = $details['Reminder_Attending'];
+      $voting = $details['Reminder_Voting'];
+      $results = $details['Reminder_Results'];
+      $email = $details['Email'];
+      $voting30 = $details['Reminder_Voting30'];
+      $voting60 = $details['Reminder_Voting60'];
 
-      $attendingNotification = $row['Notification_Attending'];
-      $votingNotification = $row['Notification_Voting'];
-      $resultsNotification = $row['Notification_Results'];
-      $voting30Notification = $row['Notification_Voting30'];
-      $voting60Notification = $row['Notification_Voting60'];
+      $attendingNotification = $details['Notification_Attending'];
+      $votingNotification = $details['Notification_Voting'];
+      $resultsNotification = $details['Notification_Results'];
+      $voting30Notification = $details['Notification_Voting30'];
+      $voting60Notification = $details['Notification_Voting60'];
+    }else{
+      $SESSION['ERROR'] = "settings.php failed to retreive user details for user ".$_SESSION['ID'];
+      echo "<script>window.location.replace('error.php')</script>";
     }
-  }else{
-    echo "ERROR: User settings not found.";
-  }
-  $conn->close();
-
 
 echo '<div id="background" style="width:94%;background:#d5d5d5;padding:3%;height:100%;">';
 echo "<form action='admin/settingshandler.php' method='POST' class='card'>";
