@@ -15,7 +15,7 @@
 
   function init(){
     <?php
-    $result = getSelectedFilms();
+    $result = getSelectedFilms(getCurrentFilmNight());
 
     if ($result->num_rows > 0){
       echo 'var films = [';
@@ -34,7 +34,7 @@
       // Selected films is empty.
       echo "var films = []";
     }
-    $vote = getUserVotes($_SESSION['ID']);
+    $vote = getUserVotes(getCurrentFilmNight(),$_SESSION['ID']);
     if($vote!="FALSE"){
       $voted = TRUE;
       echo "var Vote = $vote;";

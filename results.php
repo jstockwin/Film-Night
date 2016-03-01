@@ -115,9 +115,9 @@
   <script>
   <?php
 if (loginCheck($session)=="admin" && status()=="voting"){
-  $result = getIncomingResults();
+  $result = getResults(getCurrentFilmNight());
 }else{
-  $results = getResults();
+  $results = getResults(getCurrentResultsFilmNight());
 }
 echo "var votes = $results;\n";
 echo "var listOfCandidates  = generateListOfCandidates(votes);\n";
