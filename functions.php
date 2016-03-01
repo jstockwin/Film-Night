@@ -360,5 +360,29 @@ function getCurrentResultsFilmNight(){
   return $mostRecentNight->fetch_object()->id;
 }
 
+function withdrawVotes($filmnight_id, $user_id){
+  $result = query("DELETE votes.* FROM `votes` INNER JOIN selections ON votes.selection_id = selections.id AND user_id='$user_id' AND filmnight_id=$filmnight_id");
+  if($result==1){
+    echo "successfully removed vote";
+  }else{
+    echo "Error: There was an error submitting to the database: ".$sql2;
+    echo "Returned: ".$result2;
+    $_SESSION['Error'] = "There was an error submitting to the database: ".$sql2;
+  }
+}
+
+function addVote($filmnight_id, $user_id, $vote){
+  $result = query("SELECT selections.id,Film_Name FROM `selections` INNER JOIN nominations ON nominations.id = selections.film_id AND selections.filmnight_id=$filmnight_id");
+  while($row = $result->fetch_assoc()){
+    $position = $vote[rawurlencode($row['Film_Name'])];
+    $selection_id = $row['id'];
+    $result2 = query("REPLACE INTO votes VALUES ('$user_id', $selection_id, $position)");
+    if($result2 != 1){
+      echo "Error: Failed to update vote";
+      $_SESSION['Error'] = "Failed to update vote";
+    }
+  }
+}
+
 
 ?>
