@@ -259,67 +259,24 @@ function imdb(){
 
 function selectFilms(){
   $numFilms = 5;
-  // Get users who aren't attending
-  $absent = [];
-  $sql = "SELECT * FROM users WHERE attending=0";
-  $result = query($sql);
-  while($row = $result->fetch_assoc()){
-    array_push($absent, $row['ID']);
+  $filmnight_id = getCurrentFilmNight();
+  echo $filmnight_id;
+  // Sometimes selection happens multiple times per film night. This is usually before anyone has voted,
+  // but we'll remove any votes just in case.
+  $ids = query("SELECT id FROM selections WHERE filmnight_id=$filmnight_id");
+  while($id = $ids->fetch_assoc()['id']){
+    echo $id;
+    query("DELETE FROM votes WHERE selection_id=$id");
   }
+  // Now the votes have gone, we can delete existing films in selections
+  query("DELETE FROM selections WHERE filmnight_id=$filmnight_id");
 
-
-  $sql = "SELECT * FROM nominations WHERE Frequency>0";
-  $result = query($sql);
-  $films = [];
-  if ($result->num_rows > 0){
-    while($row = $result->fetch_assoc()){
-      $vetos = explode(",", $row['Veto_For']);
-      $veto = FALSE;
-      foreach($vetos as &$v){
-        if(in_array($v, $absent)){
-          $veto=TRUE;
-        }
-      }
-      if(!$veto){
-        array_push($films, array($row['Film_Name'],$row['Year']));
-      }
-    }
-    $numbers = [];
-    if(sizeof($films)>=$numFilms){
-      for ($i = 0; $i <$numFilms; $i++){
-        while(true){
-          $x = rand(0,sizeof($films)-1);
-          if(!in_array($x, $numbers)){
-            array_push($numbers, $x);
-            break;
-          }
-        }
-      }
-      $selected = [];
-      foreach($numbers as &$j){
-        array_push($selected, $films[$j]);
-      }
-      print_r($selected);
-      $sql = "DELETE FROM selected_films";
-      $result = query($sql);
-
-      foreach($selected as &$film){
-        $sql = 'INSERT INTO selected_films VALUES ("'.$film[0].'", '.$film[1].',NULL,NULL,NULL,NULL)';
-        $result = query($sql);
-        $ok = TRUE;
-        if (!$result == 1){
-          $ok = FALSE;
-        }
-      }
-      if($ok){
-        imdb();
-      }
-
-    }else{
-      echo "Not enough available films";
-    }
-  }else{
-    echo "No films found.";
+  // Finally, select 5 new films and add them into selections.
+  // Could this be done as a SELECT INTO selections?
+  $films = query("SELECT nominations.* FROM nominations INNER JOIN proposals ON nominations.id = proposals.film_id AND nominations.Frequency<>0 INNER JOIN users on users.id = proposals.user_id GROUP BY film_id HAVING NOT SUM(is_veto AND NOT attending) ORDER BY RAND() LIMIT 5;");
+  while($row = $films->fetch_assoc()){
+    $film_id = $row['id'];
+    query("INSERT INTO selections VALUES (NULL, '$film_id', $filmnight_id)");
   }
 }
 
@@ -470,6 +427,11 @@ function getSelectedFilms(){
 
 function getUserVotes($ID){
   return query("SELECT * FROM incomingvotes WHERE ID='$ID'");
+}
+
+function getCurrentFilmNight(){
+  $mostRecentNight = query("SELECT id FROM timings WHERE Roll_Call_End < NOW() ORDER BY Roll_Call_End DESC LIMIT 1");
+  return $mostRecentNight->fetch_object()->id;
 }
 
 
