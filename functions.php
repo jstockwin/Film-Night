@@ -258,35 +258,29 @@ function imdb(){
 
 function selectFilms(){
   $numFilms = 5;
-  $filmnight_id = getCurrentFilmNight();
+  $filmnight_id = getCurrentFilmNight(5);
   echo $filmnight_id;
   // Sometimes selection happens multiple times per film night. This is usually before anyone has voted,
   // but we'll remove any votes just in case.
-  $ids = query("SELECT id FROM selections WHERE filmnight_id=$filmnight_id");
-  while($id = $ids->fetch_assoc()['id']){
-    echo $id;
-    query("DELETE FROM votes WHERE selection_id=$id");
-  }
+  query("DELETE votes FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id=$filmnight_id");
   // Now the votes have gone, we can delete existing films in selections
   query("DELETE FROM selections WHERE filmnight_id=$filmnight_id");
 
   // Finally, select 5 new films and add them into selections.
-  // Could this be done as a SELECT INTO selections?
-  $films = query("SELECT nominations.* FROM nominations INNER JOIN proposals ON nominations.id = proposals.film_id AND nominations.Frequency<>0 INNER JOIN users on users.id = proposals.user_id GROUP BY film_id HAVING NOT SUM(is_veto AND NOT attending) ORDER BY RAND() LIMIT 5;");
-  while($row = $films->fetch_assoc()){
-    $film_id = $row['id'];
-    query("INSERT INTO selections VALUES (NULL, '$film_id', $filmnight_id)");
-  }
+  query("INSERT INTO selections
+    SELECT NULL, nominations.id, $filmnight_id
+    FROM proposals
+    INNER JOIN users ON users.id = proposals.user_id
+    RIGHT JOIN nominations ON nominations.id = proposals.film_id
+    WHERE Frequency > 0
+    GROUP BY nominations.id
+    HAVING IFNULL(NOT SUM(is_veto AND NOT attending), TRUE)
+    ORDER BY RAND()
+    LIMIT 5;");
 }
 
 function resetAttendence(){
   query("UPDATE users SET Attending=1 WHERE Active=1");
-}
-
-function resetVotes(){
-  query("DROP TABLE votes");
-  query("ALTER TABLE incomingvotes RENAME TO votes");
-  query("CREATE TABLE incomingvotes (ID varchar(127), Vote varchar(255))");
 }
 
 function getFilmNights(){
@@ -341,7 +335,7 @@ function getSelectedFilms($filmnight_id){
   return query("SELECT * FROM `selections`  INNER JOIN nominations WHERE selections.film_id = nominations.id AND selections.filmnight_id=$filmnight_id");
 }
 
-function getUserVotes($filmnight_id,$ID){
+function getUserVotes($filmnight_id, $ID){
   $filmnight_id = getCurrentFilmNight();
   $votes = query("SELECT Film_Name, position FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id AND user_id='$ID'");
   if($votes->num_rows > 0){
@@ -356,8 +350,8 @@ function getUserVotes($filmnight_id,$ID){
 
 }
 
-function getCurrentFilmNight(){
-  $mostRecentNight = query("SELECT id FROM timings WHERE Roll_Call_End < NOW() ORDER BY Roll_Call_End DESC LIMIT 1");
+function getCurrentFilmNight($tolerance=0){
+  $mostRecentNight = query("SELECT id FROM timings WHERE Roll_Call_End < DATE_ADD(NOW(), INTERVAL $tolerance MINUTE) ORDER BY Roll_Call_End DESC LIMIT 1");
   return $mostRecentNight->fetch_object()->id;
 }
 
