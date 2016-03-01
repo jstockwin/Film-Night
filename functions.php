@@ -1,7 +1,6 @@
 <?php
 
 function dbconnect(){
-  // Ensures that there is a database connection in $GLOBALS['conn']
   static $conn;
 
   if(!isset($conn)) {
@@ -306,7 +305,7 @@ function getFilmNights(){
 }
 
 function getUserDetails($ID){
-  $sql = "SELECT * FROM users WHERE ID='$ID';";
+  $sql = "SELECT * FROM users WHERE id='$ID';";
   $result = query($sql);
   if($result->num_rows == 1){
     return $result->fetch_assoc();

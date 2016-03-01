@@ -6,7 +6,7 @@
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
 <?php
   $details = getUserDetails($_SESSION['ID']);
-if(!$details == "Error"){
+if($details != "Error"){
       $rollCall = $details['Attending'];
       $attending = $details['Reminder_Attending'];
       $voting = $details['Reminder_Voting'];
