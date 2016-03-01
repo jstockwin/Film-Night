@@ -26,11 +26,11 @@ function getSubscription() {
 }
 
 function addTableRow(endpointData, isThisBrowser) {
-  name = endpointData.Name;
-  id = endpointData.Identifier;
-  newRow = table.insertRow(isThisBrowser ? 1 : -1);
-  nameCell = newRow.insertCell(0);
-  unregisterCell = newRow.insertCell(1);
+  var name = endpointData.Name;
+  var id = endpointData.id;
+  var newRow = table.insertRow(isThisBrowser ? 1 : -1);
+  var nameCell = newRow.insertCell(0);
+  var unregisterCell = newRow.insertCell(1);
   nameCell.innerHTML = name + (isThisBrowser ? " (this browser)" : "");
   unregisterCell.innerHTML = '<button id="registerDelete' + id + '">Unsubscribe</button>';
   if(isThisBrowser) {
@@ -51,16 +51,16 @@ if ('serviceWorker' in navigator) {
       return response.json();
     }).then(function(endpointList) {
       endpoints = endpointList;
-      localEndpoint = subscription ? subscription.endpoint : "No local subscription";
+      var localEndpoint = subscription ? subscription.endpoint : "No local subscription";
       console.log(localEndpoint);
       endpoints.forEach(function(endpointData){
         console.log(endpointData);
-        thisOne = false;
+        var thisOne = false;
         if(endpointData.Endpoint == localEndpoint) {
           // This endpoint is already in our list. Remove subscribe button
           thisOne = true;
           hideSubscribeButton();
-          thisIndex = endpointData.Identifier;
+          thisIndex = endpointData.id;
         }
         addTableRow(endpointData, thisOne);
       });
@@ -103,7 +103,7 @@ function subscribe() {
         location.reload();
       } else {
         hideSubscribeButton();
-        thisIndex = data.Identifier;
+        thisIndex = data.id;
         addTableRow(data, true);
       }
     });

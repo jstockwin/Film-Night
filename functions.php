@@ -151,7 +151,7 @@ function get_emails($event){
 }
 
 function get_user_endpoints($user){
-  $result = query("SELECT * FROM endpoints WHERE ID='$user';");
+  $result = query("SELECT * FROM endpoints WHERE user_id='$user';");
   $endpoints = array();
   if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()){
@@ -183,15 +183,15 @@ function get_endpoints($event){
     return "Error: Unhandled event";
   }
   $endpoints = array();
-  $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Active=1 AND ".$field."=1;";
+  $sql = "SELECT * FROM users INNER JOIN endpoints ON user_id = users.id WHERE Active=1 AND ".$field."=1;";
   $result = query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
-      array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+      array_push($endpoints, array("id" => $row['id'], "user_id" => $row['user_id'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
     }
   }
   if($event == "Voting_End60"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting60=1";
+    $sql = "SELECT * FROM users INNER JOIN endpoints ON user_id = users.id WHERE Attending=1 AND Reminder_Voting60=1";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
@@ -199,13 +199,13 @@ function get_endpoints($event){
         $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
-          array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+          array_push($endpoints, array("id" => $row['id'], "user_id" => $row['user_id'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
         }
       }
     }
   }
   if($event == "Voting_End30"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints USING (ID) WHERE Attending=1 AND Reminder_Voting30=1";
+    $sql = "SELECT * FROM users INNER JOIN endpoints ON user_id = users.id WHERE Attending=1 AND Reminder_Voting30=1";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
@@ -213,7 +213,7 @@ function get_endpoints($event){
         $result2 = query($sql2);
         if($result2->num_rows == 0){
           // Then the user has not yet voted.
-          array_push($endpoints, array("Identifier" => $row['Identifier'], "ID" => $row['ID'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
+          array_push($endpoints, array("id" => $row['id'], "user_id" => $row['user_id'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
         }
 
       }
