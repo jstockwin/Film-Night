@@ -43,15 +43,6 @@ if (loginCheck($session, TRUE)=="admin"){
   Results End: <input type="datetime-local" name="results_end" id="results_end"><br>
   <input type="submit" value="Submit">
   </form>';
-  echo "<br><br>To delete an entry, select the ID and click delete below<br><br>";
-  echo '<form action="admin/adminhandler.php" method="post">';
-  echo 'ID: <select name="deleteID">';
-  foreach($times as &$id){
-    echo '<option value="'.$id[0].'">'.$id[0].'</option>';
-  }
-  echo '</select><br>';
-  echo '<input type="submit" value="Delete">';
-  echo '</form>';
   echo '
 
 
