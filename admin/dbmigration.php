@@ -33,7 +33,7 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
       echo "Table $cTable created successfully\n";
     }
     $utf8 = $conn2->query("ALTER TABLE $cTable CONVERT TO CHARACTER SET utf8;");
-    
+
     $insert = $conn2->query("INSERT INTO $cTable SELECT * FROM $DB.$cTable");
     if(!$insert) {
       echo "ERROR: Failed to migrate data for table $cTable\n";
@@ -41,17 +41,17 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
       echo "Data migrated for table $cTable\n";
     }
   }
-  
+
   //DONE DUPLICATING
-    
+
   //FILM ID CHANGES
-  
+
   $conn2->query("ALTER TABLE nominations ADD COLUMN id VARCHAR(15) FIRST");
   $conn2->query("ALTER TABLE nominations ADD COLUMN metascore VARCHAR(7)");
   $conn2->query("ALTER TABLE nominations ADD COLUMN imdbscore VARCHAR(7)");
   $conn2->query("ALTER TABLE nominations ADD COLUMN plot VARCHAR(1023)");
-  $conn2->query("ALTER TABLE nominations ADD COLUMN poster VARCHAR(15)");
-  
+  $conn2->query("ALTER TABLE nominations ADD COLUMN poster VARCHAR(1023)");
+
   $sql = "SELECT * FROM nominations";
   $result = $conn2->query($sql);
 
@@ -86,10 +86,10 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
   //get rid of the weird Chloe film from 1960 with no name.
   //I'm told this was a botched accidental nomination of Ocean's 11.
   $conn2->query("DELETE FROM nominations WHERE ISNULL(id);");
-  
+
   //DONE WITH FILMS
-  
-  //ADD IDs TO OTHER TABLES  
+
+  //ADD IDs TO OTHER TABLES
   foreach($tables as &$cTable){
     if($cTable == "endpoints" || $cTable == "votes" || $cTable == "incomingvotes")
     {
@@ -119,11 +119,11 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
       echo "Added or changed id for table $cTable\n";
     }
   }
-  
+
   //DONE ADDING IDs
-  
+
   //CREATE PROPOSALS
-  
+
   $createProposals = $conn2->query("CREATE TABLE proposals (
     user_id VARCHAR(127),
     film_id VARCHAR(15),
@@ -132,17 +132,17 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (film_id) REFERENCES nominations(id)
   );");
-  
+
   if(!$createProposals) {
     echo "ERROR: Failed to create proposals table\n";
   } else {
     echo "Table proposals created\n";
   }
-  
+
   //POPULATE PROPOSALS
 
   $films = $conn2->query("SELECT * FROM nominations");
-  
+
   if(!$films)
   {
     echo "ERROR: Failed to get films\n";
@@ -171,11 +171,11 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
   } else {
     echo "Dropped old proposal information\n";
   }
-  
+
   //DONE WITH PROPOSALS
-  
+
   //CREATE SELECTIONS
-  
+
   $createSelections = $conn2->query("CREATE TABLE selections (
     id INT AUTO_INCREMENT PRIMARY KEY,
     film_id VARCHAR(15),
@@ -183,15 +183,15 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
     FOREIGN KEY (film_id) REFERENCES nominations(id),
     FOREIGN KEY (filmnight_id) REFERENCES timings(id)
   );");
-  
+
   if(!$createSelections) {
     echo "ERROR: Failed to create selections table\n";
   } else {
     echo "Table selections created\n";
   }
-  
+
   //POPULATE SELECTIONS
-  
+
   $mostRecentNight = $conn2->query("SELECT id FROM timings WHERE Roll_Call_End < NOW() ORDER BY Roll_Call_End DESC LIMIT 1");
   $nightID = $mostRecentNight->fetch_object()->id;
   echo "Most recent film night id: $nightID\n";
@@ -211,7 +211,7 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
       }
     }
   }
-  
+
   $dropOldSelections = $conn2->query("DROP TABLE selected_films");
   if(!$dropOldSelections) {
     echo "ERROR: Failed to drop selected_films table\n";
@@ -219,13 +219,13 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
     echo "Table selected_films dropped\n";
   }
   //DONE WITH SELECTIONS
-  
+
   //RENAME OLD VOTES
-  
+
   $conn2->query("ALTER TABLE votes RENAME TO oldvotes");
-  
+
   //CREATE NEW VOTES
-  
+
   $createVotes = $conn2->query("CREATE TABLE votes (
     user_id VARCHAR(127),
     selection_id INT,
@@ -234,15 +234,15 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (selection_id) REFERENCES selections(id)
   )");
-  
+
   if(!$createVotes) {
     echo "ERROR: Failed to create votes table\n";
   } else {
     echo "Table votes created\n";
   }
-  
+
   //MIGRATE VOTES
-  
+
   $allvotes = $conn2->query("SELECT * FROM oldvotes");
   while($votes = $allvotes->fetch_object()) {
     $user = $votes->user_id;
@@ -259,17 +259,17 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
       }
     }
   }
-  
+
   $conn2->query("DROP TABLE oldvotes");
-  
+
   //DONE WITH VOTES
-  
+
   //INCOMING VOTES IS EMPTY
-  
+
   $conn2->query("DROP TABLE incomingvotes");
-  
+
   //DONE WITH INCOMING VOTES
-  
+
 }else{
   echo "Error: Failed to create new DB";
 }
