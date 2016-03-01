@@ -15,7 +15,7 @@ if(loginCheck($session)=="admin"){
       $_SESSION['ERROR']="adminhandler.php went wrong. SQL call:<br>".$sql."<br>Result:<br>".$result;
     }
   }else if(isset($_POST['deleteID'])){
-    $sql = 'DELETE FROM timings WHERE ID='.$_POST['deleteID'];
+    $sql = 'DELETE FROM timings WHERE id='.$_POST['deleteID'];
     $result = query($sql);
     if($result == 1){
       header("location: ../admin-console.php");

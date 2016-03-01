@@ -6,7 +6,7 @@ function dbconnect(){
 
   if(!isset($conn)) {
     include $GLOBALS['root'].'../../database.php';
-    $conn = new mysqli($host, $username, $password, "films");
+    $conn = new mysqli($host, $username, $password, "films2");
   }
 
   if ($conn->connect_error) {
@@ -340,7 +340,7 @@ function getFilmNights(){
   $result = query($sql);
   if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){
-      array_push($times, array($row['ID'], $row["Roll_Call_Start"], $row["Roll_Call_End"], $row["Voting_Start"], $row["Voting_End"], $row["Results_Start"], $row["Results_End"]));
+      array_push($times, array($row['id'], $row["Roll_Call_Start"], $row["Roll_Call_End"], $row["Voting_Start"], $row["Voting_End"], $row["Results_Start"], $row["Results_End"]));
     }
     return $times;
   }
