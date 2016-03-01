@@ -408,11 +408,23 @@ function nominateFilm($film){
 }
 
 function getResults(){
-  return query("SELECT * FROM votes");
+  $filmnight_id = getCurrentResultsFilmNight();
+  $voters = query("SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id");
+  $votes = [];
+  while($voter = $voters->fetch_assoc()['user_id']){
+    array_push($votes, getUserVotes($voter));
+  }
+  return '['.implode(',', $votes).']';
 }
 
 function getIncomingResults(){
-  return query("SELECT * FROM incomingvotes");
+  $filmnight_id = getCurrentFilmNight();
+  $voters = query("SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id");
+  $votes = [];
+  while($voter = $voters->fetch_assoc()['user_id']){
+    array_push($votes, getUserVotes($voter));
+  }
+  return '['.implode(',', $votes).']';
 }
 
 function sessionStart(){
@@ -443,6 +455,11 @@ function getUserVotes($ID){
 
 function getCurrentFilmNight(){
   $mostRecentNight = query("SELECT id FROM timings WHERE Roll_Call_End < NOW() ORDER BY Roll_Call_End DESC LIMIT 1");
+  return $mostRecentNight->fetch_object()->id;
+}
+
+function getCurrentResultsFilmNight(){
+  $mostRecentNight = query("SELECT id FROM timings WHERE Voting_End < NOW() ORDER BY Voting_End DESC LIMIT 1");
   return $mostRecentNight->fetch_object()->id;
 }
 

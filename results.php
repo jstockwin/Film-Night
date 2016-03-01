@@ -117,11 +117,19 @@
 if (loginCheck($session)=="admin" && status()=="voting"){
   $result = getIncomingResults();
 }else{
-  $result = getResults();
+  $results = getResults();
+}
+echo "var votes = $results;\n";
+echo "var listOfCandidates  = generateListOfCandidates(votes);\n";
+
+if($results == "[]"){
+  echo '// There are no films. Use defaults \n
+    var listOfCandidates = ["A", "B", "C", "D", "E", "F"];
+    var votes = generateRandomVotes(listOfCandidates, 1000);';
 }
 
 
-
+/*
 if ($result->num_rows > 0){
   echo "var votes =[";
   while($row = $result->fetch_assoc()){
@@ -133,7 +141,7 @@ if ($result->num_rows > 0){
   echo "// There are no films. Use defaults \n";
   echo 'var listOfCandidates = ["A", "B", "C", "D", "E", "F"];';
   echo 'var votes = generateRandomVotes(listOfCandidates, 1000)';
-}
+} */
 ?>
 
 function hideLog(){
