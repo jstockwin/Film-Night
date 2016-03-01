@@ -21,12 +21,12 @@
       echo 'var films = [';
       while($row = $result->fetch_assoc()){
         echo '[';
-        echo '"'.$row["Film"].'",';
+        echo '"'.$row["Film_Name"].'",';
         echo '"'.$row["Year"].'",';
-        echo '"'.$row["Metascore"].'",';
-        echo '"'.$row["IMDb"].'",';
-        echo '"'.$row["Plot"].'",';
-        echo '"'.$row["Poster"].'"';
+        echo '"'.$row["metascore"].'",';
+        echo '"'.$row["imdbscore"].'",';
+        echo '"'.$row["plot"].'",';
+        echo '"'.$row["poster"].'"';
         echo '],';
       }
       echo '];';
@@ -34,8 +34,23 @@
       // Selected films is empty.
       echo "var films = []";
     }
-    $result = getUserVotes($_SESSION['ID']);
-    if ($result->num_rows > 0){
+    $vote = getUserVotes($_SESSION['ID']);
+    if($vote!="FALSE"){
+      $voted = TRUE;
+      echo "var Vote = {";
+      foreach ($vote as $name => $position) {
+        echo '"'.$name.'": '.$position.',';
+      }
+      echo "};";
+      echo "films.sort(function(a, b){return Vote[a[0]] - Vote[b[0]];});";
+      echo "console.log('voted');";
+    }else{
+      $voted = FALSE;
+      echo "console.log('not voted');";
+    }
+
+
+    /*if ($result->num_rows > 0){
       // User has voted previously
       $voted = TRUE;
       echo "console.log('true');";
@@ -50,7 +65,7 @@
     }else{
       // User has not voted previously
       $voted = FALSE;
-    }
+    }*/
 
 
     ?>

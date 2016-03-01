@@ -422,11 +422,23 @@ function sessionStart(){
 }
 
 function getSelectedFilms(){
-  return query("SELECT * FROM selected_films");
+  $filmnight_id = getCurrentFilmNight();
+  return query("SELECT * FROM `selections`  INNER JOIN nominations WHERE selections.film_id = nominations.id AND selections.filmnight_id=$filmnight_id");
 }
 
 function getUserVotes($ID){
-  return query("SELECT * FROM incomingvotes WHERE ID='$ID'");
+  $filmnight_id = getCurrentFilmNight();
+  $votes = query("SELECT Film_Name, position FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id AND user_id='$ID'");
+  if($votes->num_rows > 0){
+    // user has voted.
+    while($entry = $votes -> fetch_assoc()){
+      $vote[$entry['Film_Name']] = $entry['position'];
+    }
+    return($vote);
+  }else{
+    return "FALSE";
+  }
+
 }
 
 function getCurrentFilmNight(){
