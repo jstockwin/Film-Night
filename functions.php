@@ -24,7 +24,7 @@ function query($query){
 
 function loginCheck($session = "live", $session_started = FALSE) {
   if($session == "dev"){
-    $_SESSION['ID'] = "jstockwin@gmail.com";
+    $_SESSION['ID'] = "dingbatwhirr@gmail.com";
     $_SESSION['Permission'] = "admin";
     $_SESSION['Name'] = "debug";
     $_SESSION['Token'] = "ABC123";
@@ -434,7 +434,7 @@ function getUserVotes($ID){
     while($entry = $votes -> fetch_assoc()){
       $vote[$entry['Film_Name']] = $entry['position'];
     }
-    return($vote);
+    return(json_encode($vote));
   }else{
     return "FALSE";
   }

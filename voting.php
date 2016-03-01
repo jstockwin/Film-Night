@@ -37,11 +37,7 @@
     $vote = getUserVotes($_SESSION['ID']);
     if($vote!="FALSE"){
       $voted = TRUE;
-      echo "var Vote = {";
-      foreach ($vote as $name => $position) {
-        echo '"'.$name.'": '.$position.',';
-      }
-      echo "};";
+      echo "var Vote = $vote;";
       echo "films.sort(function(a, b){return Vote[a[0]] - Vote[b[0]];});";
       echo "console.log('voted');";
     }else{
