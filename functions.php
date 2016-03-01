@@ -449,7 +449,7 @@ function getCurrentFilmNight(){
 }
 
 function getCurrentResultsFilmNight(){
-  $mostRecentNight = query("SELECT id FROM timings WHERE Voting_End < NOW() ORDER BY Voting_End DESC LIMIT 1");
+  $mostRecentNight = query("SELECT id FROM timings WHERE Results_Start < NOW() ORDER BY Voting_End DESC LIMIT 1");
   return $mostRecentNight->fetch_object()->id;
 }
 
