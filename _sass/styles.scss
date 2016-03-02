@@ -141,7 +141,8 @@ button {
 }
 
 #container {
-  animation-duration: 2s;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
   margin: 0 auto;
   padding: 50px 0;
   position: relative;
@@ -152,7 +153,7 @@ button {
 @keyframes slide-in{
   from {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(200px);
   }
 
   to {
@@ -169,7 +170,7 @@ button {
 
   to {
     opacity: 0;
-    transform: translateY(100%);
+    transform: translateY(200px);
   }
 }
 

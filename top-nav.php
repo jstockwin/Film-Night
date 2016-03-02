@@ -82,7 +82,7 @@ var currentTab;
 function findActiveTab(){
   var pageTabs = document.getElementById('page-tabs');
   for(var i = 0; i < pageTabs.children.length; i++){
-    if(pageTabs.children[i].getAttribute('data-active')){
+    if(pageTabs.children[i].getAttribute('data-active') === "true"){
       currentTab = pageTabs.children[i];
       return pageTabs.children[i];
     }
