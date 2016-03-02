@@ -12,6 +12,9 @@ function head($title, $extra='') {
   echo '<link rel="icon" type="image/png" href="assets/icons/favicon.png">';
   echo '<meta name="theme-color" content="#455A64">';
   echo '<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>';
+  echo '<script type="text/javascript" src="js/voting-systems.js"></script>';
+  echo '<script type="text/javascript" src="js/results-graphs.js"></script>';
+  echo '<script type="text/javascript" src="js/nominate.js"></script>';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   require_once $root.'google.php';
   if($extra != '') {
