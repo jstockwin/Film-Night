@@ -167,7 +167,7 @@ window.onpopstate = function(e){
 
 function modifyHistory() {
   if(currentTab.getAttribute("onclick") === "slideIndicator(event)") {
-    window.history.replaceState({html: document.getElementById('container'), tabID: currentTab.id} , location.href, location.href);
+    window.history.replaceState({html: document.getElementById('container').innerHTML, tabID: currentTab.id} , location.href, location.href);
   }
 }
 </script>
