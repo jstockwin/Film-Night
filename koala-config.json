@@ -6,7 +6,7 @@
 	},
 	{
 	"src": "_js",
-	"dest": ""
+	"dest": "js"
 }
 	],
 	"options" :{

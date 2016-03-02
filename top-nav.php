@@ -7,12 +7,12 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
   <div id="page-tabs">
     <?php echo "<!-- ".$root2." ".$_SERVER['PHP_SELF']." -->";?>
     <div id="indicator"></div>
-    <a href="nominate.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."nominate.php"){echo 'data-active="true"';} ?>>Add Films</a>
-    <a href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
-    <a href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
-    <a href="settings.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
-    <?php $permission = loginCheck($session); if ($permission == "admin"){
-      echo '<a href="admin-console.php" onClick="slideIndicator(event)" class="tab" ';
+    <a id="nominateTab" href="nominate.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."nominate.php"){echo 'data-active="true"';} ?>>Add Films</a>
+    <a id="votingTab" href="voting.php" onclick="moveIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
+    <a id="resultsTab" href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
+    <a id="settingsTab" href="settings.php" onclick="moveIndicator(this)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
+    <?php if ($permission == "admin"){
+      echo '<a id="adminTab" href="admin-console.php" onclick="moveIndicator(this)" class="tab" ';
       if($_SERVER['PHP_SELF'] === $root2."admin-console.php"){echo 'data-active="true"';}
       echo ">Admin</a>";
     }
@@ -47,7 +47,7 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
 </div>
 <script>
 
-window.addEventListener("DOMContentLoaded", function(){setActive(findActiveTab())});
+window.addEventListener("DOMContentLoaded", function(){setActive(findActiveTab()); modifyHistory();});
 window.addEventListener("load", function(){setActive(findActiveTab())});
 window.addEventListener("resize", function(){setActive(findActiveTab())}, true);;
 
@@ -59,6 +59,9 @@ function showContent(){
   setTimeout(closeClapper, 300);
   setTimeout(shrinkHeader, 800);
 }
+
+showContent();
+
 
 function shrinkHeader(){
   document.getElementById('svg-container').style.transition = "transform 2s,left 2s, top 2s";
@@ -75,28 +78,28 @@ function expandHeader(){
   document.getElementById('header').style.height = "100%";
 }
 
+var currentTab;
 function findActiveTab(){
   var pageTabs = document.getElementById('page-tabs');
   for(var i = 0; i < pageTabs.children.length; i++){
     if(pageTabs.children[i].getAttribute('data-active')){
+      currentTab = pageTabs.children[i];
       return pageTabs.children[i];
     }
   }
 }
 
 function setActive(target){
-
   var indicator  = document.getElementById('indicator');
   var targetBBox = target.getBoundingClientRect();
   indicator.style.left = targetBBox.left + "px";
   indicator.style.right = document.getElementById('header').getBoundingClientRect().width - targetBBox.right + "px";
 }
 
-function slideIndicator(event){
-  event.preventDefault();
-  event.stopPropagation();
+
+function moveIndicator(targetTab) {
   var indicator  = document.getElementById('indicator');
-  var targetBBox = event.target.getBoundingClientRect();
+  var targetBBox = targetTab.getBoundingClientRect();
   var currentBBox = indicator.getBoundingClientRect();
   var deltaLeft = targetBBox.left - currentBBox.left;
   if(deltaLeft < 0){
@@ -106,10 +109,17 @@ function slideIndicator(event){
   }
   indicator.style.left = targetBBox.left + "px";
   indicator.style.right = document.getElementById('header').getBoundingClientRect().width - targetBBox.right + "px";
-  if(event.target.dataset['active'] != "true"){
-    expandHeader();
-    setTimeout(openClapper, 2000);
-    setTimeout(changePage, 2500, event.target.href);
+  currentTab.setAttribute("data-active",  "false");
+  targetTab.setAttribute("data-active", "true");
+  currentTab = targetTab;
+}
+
+function slideIndicator(event){
+  event.preventDefault();
+  event.stopPropagation();
+  if(event.target.getAttribute("data-active") != "true" ){
+    changePage(event.target.getAttribute("href"));
+    moveIndicator(event.target);
   }
   return false;
 }
@@ -119,26 +129,45 @@ function changePage(href){
   var left = indicator.style.left;
   var right = indicator.style.right;
   var xhr = new XMLHttpRequest();
-  xhr.open('GET',href);
+  xhr.open('GET','page-fragments/' + href);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function(){
-    document.open();
-    document.write(xhr.responseText);
-    document.close();
-    window.history.pushState({html: xhr.responseText}, "", href);
-    indicator = document.getElementById('indicator');
-    indicator.style.left = left;
-    indicator.style.right = right;
+    window.history.pushState({html: xhr.responseText, tabID: currentTab.id} , href, href);
+    var container = document.getElementById('container');
+    container.style.animationName = "slide-out";
+    container.style.opacity =  "0";
+    var f = function(){
 
+      container.innerHTML = xhr.responseText;
+      evalScripts(container);
+      container.style.animationName = "slide-in";
+      container.style.opacity =  "1";}
+
+    setTimeout(f, 500);
   }
   xhr.send();
 }
 
+function evalScripts(element) {
+  var scripts = element.getElementsByTagName("script");
+  for(var i = 0; i < scripts.length; i++) {
+    eval(scripts[i].innerHTML);
+  }
+}
+
 window.onpopstate = function(e){
     if(e.state){
-      document.open();
-      document.write(e.state.html);
-      document.close();
+      document.getElementById('container').innerHTML = e.state.html;
+      moveIndicator(document.getElementById(e.state.tabID));
+      evalScripts(container);
+    }else{
+      location.reload();
     }
 };
+
+function modifyHistory() {
+  if(currentTab.getAttribute("onclick") === "slideIndicator(event)") {
+    window.history.replaceState({html: document.getElementById('container'), tabID: currentTab.id} , location.href, location.href);
+  }
+}
 </script>
