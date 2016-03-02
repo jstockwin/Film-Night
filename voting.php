@@ -2,7 +2,8 @@
 <?php require $root.'../../database.php'; ?>
 <?php include 'head.php'; head('Film Night Voting');?>
 <body>
-<?php include 'top-nav.php'?>
+<?php include 'top-nav.php' ?>
+<div id="container">
 <?php if(($permission != FALSE && status($root) =="voting") || $permission == "admin"): ?>
 
 <script>window.onload = function() { init() };</script>
@@ -262,5 +263,6 @@
 </script>
 
 <?php endif; ?>
+</div>
 </body>
 </html>
