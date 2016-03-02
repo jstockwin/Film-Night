@@ -1,6 +1,6 @@
 <?php
 $extra = '';
 $title = 'Film Night Nominations';
-$fragment ='page-fragments\nominate.php';
+$fragment = $root.'page-fragments/nominate.php';
 include 'template.php'
 ?>
