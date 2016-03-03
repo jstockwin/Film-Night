@@ -8,69 +8,52 @@ if(!loginCheck($session)){
   echo "Error: User not logged in";
   $_SESSION['ERROR']="votinghandler.php failed to confirm that you were logged in";
 }else{
-  $conn = new mysqli($host, $username, $password, "films");
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-    $_SESSION['ERROR']="votinghandler.php failed connect to sql database: ".$conn->connect_error;
-  }
   if(isset($_POST['votes'])){
     if($_POST['votes'] == "WITHDRAW"){
       withdrawVotes(getCurrentFilmNight(), $_SESSION['ID']);
     }else{
-      $post = file_get_contents('php://input');
-      echo $post;
-      $vote = str_replace("votes=","",$post);
+      /*$post = file_get_contents('php://input');
+      echo $post;*/
+      $vote = $_POST['votes'];//str_replace("votes=","",$post);
 
       echo "Vote: ".$_POST['votes'];
-
 
       // Sanitise votes
       $continue = TRUE;
       $jsonVote = json_decode($vote, TRUE);
-      $sql = "SELECT * FROM selected_films";
-      $result = $conn->query($sql);
+      $filmnight_id = getCurrentFilmNight();
+      $sql = "SELECT selections.id, nominations.Film_Name FROM selections INNER JOIN nominations ON film_id = nominations.id WHERE filmnight_id = $filmnight_id";
+      $result = query($sql);
       $selectedFilms = [];
       $num_rows = $result->num_rows;
       if($num_rows > 0){
         while($row = $result->fetch_assoc()){
-          array_push($selectedFilms, rawurlencode($row['Film']));
+            $selectedFilms[$row['Film_Name']] =  $row['id'];
         }
       }
-      print_r($selectedFilms);
-      print_r($jsonVote);
+      error_log(print_r($selectedFilms, TRUE));
+      error_log(print_r($jsonVote, TRUE));
 
-      foreach ($selectedFilms as $film) {
-        if(!isset($jsonVote[$film])){
-          // Film not found (selected film is not found in vote)
-          $continue = FALSE;
-          $_SESSION['ERROR'] = "Error: Failed to validate your vote. <br>Not all selected films are in your vote. <br> ".$vote;
-          echo "Error: Failed to validate your vote";
-        }
-      }
-      $nums = range(1,$num_rows);
-      foreach($jsonVote as $film){ // $film is actually the voting rank number.
-        if(array_search(array_search($film, $jsonVote), $selectedFilms, TRUE)===FALSE){
-          // Film not found (film in vote has not been selected)
-          $continue = FALSE;
-          $_SESSION['ERROR'] = "Error: Failed to validate your vote. <br>A film in your vote is not in selected films <br>".$vote;
-          echo "Error: Failed to validate your vote";
-        }
-        $index = array_search($film, $nums);
-        if($index===FALSE){
-          // Checks vote indices are in 1,...,number of films.
-          $continue = FALSE;
-          $_SESSION['ERROR'] = "Error: Failed to validate your vote. <br>Invalid rank index <br>".$vote;
-          echo "Error: Failed to validate your vote";
-        }else{
-          // Removes the number $film from list of numbers - you can't have two films with the same voting rank number.
-          unset($nums[$index]);
-        }
+      $idVote = [];
+
+      if(sort(array_keys($jsonVote)) != sort(array_keys($selectedFilms))) {
+        $continue = FALSE;
+        $_SESSION['ERROR'] = "Error: Failed to validate your vote.<br>Your list of films doesn't match our list of films<br>$vote";
+        echo "Error: Failed to validate your vote: bad films";
       }
 
+      if(sort(array_values($jsonVote)) != range(1,$num_rows)) {
+        $continue = FALSE;
+        $_SESSION['ERROR'] = "Error: Failed to validate your vote.<br>You didn't give the correct positions.<br>$vote";
+        echo "Error: Failed to validate your vote: bad position";
+      }
 
+      foreach ($selectedFilms as $film => $filmid) {
+        $idVote[$filmid] = $jsonVote[$film];
+      }
 
       if($continue){
-        addVote(getCurrentFilmNight() ,$_SESSION['ID'], $jsonVote);
+        addVote(getCurrentFilmNight() ,$_SESSION['ID'], $idVote);
       }
     }
   }
