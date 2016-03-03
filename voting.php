@@ -1,5 +1,6 @@
 <?php include 'setup.php';?>
 <?php require $root.'../../database.php'; ?>
+<?php $permission = loginCheck($session); ?>
 <?php include 'head.php'; head('Film Night Voting');?>
 <body>
 <?php include 'top-nav.php' ?>
