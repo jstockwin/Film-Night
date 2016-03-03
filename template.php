@@ -22,7 +22,7 @@
 <body>
   <?php include 'top-nav.php'; ?>
   <div id="container">
-    <?php include $fragment ?>
+    <?php include $root.$fragment ?>
   </div>
 </body>
 </html>
