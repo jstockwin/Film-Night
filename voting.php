@@ -23,8 +23,8 @@
       echo 'var films = [';
       while($row = $result->fetch_assoc()){
         echo '[';
-        echo '"'.$row["Film_Name"].'",';
-        echo '"'.$row["Year"].'",';
+        echo '"'.$row["title"].'",';
+        echo '"'.$row["year"].'",';
         echo '"'.$row["metascore"].'",';
         echo '"'.$row["imdbscore"].'",';
         echo '"'.$row["plot"].'",';

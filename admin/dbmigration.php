@@ -1,6 +1,6 @@
 <?php
 include '../setup.php';
-require $GLOBALS['root'].'../../database.php';
+require "$root../../database.php";
 
 
 ##########################
@@ -269,6 +269,15 @@ if($conn->query("DROP DATABASE IF EXISTS `$newDB`")){
   $conn2->query("DROP TABLE incomingvotes");
 
   //DONE WITH INCOMING VOTES
+
+  //CHANGE NOMINATIONS TO FILMS
+
+  $conn2->query("ALTER TABLE nominations RENAME TO films");
+  $conn2->query("ALTER TABLE films CHANGE COLUMN Film_Name title VARCHAR(200)");
+  $conn2->query("ALTER TABLE films CHANGE COLUMN Year year int");
+  $conn2->query("ALTER TABLE films ADD COLUMN enabled BOOL");
+  $conn2->query("UPDATE films SET enabled = (Frequency > 0)");
+  $conn2->query("ALTER TABLE films DROP COLUMN Frequency");
 
 }else{
   echo "Error: Failed to create new DB";

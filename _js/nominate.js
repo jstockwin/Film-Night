@@ -69,7 +69,7 @@ function updateFilms(searchResults){
     if(searchResults[i].Poster == "N/A") {
       searchResults[i].Poster = "assets/icons/nothing.png";
     }
-    html = '<div class="search-result" class="search-result-picture" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false" data-veto="false">';
+    html = '<div class="search-result" class="search-result-picture" data-film-id="' + searchResults[i].imdbID + '" data-film-name="' + searchResults[i].Title + '" data-film-year="' + searchResults[i].Year + '" data-selected="false" data-veto="false">';
     html += '<img class="search-result-picture" src="' + searchResults[i].Poster + '" onclick="toggleSelected(this.parentElement)" draggable="false">';
     html += '<div class="main-icon-container" onclick="toggleSelected(this.parentElement)"><div class="check-background"></div><img src="assets/icons/ic_check.svg" class="icon"></div>'
     html += '<div class="child-icon-container" title="Suitable for vegetarians" onclick="toggleVetoed(this.parentElement)"><div class="veto-background"></div><span class="veto-v">V</span><span class="veto-eto">eto</span></div>'
@@ -141,9 +141,8 @@ function submitFilms(){
     var filmEntry = results[i];
     if(filmEntry.getAttribute('data-selected') === "true"){
       var film = {};
-      film.Title = filmEntry.getAttribute('data-film-name');
-      film.Year = filmEntry.getAttribute('data-film-year');
-      film.Veto = filmEntry.getAttribute('data-veto');
+      film.id = filmEntry.getAttribute('data-film-id');
+      film.veto = filmEntry.getAttribute('data-veto');
       toggleSelected(filmEntry);
       selectedFilms.push(film);
     }

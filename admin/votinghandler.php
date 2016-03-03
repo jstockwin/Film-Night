@@ -12,9 +12,7 @@ if(!loginCheck($session)){
     if($_POST['votes'] == "WITHDRAW"){
       withdrawVotes(getCurrentFilmNight(), $_SESSION['ID']);
     }else{
-      /*$post = file_get_contents('php://input');
-      echo $post;*/
-      $vote = $_POST['votes'];//str_replace("votes=","",$post);
+      $vote = $_POST['votes'];
 
       echo "Vote: ".$_POST['votes'];
 
@@ -22,13 +20,13 @@ if(!loginCheck($session)){
       $continue = TRUE;
       $jsonVote = json_decode($vote, TRUE);
       $filmnight_id = getCurrentFilmNight();
-      $sql = "SELECT selections.id, nominations.Film_Name FROM selections INNER JOIN nominations ON film_id = nominations.id WHERE filmnight_id = $filmnight_id";
+      $sql = "SELECT selections.id, films.title FROM selections INNER JOIN films ON film_id = films.id WHERE filmnight_id = $filmnight_id";
       $result = query($sql);
       $selectedFilms = [];
       $num_rows = $result->num_rows;
       if($num_rows > 0){
         while($row = $result->fetch_assoc()){
-            $selectedFilms[$row['Film_Name']] =  $row['id'];
+            $selectedFilms[$row['title']] =  $row['id'];
         }
       }
       error_log(print_r($selectedFilms, TRUE));
