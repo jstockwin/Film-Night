@@ -318,7 +318,7 @@ function getResults($filmnight_id){
   $voters = query("SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id");
   $votes = [];
   while($voter = $voters->fetch_assoc()['user_id']){
-    array_push($votes, getUserVotes($voter));
+    array_push($votes, getUserVotes($filmnight_id, $voter));
   }
   return '['.implode(',', $votes).']';
 }
@@ -336,7 +336,6 @@ function getSelectedFilms($filmnight_id){
 }
 
 function getUserVotes($filmnight_id, $ID){
-  $filmnight_id = getCurrentFilmNight();
   $votes = query("SELECT Film_Name, position FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN nominations ON selections.film_id = nominations.id WHERE filmnight_id=$filmnight_id AND user_id='$ID'");
   if($votes->num_rows > 0){
     // user has voted.
