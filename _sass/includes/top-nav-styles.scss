@@ -1,0 +1,150 @@
+$icon-padding: 50px;
+$icon-height: 300px;
+
+$indicator-height: 0.2rem;
+
+$header-height: 70px;
+
+$profile-image-height: $header-height / 2;
+
+
+#header {
+  background-color: $primary-color;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  transition: height 2s;
+  width: 100%;
+  z-index: 100;
+}
+
+.svg-container {
+  box-sizing: border-box;
+  height: $icon-height;
+  left: 50%;
+  padding: $icon-padding;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: left top;
+  z-index: 102;
+
+  svg {
+    height: 100%;
+  }
+}
+
+.small-svg-container {
+  left: 0;
+  top: 0;
+  transform: scale($header-height / $icon-height);
+}
+
+#top {
+  height:  0.25 * ($icon-height - 2* $icon-padding);
+  transform: rotate(-45deg);
+  transform-origin: left bottom;
+  transition: transform 0.2s;
+  transition-timing-function: ease-in;
+}
+
+#bottom {
+  height: 0.75 * ($icon-height - 2* $icon-padding);
+}
+
+
+// Tabs
+#tabs-wrapper {
+  align-items: center;
+  display: flex;
+  height: $header-height;
+}
+
+#page-tabs {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 250;
+}
+
+.tab {
+  color: $white;
+  display: block;
+  margin: 0 10px;
+  padding-bottom: $indicator-height;
+  position: relative;
+  text-decoration: none;
+}
+
+#indicator {
+  background-color: $accent-color;
+  bottom: 0;
+  height: $indicator-height;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+#profile-image {
+  border-radius: 50%;
+  height: $profile-image-height;
+  margin: 0 10px;
+}
+
+// Profile drop-down
+
+#profile-toggle {
+  display: none;
+}
+
+#profile-toggle:checked + #profile-dropdown {
+  animation-name: expand;
+  display: block;
+}
+
+#profile-dropdown {
+  @extend %z-depth-2;
+
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  background-color: $white;
+  border-radius: 2px;
+  display: none;
+  margin: 10px;
+  position: absolute;
+  right: 0;
+  top: $profile-image-height;
+  transform-origin: calc(100% - 27.5px) top;
+  z-index: 200;
+
+  #name, #email {
+    font-weight: normal;
+    margin: 10px;
+    white-space: nowrap;
+  }
+
+  #email {
+    color: $secondary-text-color;
+  }
+}
+
+@keyframes expand {
+  0% {
+    top: $profile-image-height / 2;
+    transform: scale(0, 0);
+
+  }
+
+  10% {
+    top: $profile-image-height / 2;
+    transform: scale(0.1, 0.1);
+
+  }
+
+  100% {
+    top: $profile-image-height;
+    transform: scale(1, 1);
+  }
+}

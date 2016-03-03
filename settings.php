@@ -1,7 +1,10 @@
 <?php include 'setup.php';?>
+<?php require $root.'../../database.php'; ?>
+<?php $permission = loginCheck($session); ?>
 <?php include 'head.php'; head('Film Night Settings');?>
 <body>
 <?php include 'top-nav.php' ?>
+<div id="container">
 <?php if($permission != FALSE): ?>
 <script>window.onload = function() { closeClapper(); setTimeout(shrinkHeader, 500); };</script>
 <?php
@@ -89,8 +92,9 @@ Which email address would you like to receive these email to?<br>
     <th colspan=2>Notification Recipients:</th>
   </tr>
 </table>
-<script src="settings.js"></script>
+<script src="js/settings.js"></script>
 </div>
 <?php endif; ?>
+</div>
 </body>
 </html>
