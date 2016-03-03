@@ -377,5 +377,3 @@ function generateKey(listOfCandidates){
 </script>
 </body>
 </html>
-
- 
