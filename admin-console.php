@@ -1,4 +1,5 @@
 <?php include 'setup.php';?>
+<?php $permission = loginCheck($session); ?>
 <?php include 'head.php'; head('Film Night Admin Console');?>
 <body>
 <?php include 'top-nav.php';?>
