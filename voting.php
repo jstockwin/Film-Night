@@ -17,30 +17,14 @@
 
   function init(){
     <?php
-    $result = getSelectedFilms(getCurrentFilmNight());
+    $selections = getSelectedFilms(getCurrentFilmNight());
 
-    if ($result->num_rows > 0){
-      echo 'var films = [';
-      while($row = $result->fetch_assoc()){
-        echo '[';
-        echo '"'.$row["title"].'",';
-        echo '"'.$row["year"].'",';
-        echo '"'.$row["metascore"].'",';
-        echo '"'.$row["imdbscore"].'",';
-        echo '"'.$row["plot"].'",';
-        echo '"'.$row["poster"].'"';
-        echo '],';
-      }
-      echo '];';
-    }else{
-      // Selected films is empty.
-      echo "var films = []";
-    }
+    echo "var films = ".json_encode($selections).";";
     $vote = getUserVotes(getCurrentFilmNight(),$_SESSION['ID']);
     if($vote!="FALSE"){
       $voted = TRUE;
-      echo "var Vote = $vote;";
-      echo "films.sort(function(a, b){return Vote[a[0]] - Vote[b[0]];});";
+      echo "Vote = $vote;";
+      echo "films.sort(function(a, b){return Vote[a.title] - Vote[b.title];});";
       echo "console.log('voted');";
     }else{
       $voted = FALSE;
@@ -83,8 +67,8 @@
         list.innerHTML += generateHTMLToAdd();
      }
      for( var i=0; i< values.length;i++){
-     [i+1, values[i]];
-     fillOutListItem([i+1, values[i]]);
+         [i+1, values[i]];
+         fillOutListItem([i+1, values[i]]);
      }
 
      //spookify(50);
@@ -150,18 +134,19 @@
     var rating = "<p id=\"Rating"+numberOfFields+"\"><b>IMDb Rating:</b></p>";
     var metaScore = "<p id=\"MetaScore"+numberOfFields+"\"><b>Metascore:</b></p>";
     var divEnd = "</div>";
-    console.log( buttonDivider +upButton + downButton + divEnd+ div + title+ div2+img +plot+year+rating+metaScore+divEnd+divEnd );
+    //console.log( buttonDivider +upButton + downButton + divEnd+ div + title+ div2+img +plot+year+rating+metaScore+divEnd+divEnd );
     return  buttonDivider +upButton + downButton + divEnd+ div + title+ div2+img +plot+year+rating+metaScore+divEnd+divEnd ;
   }
 
   function getInfoFromListItem(id){
-    var response =[];
-    response.push(document.getElementById(id).innerHTML);
-    response.push(document.getElementById("Year"+id).innerHTML.substring(14));
-    response.push(document.getElementById("MetaScore"+id).innerHTML.substring(19));
-    response.push(document.getElementById("Rating"+id).innerHTML.substring(21));
-    response.push(document.getElementById("Plot"+id).innerHTML.substring(14));
-    response.push(document.getElementById("img"+id).src);
+    var response = {};
+    response.id = document.getElementById(id).dataset.id;
+    response.title = document.getElementById(id).innerHTML;
+    response.year = document.getElementById("Year"+id).innerHTML.substring(14);
+    response.metascore = document.getElementById("MetaScore"+id).innerHTML.substring(19);
+    response.imdbscore = document.getElementById("Rating"+id).innerHTML.substring(21);
+    response.plot = document.getElementById("Plot"+id).innerHTML.substring(14);
+    response.poster = document.getElementById("img"+id).src;
     console.log(response);
     return response;
   }
@@ -169,42 +154,40 @@
   function fillOutListItemWithoutListeners(parameters){
     var response = parameters[1];
     var id = parameters[0];
-    document.getElementById(id).innerHTML = response[0];
-    document.getElementById("img"+id).src = response[5];
-    document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response[4]);
-    document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response[1];
-    document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response[3];
-    document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response[2];
+    document.getElementById(id).dataset.id = response.id;
+    document.getElementById(id).innerHTML = response.title;
+    document.getElementById("img"+id).src = response.poster;
+    document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response.plot);
+    document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response.year;
+    document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response.imdbscore;
+    document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response.metascore;
   }
 
   function fillOutListItem(parameters){
-    console.log(parameters);
+    //console.log(parameters);
     var response = parameters[1];
     var id = parameters[0];
-    document.getElementById(id).innerHTML = response[0];
-    document.getElementById("img"+id).src = response[5];
-    document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response[4]);
-    document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response[1];
-    document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response[3];
-    document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response[2];
+    document.getElementById(id).dataset.id = response.id;
+    document.getElementById(id).innerHTML = response.title;
+    document.getElementById("img"+id).src = response.poster;
+    document.getElementById("Plot"+id).innerHTML = "<b> Plot:</b> "+decodeURIComponent(response.plot);
+    document.getElementById("Year"+id).innerHTML = "<b> Year:</b> "+response.year;
+    document.getElementById("Rating"+id).innerHTML = "<b> IMDb Rating:</b> "+response.imdbscore;
+    document.getElementById("MetaScore"+id).innerHTML = "<b> Metascore:</b> "+response.metascore;
     document.getElementById("UB"+id).addEventListener("click", function() {MoveItem(this.id,1);}, false);
     document.getElementById("DB"+id).addEventListener("click", function() {MoveItem(this.id,-1);}, false);
   }
 
   function submit(){
     console.log("submit");
-    var orderedTitles =[];
+    var orderedTitles = {};
     for(var i=0; i< numberOfFields;i++){
-      var targets = [{target: "\\!", result: "%21"}, {target: "\\*", result: "%2A"},{target: "\\(", result: "%27"},{target: "\\)", result: "%28"},{target: "\\'", result: "%29"}];
-      var encodedName = encodeURIComponent(document.getElementById(i+1).innerHTML);
-      for (var j = 0; j < targets.length; j++){
-        encodedName = encodedName.replace(new RegExp(targets[j].target, 'g'), targets[j].result);
-      }
-      orderedTitles.push('"'+encodedName+'": '+ (i+1));
+      var imdbid = document.getElementById(i+1).dataset.id;
+      orderedTitles[imdbid] = i+1;
     }
     var button = document.getElementById("submit");
     console.log(orderedTitles);
-    console.log('votes={' + orderedTitles + '}');
+    console.log('votes=' + JSON.stringify(orderedTitles));
     button.disabled=true;
     button.innerHTML="Submitting";
 
@@ -218,7 +201,7 @@
         location.reload();
       }
     };
-    xhr.send('votes={' + orderedTitles + '}');
+    xhr.send('votes=' + JSON.stringify(orderedTitles));
   }
 
   function withdraw(){

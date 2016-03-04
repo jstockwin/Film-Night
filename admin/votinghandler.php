@@ -20,13 +20,13 @@ if(!loginCheck($session)){
       $continue = TRUE;
       $jsonVote = json_decode($vote, TRUE);
       $filmnight_id = getCurrentFilmNight();
-      $sql = "SELECT selections.id, films.title FROM selections INNER JOIN films ON film_id = films.id WHERE filmnight_id = $filmnight_id";
+      $sql = "SELECT id, film_id FROM selections WHERE filmnight_id = $filmnight_id";
       $result = query($sql);
       $selectedFilms = [];
       $num_rows = $result->num_rows;
       if($num_rows > 0){
         while($row = $result->fetch_assoc()){
-            $selectedFilms[$row['title']] =  $row['id'];
+            $selectedFilms[$row['film_id']] =  $row['id'];
         }
       }
       error_log(print_r($selectedFilms, TRUE));
@@ -51,7 +51,7 @@ if(!loginCheck($session)){
       }
 
       if($continue){
-        addVote(getCurrentFilmNight() ,$_SESSION['ID'], $idVote);
+        addVote($filmnight_id, $_SESSION['ID'], $idVote);
       }
     }
   }

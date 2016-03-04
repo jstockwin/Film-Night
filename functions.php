@@ -332,7 +332,15 @@ function sessionStart(){
 }
 
 function getSelectedFilms($filmnight_id){
-  return query("SELECT * FROM selections INNER JOIN films WHERE film_id = films.id AND filmnight_id=$filmnight_id");
+  $result = query("SELECT * FROM selections INNER JOIN films ON film_id = films.id WHERE filmnight_id=$filmnight_id");
+
+  $selections = [];
+  if ($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      array_push($selections, $row);
+    }
+  }
+  return $selections;
 }
 
 function getUserVotes($filmnight_id, $ID){
