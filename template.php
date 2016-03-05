@@ -15,6 +15,8 @@
   <script type="text/javascript" src="js/voting-systems.js"></script>
   <script type="text/javascript" src="js/results-graphs.js"></script>
   <script type="text/javascript" src="js/nominate.js"></script>
+  <script type="text/javascript" src="js/voting.js"></script>
+  <script type="text/javascript" src="js/page-fragments.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php require_once $root.'google.php' ?>
   <?php if($extra != '') {echo $head;} ?>
@@ -24,5 +26,6 @@
   <div id="container">
     <?php include $root.$fragment ?>
   </div>
+  <script>window.addEventListener("load", function(){initPageFragment("<?php echo $fragment; ?>");})</script>
 </body>
 </html>

@@ -6,7 +6,16 @@ var numberOfFields = 0;
 var voted;
 var films;
 
-function init(){
+function initVoting(){
+  YouHaveBeenWarned = false;
+  ThisTime = false;
+  YouHaveBeenWarnedDown = false;
+  ThisTimeDown = false;
+  numberOfFields = 0;
+  if(document.getElementById('cards') === null) {
+    hideContent();
+    return;
+  }
   fetch('admin/infohandler.php?wants=films', {credentials: 'same-origin'}).then(function(response) {
     return response.json();
   }).then(function(filmInfo) {
@@ -24,6 +33,8 @@ function init(){
   }).catch(function(error) {
     console.log("Something went wrong:", error);
   });
+  document.getElementById("submit").addEventListener("click",function(){submit();});
+  document.getElementById("withdraw").addEventListener("click",function(){withdraw();});
 }
 
 function populateList(values){
@@ -36,9 +47,6 @@ function populateList(values){
   for( var i=0; i< values.length;i++){
     fillOutListItem(i+1, values[i]);
   }
-
-    //spookify(50);
-
 }
 
 function setButtons(voted) {
@@ -103,12 +111,13 @@ function MoveItem(id, direction) {
       alert("That is already the bottom entry");
       YouHaveBeenWarnedDown =true;
     }
-  }
-  var values = getInfoFromListItem(id)
-  var values2 = getInfoFromListItem(id-direction);
+  } else {
+    var values = getInfoFromListItem(id)
+    var values2 = getInfoFromListItem(id-direction);
 
-  fillOutListItemWithoutListeners(id, values2);
-  fillOutListItemWithoutListeners(id-direction, values);
+    fillOutListItemWithoutListeners(id, values2);
+    fillOutListItemWithoutListeners(id-direction, values);
+  }
 }
 
 function generateHTMLToAdd(){
@@ -201,7 +210,3 @@ function withdraw(){
   };
   xhr.send('votes=WITHDRAW');
 }
-
-window.addEventListener("load",function(){init();});
-document.getElementById("submit").addEventListener("click",function(){submit();});
-document.getElementById("withdraw").addEventListener("click",function(){withdraw();});

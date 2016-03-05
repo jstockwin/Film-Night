@@ -5,10 +5,10 @@ if(isset($_SESSION['ERROR']) && !$_SESSION['ERROR']==""){header("location: error
 <div id="header">
   <div id="tabs-wrapper">
   <div id="page-tabs">
-    <?php echo "<!-- ".$root2." ".$_SERVER['PHP_SELF']." -->";?>
+    <!--<?php echo $root2." ".$_SERVER['PHP_SELF']; ?>-->
     <div id="indicator"></div>
     <a id="nominateTab" href="nominate.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."nominate.php"){echo 'data-active="true"';} ?>>Add Films</a>
-    <a id="votingTab" href="voting.php" onclick="moveIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
+    <a id="votingTab" href="voting.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."voting.php"){echo 'data-active="true"';} ?>>Voting</a>
     <a id="resultsTab" href="results.php" onclick="slideIndicator(event)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."results.php"){echo 'data-active="true"';} ?>>Results</a>
     <a id="settingsTab" href="settings.php" onclick="moveIndicator(this)" class="tab" <?php if($_SERVER['PHP_SELF'] === $root2."settings.php"){echo 'data-active="true"';} ?>>Settings</a>
     <?php if ($permission == "admin"){
@@ -55,13 +55,15 @@ function closeClapper(){
   document.getElementById('top').style.transform = "rotate(0deg)";
 }
 
+function hideContent(){
+  expandHeader();
+  setTimeout(openClapper, 2000);
+}
+
 function showContent(){
   setTimeout(closeClapper, 300);
   setTimeout(shrinkHeader, 800);
 }
-
-showContent();
-
 
 function shrinkHeader(){
   document.getElementById('svg-container').style.transition = "transform 2s,left 2s, top 2s";
@@ -140,6 +142,7 @@ function changePage(href){
 
       container.innerHTML = xhr.responseText;
       evalScripts(container);
+      initPageFragment('page-fragments/'+href);
       container.style.animationName = "slide-in";
       container.style.opacity =  "1";}
 
