@@ -25,7 +25,6 @@ if ($aud == "387268322087-pnkcj2h1noi2emj25m3n9i1goi6rb2ah.apps.googleuserconten
 }else{
   // User authenticated with Google, but is not in our list of users.
   $_SESSION["ID"] = $email;
-}
 }else{
   // Error: Bad aud.
 }
