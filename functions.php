@@ -331,6 +331,22 @@ function sessionStart(){
   }
 }
 
+function getSelectedFilmsInUserOrder($filmnight_id, $user_id){
+  $result = query("SELECT films.*, !ISNULL(position) AS voted
+    FROM selections
+    LEFT JOIN votes ON selection_id = selections.id AND user_id = '$user_id'
+    INNER JOIN films ON film_id = films.id WHERE filmnight_id = $filmnight_id
+    ORDER BY position, selections.id");
+
+  $selections = [];
+  if ($result->num_rows > 0){
+    while($row = $result->fetch_assoc()){
+      array_push($selections, $row);
+    }
+  }
+  return $selections;
+}
+
 function getSelectedFilms($filmnight_id){
   $result = query("SELECT * FROM selections INNER JOIN films ON film_id = films.id WHERE filmnight_id=$filmnight_id");
 

@@ -29,8 +29,17 @@ if(isset($_GET['wants'])){
           echo '{"title": "Film Night", "body": "You have a notification but nothing is happening.", "url": "index.php"}';
       }
     }
+  } else if($wants == "films") {
+    $filmnight_id = getCurrentFilmNight();
+    $selections = [];
+    if(loginCheck($session)){
+      $selections = getSelectedFilmsInUserOrder($filmnight_id, $_SESSION['ID']);
+    }
+    echo json_encode(["status" => "success", "filmList" => $selections, "hasVoted" => $selections[1]["voted"] == "1"]);
+  } else {
+      echo '{"status": "error", "error": "Don\'t know how to get '.$wants.'"}';
   }
 } else {
-  echo '{"error": "Nothing Received"}';
+  echo '{"status": "error", "error": "Nothing Received"}';
 }
 ?>
