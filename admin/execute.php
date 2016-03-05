@@ -76,7 +76,6 @@ if(in_array("Voting_Start",$events)){
 if(in_array("Results_Start",$events)){
   // Within 5 minutes of results starting. Notify users.
   echo "results";
-  resetVotes();
   $to = get_emails("Results_Start");
   $message = '
   <html>
