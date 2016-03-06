@@ -9,4 +9,5 @@ if (strpos(gethostname(), 'rpi') !== FALSE){
   $session = "dev";
 }
 require_once $root.'functions.php';
+sessionStart();
 ?>
