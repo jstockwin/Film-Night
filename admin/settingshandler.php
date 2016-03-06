@@ -5,15 +5,6 @@ require $GLOBALS['root'].'../../database.php';
 ob_end_clean(); // supresses output.
 
 
-// Create connection
-$conn = new mysqli($host, $username, $password, "films");
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-  $_SESSION['ERROR']="settingshandler.php failed connect to sql database: ".$conn->connect_error;
-}
-$attending=0;
 $voting=0;
 $results=0;
 $voting30=0;
@@ -54,8 +45,6 @@ if(isset($_POST['voting60Notification'])){
   $voting60Notification=1;
 }
 
-
-
 $rollCall = 1;
 if(isset($_POST['rollCall']) && $_POST['rollCall']!="yes"){
   $rollCall=0;
@@ -66,7 +55,7 @@ Reminder_Voting='.$voting.', Reminder_Results='.$results.'
  Notification_Voting='.$votingNotification.', Notification_Results='.$resultsNotification.'
 , Notification_Voting30='.$voting30Notification.', Notification_Voting60='.$voting60Notification.'
  WHERE id="'.$_SESSION['ID'].'";';
-$result = $conn->query($sql);
+$result = query($sql);
 echo $result;
 echo $sql;
 if($result == 1){
