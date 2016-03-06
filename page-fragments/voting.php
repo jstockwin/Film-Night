@@ -9,5 +9,4 @@
     <button type="button" id="withdraw" style="flex-basis:40%" >Withdraw Vote</button>
   </div>
 </div>
-<script src="js/voting.js"></script>
 <?php endif; ?>
