@@ -14,7 +14,7 @@ if ($aud == "387268322087-pnkcj2h1noi2emj25m3n9i1goi6rb2ah.apps.googleuserconten
   $details = getUserDetails($email);
   if($details["Active"]==1){
     // Active user returned
-    $_SESSION["ID"] = $details["ID"];
+    $_SESSION["ID"] = $details["id"];
     $_SESSION["Permission"] = $details["Permission"];
     $_SESSION["Name"] = $details["Name"];
     $_SESSION["Token"] = $token;
