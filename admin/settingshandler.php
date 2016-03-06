@@ -65,7 +65,7 @@ Reminder_Voting='.$voting.', Reminder_Results='.$results.'
 , Reminder_Voting30='.$voting30.', Reminder_Voting60='.$voting60.', Notification_Attending='.$attendingNotification.',
  Notification_Voting='.$votingNotification.', Notification_Results='.$resultsNotification.'
 , Notification_Voting30='.$voting30Notification.', Notification_Voting60='.$voting60Notification.'
- WHERE ID="'.$_SESSION['ID'].'";';
+ WHERE id="'.$_SESSION['ID'].'";';
 $result = $conn->query($sql);
 echo $result;
 echo $sql;
