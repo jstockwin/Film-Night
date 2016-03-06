@@ -364,7 +364,7 @@ function getUserVotes($filmnight_id, $ID){
   if($votes->num_rows > 0){
     // user has voted.
     while($entry = $votes -> fetch_assoc()){
-      $vote[$entry['title']] = $entry['position'];
+      $vote[$entry['title']] = intval($entry['position']);
     }
     return(json_encode($vote));
   }else{
