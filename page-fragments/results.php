@@ -109,7 +109,7 @@
 <script>
 <?php
 
-if (loginCheck($session)=="admin" && status()=="voting"){
+if (loginCheck($session)=="admin" && status()=="voting" && !isset($_GET["night"])){
   $results = getResults(getCurrentFilmNight());
 }else{
   $results = getResults(getCurrentResultsFilmNight());
