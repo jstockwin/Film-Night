@@ -267,7 +267,8 @@ function antiPlurality(listOfCandidates, votes) {
   for (var i = 0; i < listOfCandidates.length; i ++) {
     var result = {'film': listOfCandidates[i], 'score': 0, 'rank': i};
     for (var j = 0; j < votes.length; j++) {
-      if (votes[j][listOfCandidates[i]] === listOfCandidates.length) {
+      var worstPosition = Object.keys(votes[j]).reduce(function(m, k){ return votes[j][k] > m ? votes[j][k] : m }, -Infinity);
+      if (votes[j][listOfCandidates[i]] === worstPosition) {
         result.score--;
       }
     }
