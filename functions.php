@@ -379,8 +379,8 @@ function getCurrentFilmNight($tolerance=0){
 }
 
 function getCurrentResultsFilmNight(){
-  if(isset($_GET["night"])) {
-    return $_GET["night"];
+  if(isset($_GET["night"]) && is_numeric($_GET["night"])) {
+    return intval($_GET["night"]);
   }
   $mostRecentNight = query("SELECT id FROM timings WHERE Results_Start < NOW() ORDER BY Voting_End DESC LIMIT 1");
   return $mostRecentNight->fetch_object()->id;
