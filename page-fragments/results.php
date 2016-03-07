@@ -304,5 +304,18 @@ for(var i = 0; i < listOfCandidates.length; i++){
 return key;
 }
 
+function calculateMetaResult() {
+  var metaVotes = [];
+  results.forEach(function(result) {
+    voteForm = {};
+    result.forEach(function(entry) {
+      voteForm[entry.film] = entry.rank;
+    });
+    metaVotes.push(voteForm);
+  });
+  results = [];
+  votes = metaVotes;
+  updateAllTables();
+}
 
 </script>
