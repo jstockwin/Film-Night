@@ -30,8 +30,6 @@ if (in_array("Roll_Call_Start",$events)){
   <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
   <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetoed will not be selected this week.</p>
   <br>
-  <p><b>NOTIFICATIONS ARE NOW WORKING!</b> click "subscribe" on the link above to receive film night notifications through your browser</p>
-  <br>
   <p>Best wishes,<br>The HiveBot&trade;</p>
   </body>
   ';
@@ -113,7 +111,7 @@ if(status()=="voting"){
     </body>
     </html>
     ';
-    mail($to,"Film Night Results", $message, "Content-type:text/html");
+    mail($to,"Film Night Voting", $message, "Content-type:text/html");
 
     $webPush = new WebPush(array('GCM'=>$push_api));
     $endpoints = get_endpoints("Voting_End30");
@@ -136,7 +134,7 @@ if(status()=="voting"){
     </body>
     </html>
     ';
-    mail($to,"Film Night Results", $message, "Content-type:text/html");
+    mail($to,"Film Night Voting", $message, "Content-type:text/html");
 
     $webPush = new WebPush(array('GCM'=>$push_api));
     $endpoints = get_endpoints("Voting_End60");
