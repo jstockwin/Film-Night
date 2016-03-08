@@ -191,31 +191,22 @@ function get_endpoints($event){
     }
   }
   if($event == "Voting_End60"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND ReminderVoting_60";
+    $filmnight_id = getCurrentFilmNight();
+    $sql = "SELECT endpoints.* FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND Reminder_Voting60";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
-        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = query($sql2);
-        if($result2->num_rows == 0){
-          // Then the user has not yet voted.
-          array_push($endpoints, array("id" => $row['id'], "user_id" => $row['user_id'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
-        }
+        array_push($endpoints, $row);
       }
     }
   }
   if($event == "Voting_End30"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND ReminderVoting_30";
+    $filmnight_id = getCurrentFilmNight();
+    $sql = "SELECT endpoints.* FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND Reminder_Voting30";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
-        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = query($sql2);
-        if($result2->num_rows == 0){
-          // Then the user has not yet voted.
-          array_push($endpoints, array("id" => $row['id'], "user_id" => $row['user_id'], "Name" => $row['Name'], "Endpoint" => $row['Endpoint']));
-        }
-
+        array_push($endpoints, $row);
       }
     }
   }
