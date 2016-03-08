@@ -191,7 +191,7 @@ function get_endpoints($event){
     }
   }
   if($event == "Voting_End60"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints ON user_id = users.id WHERE Attending=1 AND Reminder_Voting60=1";
+    $sql = "SELECT * FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND ReminderVoting_60";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
@@ -205,7 +205,7 @@ function get_endpoints($event){
     }
   }
   if($event == "Voting_End30"){
-    $sql = "SELECT * FROM users INNER JOIN endpoints ON user_id = users.id WHERE Attending=1 AND Reminder_Voting30=1";
+    $sql = "SELECT * FROM users INNER JOIN endpoints ON endpoints.user_id = users.id LEFT JOIN (SELECT * FROM votes INNER JOIN selections ON selection_id = selections.id WHERE filmnight_id = $filmnight_id) vs ON vs.user_id = users.id WHERE ISNULL(filmnight_id) AND attending AND ReminderVoting_30";
     $result = query($sql);
     if($result->num_rows > 0){
       while($row = $result->fetch_assoc()){
