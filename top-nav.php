@@ -141,7 +141,6 @@ function changePage(href){
     var f = function(){
 
       container.innerHTML = xhr.responseText;
-      evalScripts(container);
       initPageFragment('page-fragments/'+href);
       container.style.animationName = "slide-in";
       container.style.opacity =  "1";}
@@ -151,18 +150,13 @@ function changePage(href){
   xhr.send();
 }
 
-function evalScripts(element) {
-  var scripts = element.getElementsByTagName("script");
-  for(var i = 0; i < scripts.length; i++) {
-    eval(scripts[i].innerHTML);
-  }
-}
-
 window.onpopstate = function(e){
+    console.log(e);
     if(e.state){
       document.getElementById('container').innerHTML = e.state.html;
-      moveIndicator(document.getElementById(e.state.tabID));
-      evalScripts(container);
+      var tab = document.getElementById(e.state.tabID);
+      moveIndicator(tab);
+      initPageFragment('page-fragments/'+tab.attributes.href.value);
     }else{
       location.reload();
     }
