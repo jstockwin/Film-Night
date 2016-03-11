@@ -36,6 +36,14 @@ if(isset($_GET['wants'])){
       $selections = getSelectedFilmsInUserOrder($filmnight_id, $_SESSION['ID']);
     }
     echo json_encode(["status" => "success", "filmList" => $selections, "hasVoted" => $selections[1]["voted"] == "1"]);
+  } else if($wants == "votes") {
+    $results = [];
+    if (loginCheck($session)=="admin" && status()=="voting" && !isset($_GET["night"])){
+      $results = getResults(getCurrentFilmNight());
+    }else{
+      $results = getResults(getCurrentResultsFilmNight());
+    }
+    echo json_encode(["status" => "success", "votes" => $results]);
   } else {
     echo '{"status": "error", "error": "Don\'t know how to get '.$wants.'"}';
   }

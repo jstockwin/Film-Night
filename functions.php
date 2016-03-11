@@ -311,7 +311,7 @@ function getResults($filmnight_id){
   while($voter = $voters->fetch_assoc()['user_id']){
     array_push($votes, getUserVotes($filmnight_id, $voter));
   }
-  return '['.implode(',', $votes).']';
+  return $votes;
 }
 
 
@@ -357,9 +357,9 @@ function getUserVotes($filmnight_id, $ID){
     while($entry = $votes -> fetch_assoc()){
       $vote[$entry['title']] = intval($entry['position']);
     }
-    return(json_encode($vote));
+    return($vote);
   }else{
-    return "FALSE";
+    return [];
   }
 
 }

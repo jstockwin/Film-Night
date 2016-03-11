@@ -16,6 +16,7 @@
   <script type="text/javascript" src="js/results-graphs.js"></script>
   <script type="text/javascript" src="js/nominate.js"></script>
   <script type="text/javascript" src="js/voting.js"></script>
+  <script type="text/javascript" src="js/results.js"></script>
   <script type="text/javascript" src="js/page-fragments.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php require_once $root.'google.php' ?>
