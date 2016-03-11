@@ -37,7 +37,7 @@ if(isset($_GET['wants'])){
     }
     echo json_encode(["status" => "success", "filmList" => $selections, "hasVoted" => $selections[1]["voted"] == "1"]);
   } else {
-      echo '{"status": "error", "error": "Don\'t know how to get '.$wants.'"}';
+    echo '{"status": "error", "error": "Don\'t know how to get '.$wants.'"}';
   }
 } else {
   echo '{"status": "error", "error": "Nothing Received"}';
