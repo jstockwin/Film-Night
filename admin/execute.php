@@ -27,7 +27,7 @@ if (in_array("Roll_Call_Start",$events)){
   <body>
   <p>Dear HiveMember,</p>
   <br>
-  <p>Please <a href="https://jakestockwin.co.uk/filmnight/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
+  <p>Please <a href="https://films.jakestockwin.co.uk/settings.php">click here</a> and fill in the form if you are not planning on attending film night this week.</p>
   <p>If you are attending you do not need to do anything. If you say you are not attending, then films which you have vetoed will not be selected this week.</p>
   <br>
   <p>Best wishes,<br>The HiveBot&trade;</p>
@@ -55,7 +55,7 @@ if(in_array("Voting_Start",$events)){
   <body>
   <p>Dear HiveMember,</p>
   <br>
-  <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote for this week&apos;s film night.</p>
+  <p>Please <a href="https://films.jakestockwin.co.uk/voting.php">click here</a> to vote for this week&apos;s film night.</p>
   <br>
   <p>Best wishes,<br>The HiveBot&trade;</p>
   </body>
@@ -79,7 +79,7 @@ if(in_array("Results_Start",$events)){
   <html>
   <body>
   <p>Dear HiveMember,</p>
-  <p>Please <a href="https://jakestockwin.co.uk/filmnight/results.php">click here</a> to view the winning films!</p>
+  <p>Please <a href="https://films.jakestockwin.co.uk/results.php">click here</a> to view the winning films!</p>
   <br>
   <p>Best wishes,<br>The HiveBot&trade;</p>
   </body>
@@ -105,7 +105,7 @@ if(status()=="voting"){
     <body>
     <p>Dear HiveMember,</p>
     <p>You are yet to vote for this weeks film night. Voting closes in half an hour.
-    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+    <p>Please <a href="https://films.jakestockwin.co.uk/voting.php">click here</a> to vote</p>
     <br>
     <p>Best wishes,<br>The HiveBot&trade;</p>
     </body>
@@ -128,7 +128,7 @@ if(status()=="voting"){
     <body>
     <p>Dear HiveMember,</p>
     <p>You are yet to vote for this weeks film night. Voting closes in an hour.
-    <p>Please <a href="https://jakestockwin.co.uk/filmnight/voting.php">click here</a> to vote</p>
+    <p>Please <a href="https://films.jakestockwin.co.uk/voting.php">click here</a> to vote</p>
     <br>
     <p>Best wishes,<br>The HiveBot&trade;</p>
     </body>
