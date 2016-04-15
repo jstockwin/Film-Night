@@ -6,6 +6,16 @@ require $root.'vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 ob_end_clean(); // supresses output.
 
+$whitelist = array(
+    '127.0.0.1',
+    '178.62.48.243',
+    '::1'
+);
+
+if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+    die('Only the server may access this page.')
+}
+
 if(isset($_GET["notify"])) {
   $webPush = new WebPush(array('GCM'=>$push_api));
   $endpoints = get_endpoints("All");
