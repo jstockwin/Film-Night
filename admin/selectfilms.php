@@ -8,7 +8,7 @@ $whitelist = array(
 );
 
 if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-    die('Only the server may access this page.')
+    die('Only the server may access this page.');
 }
 
 echo selectFilms();
