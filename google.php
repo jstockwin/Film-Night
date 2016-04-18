@@ -13,10 +13,10 @@ function signOut() {
     console.log('User signed out.');
   });
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://jakestockwin.co.uk/filmnight/logout.php');
+  xhr.open('POST', 'https://films.jakestockwin.co.uk/logout.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function(){
-    location.replace("https://jakestockwin.co.uk/filmnight/index.php");
+    location.replace("https://films.jakestockwin.co.uk/index.php");
   }
   xhr.send();
 }
@@ -25,7 +25,7 @@ function onSignIn(googleUser) {
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://jakestockwin.co.uk/filmnight/loginhandler.php');
+  xhr.open('POST', 'https://films.jakestockwin.co.uk/loginhandler.php');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
     console.log('Signed in as: ' + xhr.responseText);

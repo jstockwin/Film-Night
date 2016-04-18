@@ -4,7 +4,7 @@ include '../setup.php';
 require $GLOBALS['root'].'../../database.php';
 ob_end_clean(); // supresses output.
 
-
+$attending=0;
 $voting=0;
 $results=0;
 $voting30=0;
