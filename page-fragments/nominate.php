@@ -1,3 +1,4 @@
+<?php include '../setup.php';?>
 <?php require $root.'../../database.php'; ?>
 <?php $permission = loginCheck($session); ?>
 <?php if($permission != FALSE): ?>
