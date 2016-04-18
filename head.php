@@ -15,6 +15,7 @@ function head($title, $extra='') {
   echo '<script type="text/javascript" src="js/results-graphs.js"></script>';
   echo '<script type="text/javascript" src="js/nominate.js"></script>';
   echo '<script type="text/javascript" src="js/voting.js"></script>';
+  echo '<script type="text/javascript" src="js/results.js"></script>';
   echo '<script type="text/javascript" src="js/page-fragments.js"></script>';
   echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
   require_once $GLOBALS['root'].'google.php';
