@@ -117,9 +117,9 @@ if (loginCheck($session)=="admin" && status()=="voting" && !isset($_GET["night"]
 
 
 if($results == "[]"){
-  echo '// There are no films. Use defaults'+"\n";
-  echo 'var listOfCandidates = ["A", "B", "C", "D", "E", "F"];'+"\n";
-  echo 'var votes = generateRandomVotes(listOfCandidates, 1000);'+"\n";
+  echo '// There are no films. Use defaults'."\n";
+  echo 'var listOfCandidates = ["A", "B", "C", "D", "E", "F"];'."\n";
+  echo 'var votes = generateRandomVotes(listOfCandidates, 1000);'."\n";
 }else{
   echo "var votes = $results;\n";
   echo "var listOfCandidates  = generateListOfCandidates(votes);\n";
