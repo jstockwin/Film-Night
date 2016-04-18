@@ -24,6 +24,7 @@
 </head>
 <body>
   <?php include 'top-nav.php'; ?>
+  <?php echo "<!--".gethostname()."-->"; ?>
   <div id="container">
     <?php include $root.$fragment ?>
   </div>
