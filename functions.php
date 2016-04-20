@@ -118,31 +118,22 @@ function get_emails($event){
     }
   }
   if($event == "Voting_End60"){
-    $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting60=1";
-    $result = query($sql);
-    if($result->num_rows > 0){
-      while($row = $result->fetch_assoc()){
-        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = query($sql2);
-        if($result2->num_rows == 0){
-          // Then the user has not yet voted.
-          $to = $to.$row['Email'].", ";
-        }
+    $filmNight = getCurrentFilmNight();
+    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting60 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)";)
+    $to="";
+    if($emails->num_rows > 0){
+      while($email = $emails->fetch_assoc()['email']){
+        $to = $to.$email.", ";
       }
     }
   }
   if($event == "Voting_End30"){
-    $sql = "SELECT * FROM users WHERE Attending=1 AND Reminder_Voting30=1";
-    $result = query($sql);
-    if($result->num_rows > 0){
-      while($row = $result->fetch_assoc()){
-        $sql2 = "SELECT * FROM incomingvotes WHERE ID='".$row['ID']."'";
-        $result2 = query($sql2);
-        if($result2->num_rows == 0){
-          // Then the user has not yet voted.
-          $to = $to.$row['Email'].", ";
-        }
-
+    $filmNight = getCurrentFilmNight();
+    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting30 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)";)
+    $to="";
+    if($emails->num_rows > 0){
+      while($email = $emails->fetch_assoc()['email']){
+        $to = $to.$email.", ";
       }
     }
   }
