@@ -1,5 +1,5 @@
 <?php
-if (strpos(gethostname(), 'ubuntu-512mb-lon1-01') !== FALSE){
+if (strpos(gethostname(), 'ubuntu-1gb-lon1-01') !== FALSE){
   $GLOBALS['root'] = $_SERVER['DOCUMENT_ROOT'].'/';
   $GLOBALS['root2'] = '/';
   $session = "live";

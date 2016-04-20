@@ -119,7 +119,7 @@ function get_emails($event){
   }
   if($event == "Voting_End60"){
     $filmNight = getCurrentFilmNight();
-    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting60 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)";)
+    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting60 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)");
     $to="";
     if($emails->num_rows > 0){
       while($email = $emails->fetch_assoc()['email']){
@@ -129,7 +129,7 @@ function get_emails($event){
   }
   if($event == "Voting_End30"){
     $filmNight = getCurrentFilmNight();
-    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting30 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)";)
+    $emails = query("SELECT email FROM users WHERE Attending = 1 AND Reminder_Voting30 = 1 AND id NOT IN (SELECT DISTINCT user_id FROM `votes` INNER JOIN selections ON votes.selection_id=selections.id INNER JOIN users ON votes.user_id=users.id WHERE filmnight_id=$filmNight)");
     $to="";
     if($emails->num_rows > 0){
       while($email = $emails->fetch_assoc()['email']){
